@@ -1,0 +1,380 @@
+[
+  {
+    "id": "human",
+    "name": "Human",
+    "source": { "page": 8 },
+    "size": ["medium", "small"],
+    "hasRadiationDc": true,
+    "features": [],
+    "variants": [
+      {
+        "id": "variant-human",
+        "name": "Variant Human Traits",
+        "replaces": [],
+        "features": [
+          {
+            "id": "resourceful",
+            "name": "Resourceful",
+            "description": "You gain one extra Karma Cap that you can use each game.",
+            "effects": [{ "type": "modifier", "stat": "karmaCaps", "value": 1 }]
+          },
+          {
+            "id": "unexposed",
+            "name": "Unexposed",
+            "description": "You have disadvantage on all Radiation and Addiction checks.",
+            "effects": [
+              { "type": "rollMode", "roll": "radiation", "mode": "disadvantage" },
+              { "type": "rollMode", "roll": "addiction", "mode": "disadvantage" }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "gen-3-synth",
+        "name": "Gen 3 Synth",
+        "replaces": [],
+        "features": [
+          {
+            "id": "gen-3-synth",
+            "name": "Gen 3 Synth",
+            "description": "This variant option provides no abilities or statistical change. However it can provide a psychological or narrative one. Work with your GM on how this potentiality could affect your character. Alternatively, when creating your human character; roll a d20. On a 20, your character is secretly a Gen 3 Synth.",
+            "effects": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ghoul",
+    "name": "Ghoul",
+    "source": { "page": 9 },
+    "size": ["medium", "small"],
+    "hasRadiationDc": false,
+    "features": [
+      {
+        "id": "evolution",
+        "name": "Evolution",
+        "description": "You cannot gain levels of radiation and you are immune to radiation damage. Additionally, you gain no Irradiated levels from consuming food or water.",
+        "effects": [
+          { "type": "immunity", "to": "radiationLevels" },
+          { "type": "immunity", "to": "damage.radiation" }
+        ]
+      },
+      {
+        "id": "resilient-anatomy",
+        "name": "Resilient Anatomy",
+        "description": "You are resistant to poison damage. Any stamina points you would gain from consuming food, drinks, or chems is halved (rounded down). Any hit points you would gain from stimpaks is halved (rounded down). You cannot gain hit points from healing powder. Syringes that aren’t ‘loaders’ have no effect on you. Additionally, whenever you take damage from the bleeding condition, you take half as much.",
+        "effects": [
+          { "type": "resistance", "to": "damage.poison" },
+          { "type": "note", "text": "SP from food/drink/chems and HP from stimpaks halved (round down); no HP from healing powder; non-loader syringes have no effect; bleeding damage halved." }
+        ]
+      }
+    ],
+    "variants": [
+      {
+        "id": "variant-ghoul",
+        "name": "Variant Ghoul Traits",
+        "replaces": [],
+        "features": [
+          {
+            "id": "many-roads-walked",
+            "name": "Many Roads Walked",
+            "description": "You gain a +2 in all skills and you gain an extra perk at 1st Level.",
+            "effects": [
+              { "type": "modifier", "stat": "skill.*", "value": 2 },
+              { "type": "modifier", "stat": "perkPoints", "value": 1 }
+            ]
+          },
+          {
+            "id": "old-bones",
+            "name": "Old Bones",
+            "description": "You are immune to poison damage and you gain the Stitched Together perk.",
+            "effects": [
+              { "type": "immunity", "to": "damage.poison" },
+              { "type": "grantPerk", "perkId": "stitched-together" }
+            ],
+            "needsReview": true
+          },
+          {
+            "id": "half-life",
+            "name": "Half Life",
+            "description": "Your mind slips each day, ghoulification has taken an immense toll on you and you feel yourself slowly becoming feral. When you reach Level 15, you are fully consumed by ghoulification, your mind is no longer your own, and your character is controlled by the GM.",
+            "effects": [{ "type": "note", "text": "At level 15 the character becomes feral and is controlled by the GM." }]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "synth",
+    "name": "Gen-2 Synth",
+    "source": { "page": 10 },
+    "size": ["medium", "small"],
+    "hasRadiationDc": false,
+    "features": [
+      {
+        "id": "inorganic-body",
+        "name": "Inorganic Body",
+        "description": "You are immune to radiation and poison. You gain no effects from Chems, Drinks or Food. Additionally you have no need to breathe, sleep, eat, or drink.",
+        "effects": [
+          { "type": "immunity", "to": "radiationLevels" },
+          { "type": "immunity", "to": "damage.radiation" },
+          { "type": "immunity", "to": "damage.poison" },
+          { "type": "note", "text": "No effects from chems, drinks or food; no need to breathe, sleep, eat or drink (hunger/dehydration/exhaustion tracks don't apply)." }
+        ]
+      }
+    ],
+    "variants": [
+      {
+        "id": "variant-gen-2-synth",
+        "name": "Variant Gen-2 Synth Traits",
+        "replaces": [],
+        "features": [
+          {
+            "id": "brittle-body",
+            "name": "Brittle Body",
+            "description": "Whenever a creature makes a targeted attack against you, you gain two limb conditions instead of one. Additionally you are vulnerable to electricity damage.",
+            "effects": [
+              { "type": "vulnerability", "to": "damage.electricity" },
+              { "type": "note", "text": "Targeted attacks against you apply two limb conditions instead of one." }
+            ]
+          },
+          {
+            "id": "software-and-hardware-upgrades",
+            "name": "Software and Hardware Upgrades",
+            "description": "Whenever you gain a perk, you are considered a Robot for perk requirements.",
+            "effects": [{ "type": "countsAsRace", "race": "robot", "for": "perkRequirements" }]
+          },
+          {
+            "id": "artificial-intelligence-algorithms",
+            "name": "Artificial Intelligence Algorithms",
+            "description": "Whenever you gain skill points, you gain 1 more.",
+            "effects": [{ "type": "modifier", "stat": "skillPoints", "value": { "ref": "skillPointGrants" } }]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "robot",
+    "name": "Robot",
+    "source": { "page": 11 },
+    "size": ["medium"],
+    "hasRadiationDc": false,
+    "features": [
+      {
+        "id": "inorganic-body",
+        "name": "Inorganic Body",
+        "description": "You cannot gain radiation levels, you are immune to radiation damage and poison damage. You cannot gain levels of bleeding. You gain no effects from Chems, Drinks or Food. Additionally, you have no need to breathe, sleep, eat, or drink.",
+        "effects": [
+          { "type": "immunity", "to": "radiationLevels" },
+          { "type": "immunity", "to": "damage.radiation" },
+          { "type": "immunity", "to": "damage.poison" },
+          { "type": "immunity", "to": "condition.bleeding" },
+          { "type": "note", "text": "No effects from chems, drinks or food; no need to breathe, sleep, eat or drink (hunger/dehydration/exhaustion tracks don't apply)." }
+        ]
+      },
+      {
+        "id": "severed-limbs",
+        "name": "Severed Limbs",
+        "description": "If any of your limbs are severed, you do not go into shock and they can be reattached with 3 steel and 1 circuitry junk item. When you or a creature reattaches a limb, it takes a number of minutes equal to 10 - their or your crafting skill bonus. If the amount of time is reduced to 0, it takes 6 AP to reattach the limb instead.",
+        "effects": [{ "type": "note", "text": "Severed limbs: no shock; reattach with 3 steel + 1 circuitry in (10 − Crafting) minutes, or 6 AP if that is ≤ 0." }]
+      },
+      {
+        "id": "armor-and-weapons",
+        "name": "Armor and Weapons",
+        "description": "You can use armor and weapons just as any other race would. If your robot sub-type grants you a weapon, you can upgrade and modify this weapon just like any other weapon. However, you cannot use power armor.",
+        "effects": [{ "type": "note", "text": "Cannot use power armor." }]
+      }
+    ],
+    "subtypes": [
+      {
+        "id": "handy",
+        "name": "Handy",
+        "source": { "page": 11 },
+        "features": [
+          {
+            "id": "handy-limbs",
+            "name": "Limbs and Targeted Attacks",
+            "description": "You have three arms, three eyes, and can have up to three hands if you choose to have three Grippers. You do not have a head, groin, or legs that can be targeted by targeted attacks or severed. Instead; targeted attacks to your eyes cost 2 less AP and creatures can target your jet engine. The jet engine functions exactly the same as a targeted attack to the legs, except the attack costs 2 more AP. If your jet engine is severed, you fall prone and cannot move until it is reattached.",
+            "effects": [{ "type": "note", "text": "3 arms, 3 eyes, no head/groin/legs. Eye targeted attacks cost 2 less AP; jet engine counts as legs, +2 AP to target." }]
+          },
+          {
+            "id": "fuel",
+            "name": "Fuel",
+            "description": "Every week, 7 days, or 168 hours; you can spend 6 AP to fill your tank with a gallon of fuel or six oil junk items which are consumed upon use. If you fail to consume a gallon of fuel after the week, you must succeed a DC 12 Endurance check for each hour past 168. For each successful check, the DC increases by 2. On a fail, you become unconscious until another creature fills your tank with fuel. Alternatively, you can load a fusion core into your chassis. If you do, you can operate for 30 days without requiring fuel.",
+            "effects": [{ "type": "note", "text": "Refuel weekly (1 gallon fuel or 6 oil, 6 AP) or fusion core for 30 days; overdue: hourly DC 12 END check, +2 per success." }]
+          },
+          {
+            "id": "jet-engine",
+            "name": "Jet Engine",
+            "description": "You hover a few feet off the ground while active and moving. You don't trigger any floor based traps or activated effects. However, if you are knocked prone, become stunned, or fall unconscious; you fall to the ground.",
+            "effects": [{ "type": "note", "text": "Hovers: doesn't trigger floor traps; falls when prone, stunned or unconscious." }]
+          }
+        ],
+        "toolChoice": {
+          "count": 3,
+          "description": "Three tools built into three arms. They can be modified like any other weapon, only require one hand, cost no AP to equip or stow, and can't be detached unless the arm is severed. With fewer than two Grippers you effectively have one hand.",
+          "options": [
+            { "id": "buzz-saw", "name": "Buzz Saw", "text": "Melee Weapon. 5 AP. 1d8 slashing. Critical Hit: 20, x2, applies bleeding. Special Properties: Cleave, Durable." },
+            { "id": "clippers", "name": "Clippers", "text": "Melee Weapon. 3 AP. 1d4 piercing. Critical Hit: 19, 20. 1d4 piercing. Special Properties: Dismember, Durable." },
+            { "id": "drill", "name": "Drill", "text": "Melee Weapon. 6 AP. 1d8 slashing. Critical Hit: 20, 2d8 slashing. Special Properties: Durable, Mangle." },
+            { "id": "gripper", "name": "Gripper", "text": "Two finger-like appendages that can grab, twist, operate, use weapons, and hold items, at similar efficiency to a human hand." },
+            { "id": "torch", "name": "Torch", "text": "Ranged Weapon, 10 ft. line. 5 AP. 1d10 fire. Ammo: fuel, 5 rounds. Special Properties: Area of Effect, Durable, Incendiary." }
+          ],
+          "needsReview": true
+        }
+      },
+      {
+        "id": "protectron",
+        "name": "Protectron",
+        "source": { "page": 12 },
+        "features": [
+          {
+            "id": "protectron-limbs",
+            "name": "Limbs and Targeted Attacks",
+            "description": "You have two arms, two legs, two hands, two feet, a head, and a torso. However, you do not have eyes or a groin that can be targeted by normal targeted attacks or severed.",
+            "effects": [{ "type": "note", "text": "No eyes or groin to target." }]
+          },
+          {
+            "id": "reinforced-plating",
+            "name": "Reinforced Plating",
+            "description": "Your DT increases by 1 even if you aren’t wearing armor.",
+            "effects": [{ "type": "modifier", "stat": "dt", "value": 1 }]
+          },
+          {
+            "id": "slow",
+            "name": "Slow",
+            "description": "Protectrons can only spend a maximum of 6 AP on movement during their turns.",
+            "effects": [{ "type": "note", "text": "Max 6 AP on movement per turn." }]
+          }
+        ],
+        "toolChoice": {
+          "count": 1,
+          "description": "One tool built into one arm. It can be modified like any other weapon, only requires one hand, costs no AP to equip or stow, and can't be detached unless the arm is severed.",
+          "options": [
+            { "id": "taser", "name": "Taser", "text": "Melee Weapon. 4 AP. 2d8 electricity. Critical Hit: 20, x2 applies dazed. Special Properties: Durable." },
+            { "id": "laser", "name": "Laser", "text": "Ranged Weapon, Range: x10/x20. 4 AP. 1d8 laser. Critical Hit: 20, x2, applies burning. Ammo: Fusion cell, 30 rounds. Special Properties: Durable, Semi-Automatic." },
+            { "id": "defibrillator", "name": "Defibrillator", "text": "Unarmed Attack. 6 AP. 2d8 electricity. Critical Hit: 20, 1d8. Special Properties: Durable, Revitalizing." },
+            { "id": "cryo-spray", "name": "Cryo Spray", "text": "Ranged Weapon, 20 ft. cone. 5 AP. 2d4 cold. Ammo: Cryo cell, 3 rounds. Special Properties: Area of Effect, Durable, Freezing, Slow." },
+            { "id": "nail-gun", "name": "Nail Gun", "text": "Ranged Weapon, Range: x3/x10. 6 AP. 1 piercing per attack. Critical Hit: 20, 10 piercing. Ammo: Nails, 90 rounds. Special Properties: Automatic: 2, Durable." }
+          ]
+        }
+      },
+      {
+        "id": "robobrain",
+        "name": "Robobrain",
+        "source": { "page": 12 },
+        "features": [
+          {
+            "id": "robobrain-limbs",
+            "name": "Limbs and Targeted Attacks",
+            "description": "You have two arms, two hands, a head, and a torso. However, you do not have legs, feet, eyes, or a groin that can be targeted by normal targeted attacks or severed. Instead, creatures can target your all terrain rollers. The rollers function exactly the same as a targeted attack to the legs except they cannot be severed.",
+            "effects": [{ "type": "note", "text": "No legs/feet/eyes/groin; rollers count as legs but can't be severed." }]
+          },
+          {
+            "id": "all-terrain-rollers",
+            "name": "All Terrain Rollers",
+            "description": "You do not have to spend extra AP to move through difficult terrain.",
+            "effects": [{ "type": "note", "text": "No extra AP for difficult terrain." }]
+          },
+          {
+            "id": "neurotransmitters",
+            "name": "NeuroTransmitters",
+            "description": "You are vulnerable to electricity damage. Additionally, when you take damage from a targeted attack to the head; you gain two conditions instead of one.",
+            "effects": [
+              { "type": "vulnerability", "to": "damage.electricity" },
+              { "type": "note", "text": "Targeted attacks to the head apply two conditions instead of one." }
+            ]
+          }
+        ]
+      }
+    ],
+    "variants": []
+  },
+  {
+    "id": "superMutant",
+    "name": "Super Mutant",
+    "source": { "page": 13 },
+    "size": ["medium"],
+    "hasRadiationDc": false,
+    "features": [
+      {
+        "id": "super-mutant-size",
+        "name": "Size",
+        "description": "You cannot use power armor unless it is specifically modded to your body type.",
+        "effects": [{ "type": "note", "text": "Cannot use power armor unless modded for super mutants." }]
+      },
+      {
+        "id": "evolution",
+        "name": "Evolution",
+        "description": "You cannot gain levels of radiation and you are immune to radiation damage. Additionally, you gain no Irradiated levels from consuming food or water.",
+        "effects": [
+          { "type": "immunity", "to": "radiationLevels" },
+          { "type": "immunity", "to": "damage.radiation" }
+        ]
+      },
+      {
+        "id": "superior-strength",
+        "name": "Superior Strength",
+        "description": "Due to your increased mass in muscle, your Strength score increases by 1 and cannot be lower than 6. Additionally your Carry Load is increased by 40.",
+        "effects": [
+          { "type": "modifier", "stat": "ability.strength", "value": 1 },
+          { "type": "clamp", "stat": "ability.strength", "min": 6 },
+          { "type": "modifier", "stat": "carryLoad", "value": 40 }
+        ]
+      },
+      {
+        "id": "mass-exertion",
+        "name": "Mass Exertion",
+        "description": "The amount of required food and water you need each day with gaining levels of hunger and dehydration is doubled.",
+        "effects": [{ "type": "note", "text": "Daily food and water requirement doubled." }]
+      },
+      {
+        "id": "bulky",
+        "name": "Bulky",
+        "description": "Whenever your weapons or armor would gain a level of decay, they gain an additional one.",
+        "effects": [{ "type": "note", "text": "Weapons/armor gain an extra level of decay whenever they gain one." }]
+      }
+    ],
+    "variants": [
+      {
+        "id": "defective-strain",
+        "name": "Defective Strain",
+        "replaces": ["superior-strength"],
+        "features": [
+          {
+            "id": "defective-strain",
+            "name": "Defective Strain",
+            "description": "Your body was empowered but your mind weakened. Your Strength and Endurance ability scores both increase by 2 and your Carry Load is increased by 40. However, your Intelligence ability score is reduced by 2 and cannot be raised higher than a 3.",
+            "effects": [
+              { "type": "modifier", "stat": "ability.strength", "value": 2 },
+              { "type": "modifier", "stat": "ability.endurance", "value": 2 },
+              { "type": "modifier", "stat": "carryLoad", "value": 40 },
+              { "type": "modifier", "stat": "ability.intelligence", "value": -2 },
+              { "type": "clamp", "stat": "ability.intelligence", "max": 3 }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "nightkin",
+        "name": "Nightkin",
+        "replaces": ["superior-strength"],
+        "features": [
+          {
+            "id": "nightkin",
+            "name": "Nightkin",
+            "description": "Your Strength score increases by 1 and cannot be lower than 6. Additionally your Carry Load is increased by 40. You also gain an ability called Stealth field. You can spend 3 action points on your turn to turn you and everything you are carrying invisible. This ability lasts for 1 minute. Each time you use this ability after the first use each day, your Perception ability score temporarily decreases by 1 for 24 hours (to a minimum of 1). Your Perception ability score being decreased in this way does not limit you in using or choosing perks that have a Perception ability score requirement.",
+            "effects": [
+              { "type": "modifier", "stat": "ability.strength", "value": 1 },
+              { "type": "clamp", "stat": "ability.strength", "min": 6 },
+              { "type": "modifier", "stat": "carryLoad", "value": 40 },
+              { "type": "note", "text": "Stealth field: 3 AP, invisible for 1 minute. Each use after the first per day: −1 PER for 24 h (min 1), which doesn't affect perk eligibility." }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

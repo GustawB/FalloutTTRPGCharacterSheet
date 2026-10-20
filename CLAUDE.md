@@ -18,10 +18,11 @@ local Node server (no Tauri) persists characters as JSON files on disk.
 
 ```
 data/                 rules as data (extracted from the PDF, committed)
-  backgrounds.json    21 entries
-  traits.json         48 entries
-  perks.json          173 entries
-  overrides/<file>.json   hand curation, merged over extraction by id
+  backgrounds.json    21 entries  (generated)
+  traits.json         48 entries  (generated)
+  perks.json          173 entries (generated)
+  races.json          5 races     (hand-written, edit directly)
+  overrides/<file>.json   hand curation for generated files, merged by id
 scripts/extract_rules.py  PDF → data/*.json (needs poppler `pdftotext`)
 src/engine/           pure TS: no React, no I/O, no Date.now(); fully unit-tested
 src/ui/               React components
@@ -35,7 +36,8 @@ the p6 level-up table, with the corrections from ERRATA.md applied.
 
 ## Ground rules for agents
 
-- **Never edit `data/{backgrounds,traits,perks}.json` by hand.** They are
+- **Never edit `data/{backgrounds,traits,perks}.json` by hand.** (`races.json`
+  is the exception: it's hand-written.) They are
   generated. Curation goes in `data/overrides/<file>.json`, then re-run
   `python3 scripts/extract_rules.py <rulebook.pdf>`. If you don't have the
   PDF (CI doesn't), edit the override *and* apply the identical patch to the
@@ -55,7 +57,8 @@ Contributions are applied in this order, and every stage appends to the
 breakdowns:
 
 1. **base** – formulas below, from abilities and level
-2. **race**
+2. **race**: base features, then the chosen subtype (robots), then the
+   chosen variants. A variant's `replaces` removes those base features first
 3. **background** – +2 to the three chosen skills
 4. **traits** – the Wild Wasteland variant's effects *replace* the base
    trait's effects when toggled
@@ -83,12 +86,12 @@ in the breakdown.
 | `carryLoad` | `STR × 10` | p21 |
 | `passiveSense` | `12 + modPER` | p22 |
 | `combatSequence` | `modPER` | p127, E13 |
-| `radiationDc` | `12 − modEND`, **humans only** (absent for other races) | p23 |
+| `radiationDc` | `12 − modEND`, only if the race has `hasRadiationDc` (humans) | p23 |
 | `karmaCaps` | `1 + (LCK = 10 ? 1 : 0)` | p24–25 |
 | `deathSave` | `max(modLCK, modEND) + partyNerve` (player picks LCK or END; default is the higher) | p22 |
 | `skill.<id>` | `mod(skillAbility) + luckSkillBonus + background(2) + allocatedSkillPoints + effects` | p4, p21, E7, E11 |
 | `skillPoints` | `Σ grants at L ∈ {5,9,…,29}`, 3/4/5 by modINT | p5, E2, E4 |
-| `perkPoints` | `L − |{5,9,13,17,19} ∩ [1,L]|` | p5, E5 |
+| `perkPoints` | `L − #({5,9,…,29} ∩ [1,L])` | p5, E5 |
 | `partyNerve` (party) | `floor(Σ modCHA / 2)` | p23, E9 |
 | `groupSneak` (party) | `floor(mean skill.sneak)` | p24, E10 |
 
@@ -145,15 +148,20 @@ type Repeat = {
 
 type Expr =
   | number
-  | { ref: "level" | `ability.${AbilityId}` | `mod.${AbilityId}` | "rank" }
+  | { ref: "level" | `ability.${AbilityId}` | `mod.${AbilityId}` | "rank"
+        | "skillPointGrants" }                   // number of skill-point grants reached so far
   | { op: "add" | "sub" | "mul" | "div" | "min" | "max"; args: Expr[] }
   | { op: "floor"; args: [Expr] };
 
 type Effect =
-  | { type: "modifier"; stat: StatId; value: Expr }
+  | { type: "modifier"; stat: StatId | "skill.*"; value: Expr }   // skill.* = every skill
+  | { type: "clamp"; stat: StatId; min?: number; max?: number }  // e.g. STR "cannot be lower than 6"
   | { type: "rollMode"; roll: StatId | "attack" | "abilityCheck" | string;
       mode: "advantage" | "disadvantage" }
-  | { type: "immunity"; to: string }             // e.g. "radiation", "condition.bleeding"
+  | { type: "immunity" | "resistance" | "vulnerability"; to: string }
+      // to: "damage.<type>" | "condition.<name>" | "radiationLevels"
+  | { type: "grantPerk"; perkId: string }        // free perk; costs no perk point, ignores requirements
+  | { type: "countsAsRace"; race: RaceId; for: "perkRequirements" }
   | { type: "note"; text: string };              // situational: shown on the sheet, never computed
 ```
 
@@ -186,6 +194,29 @@ type Background = {
 };
 ```
 
+```ts
+type Feature = { id: string; name: string; description: string;
+                 effects: Effect[]; needsReview?: true };
+
+type Race = {
+  id: RaceId; name: string; source: Source;
+  size: ("small" | "medium" | "large")[];
+  hasRadiationDc: boolean;
+  features: Feature[];
+  subtypes?: {                    // robots: exactly one must be chosen
+    id: string; name: string; source: Source; features: Feature[];
+    toolChoice?: { count: number; description: string; needsReview?: true;
+                   options: { id: string; name: string; text: string }[] };
+  }[];
+  variants: {                     // optional, GM-approved; each is a toggle
+    id: string; name: string;
+    replaces: string[];           // base feature ids removed when chosen; variants
+                                  // with overlapping `replaces` are mutually exclusive
+    features: Feature[];
+  }[];
+};
+```
+
 Override files are `{ "<id>": { ...fields to replace } }`. A `wildWasteland`
 array is patched element-wise by index, and every other key replaces the
 field wholesale.
@@ -199,7 +230,8 @@ task. Anything an effect can't express exactly becomes a `note`, plus a
 ```ts
 type Character = {
   id: string; name: string; schemaVersion: 1;
-  race: RaceId; level: number; xp: number;
+  race: { id: RaceId; subtype?: string; variants: string[]; tools?: string[] };
+  level: number; xp: number;
   abilities: Record<AbilityId, number>;       // after creation-point allocation (pre-perk)
   background: { id: string; skills: [SkillId, SkillId, SkillId] };
   traits: { id: string; wildWasteland: boolean }[];   // 0–2

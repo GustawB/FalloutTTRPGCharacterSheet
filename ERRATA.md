@@ -37,14 +37,17 @@ Page numbers are printed page numbers, which equal PDF page indices.
 - If INT changes, the total is recomputed retroactively ("gain or lose Skill
   Points equal to the total available at your level", p5).
 
-### E5. Perk points: none at levels 5, 9, 13, 17 **and 19**
+### E5. Perk points: none at levels 5, 9, 13, 17, 21, 25, 29 (not 19)
 - **Text (p5):** "1 perk point at each level except for 5th, 9th, 13th, 17th,
   and 19th level." The p6 table agrees (14 at level 18, 14 at level 19,
   25 at level 30).
-- **Suspicion:** 19 breaks the every-4-levels pattern (21 would fit).
-- **Ruling:** rules as written. Text and table agree, so this isn't treated as
-  a typo. `perkPoints(L) = L − |{5, 9, 13, 17, 19} ∩ [1, L]|`.
-  **Open:** the maintainer may switch this to 21/25/29.
+- **Contradiction:** every other progression in the book runs every 4 levels
+  (skill points at 5, 9, …, 29), and 19 breaks that pattern.
+- **Ruling (maintainer, 2026-10-20):** typo. No perk point at the skill-point
+  levels 5, 9, 13, 17, 21, 25, 29.
+  `perkPoints(L) = L − (L ≥ 5 ? floor((L − 5) / 4) + 1 : 0)`, giving
+  15 at level 19, 16 at level 20 and 23 at level 30. Don't test against the
+  p6 table's perk column from level 19 on.
 
 ### E6. SP/HP progression is retroactive in the modifier
 - **Text (p5):** +5 + mod at levels 3, 5, …, 29, and if the modifier changes
@@ -56,8 +59,9 @@ Page numbers are printed page numbers, which equal PDF page indices.
 
 ## Rounding and unstated details
 
-All of these use `Math.floor`, i.e. toward −∞, which is what "rounded down"
-means for negative values.
+E7–E13 were confirmed by the maintainer on 2026-10-20. All of these use
+`Math.floor`, i.e. toward −∞, which is what "rounded down" means for
+negative values.
 
 ### E7. Luck skill bonus
 - **Text:** p4 step 5 says "half your Luck modifier (rounded down)". p25 adds:
@@ -100,6 +104,18 @@ means for negative values.
   combat sequence is "a Perception check", and the Synth race (p13) calls it
   "your Combat Sequence bonus".
 - **Ruling:** `combatSequence = modPER + effects`.
+
+## Races
+
+### E14. Handy robots get three tools
+- **Text (p11):** "Handy's are built with three special tools that are
+  attached and built into three of their arms … Choose one tool or weapon
+  from the following list that is attached to your arm." The Gripper entry
+  says "if you do not have at least two of these tools", which implies
+  several picks.
+- **Ruling:** pick 3 tools (one per arm), with duplicates allowed (e.g. three
+  Grippers, which p11 mentions explicitly). Marked `needsReview` in
+  `data/races.json`.
 
 ## Editorial (no ruling needed, just don't trust these references)
 - p4 steps 7 and 23 say traits are on "pg. 20". They're on p25.
