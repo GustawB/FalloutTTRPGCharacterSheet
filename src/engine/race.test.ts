@@ -135,3 +135,40 @@ describe("robot subtypes and tools", () => {
     expect(sheet({ id: "human", subtype: "handy" }).problems).toHaveLength(1);
   });
 });
+
+describe("race effects reach derived stats", () => {
+  it("defective strain raises END, so hp and the ability breakdown follow", () => {
+    const plain = sheet({ id: "superMutant" });
+    const s = sheet({ id: "superMutant", variants: ["defective-strain"] });
+    expect(s.abilities.endurance.value).toBe(plain.abilities.endurance.value + 2);
+    expect(s.derived.hp.value).toBe(plain.derived.hp.value + 2);
+    expect(s.abilities.intelligence.breakdown.at(-1)).toMatchObject({ value: -2 });
+    expect(s.abilities.intelligence.breakdown.at(-1)?.source).toContain("Defective Strain");
+  });
+
+  it("every stat value equals the sum of its breakdown", () => {
+    const s = sheet({ id: "superMutant", variants: ["defective-strain"] });
+    for (const r of [...Object.values(s.abilities), ...Object.values(s.derived)]) {
+      if (r) expect(r.value).toBe(r.breakdown.reduce((a, c) => a + c.value, 0));
+    }
+  });
+
+  it("notes carry the feature as source", () => {
+    const s = sheet({ id: "superMutant" });
+    expect(s.notes.some((n) => n.source.includes("Super Mutant") && n.text.includes("power armor"))).toBe(true);
+  });
+});
+
+describe("tool choice edge cases", () => {
+  it("protectron with no tool is a problem", () => {
+    expect(sheet({ id: "robot", subtype: "protectron" }).problems).toEqual(["Protectron needs 1 tool(s), got 0"]);
+  });
+  it("robobrain has no tool choice", () => {
+    expect(sheet({ id: "robot", subtype: "robobrain" }).problems).toEqual([]);
+    expect(sheet({ id: "robot", subtype: "robobrain", tools: ["taser"] }).problems).toHaveLength(1);
+  });
+  it("handy with 4 tools is a problem", () => {
+    const tools = ["gripper", "gripper", "drill", "torch"];
+    expect(sheet({ id: "robot", subtype: "handy", tools }).problems).toEqual(["Handy needs 3 tool(s), got 4"]);
+  });
+});
