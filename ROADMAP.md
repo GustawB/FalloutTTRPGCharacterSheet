@@ -62,7 +62,9 @@ Autopilot) runs one iteration at a time:
 3. **merge:** re-runs the checks. Green → squash-merge. Red → close the PR and
    label the issue `blocked`, so it's skipped.
 
-Then it dispatches itself again, until nothing qualifies. So create issues in
+Then it dispatches itself again, until nothing qualifies. Any `@claude` run on
+an issue labelled `epic` also dispatches it when it finishes (from a
+`GITHUB_TOKEN` step in `claude.yml`, because the action's own token can't). So create issues in
 dependency order, and make acceptance criteria testable, because tests are
 the only gate. Kill switch: the repo variable `CLAUDE_AUTOPILOT=off`.
 

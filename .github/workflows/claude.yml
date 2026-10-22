@@ -49,3 +49,11 @@ jobs:
           claude_args: |
             --allowed-tools "Bash(gh:*),Bash(git:*),Bash(python3:*),Bash(npm:*),Bash(npx:*),Bash(node:*)"
 
+      # Inside the action, `gh` uses the Claude app token, which can't dispatch
+      # workflows (403). GITHUB_TOKEN can, so start the autopilot from here.
+      # Only on `epic` issues, so ordinary @claude mentions don't start it.
+      - name: Start the autopilot
+        if: always() && vars.CLAUDE_AUTOPILOT != 'off' && contains(github.event.issue.labels.*.name, 'epic')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run claude-next.yml --ref main
