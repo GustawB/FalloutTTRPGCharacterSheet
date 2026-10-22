@@ -219,6 +219,15 @@ negative values.
   the engine until a removal mechanism exists.
 - **Status:** Provisional (agent, #19)
 
+### E27. Fast Metabolism (Wild Wasteland) drops the Radiation DC penalty
+- **Text (p25):** the Wild Wasteland variant gives Healing Rate +level and a
+  larger Radiation DC increase on a successful check. It doesn't repeat the
+  base trait's +3 Radiation DC and doesn't say "in addition to this trait's effects".
+- **Ruling:** a Wild Wasteland variant replaces the base effects (CLAUDE.md), so
+  the flat +3 `radiationDc` is not applied. Only the Healing Rate modifier and a
+  note remain.
+- **Status:** Provisional (agent, #19)
+
 ## Editorial (no ruling needed, just don't trust these references)
 - p4 steps 7 and 23 say traits are on "pg. 20". They're on p25.
 - p5 says the perk list is on "page 27". It's on p32.

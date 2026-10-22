@@ -40,18 +40,14 @@
             }
           },
           {
-            "type": "modifier",
-            "stat": "radiationDc",
-            "value": 3
-          },
-          {
             "type": "note",
             "text": "Whenever you succeed a radiation check, your Radiation DC increases by 4 instead of 2."
           }
         ]
       }
     ],
-    "category": "race"
+    "category": "race",
+    "needsReview": true
   },
   {
     "id": "cheaper-parts",
