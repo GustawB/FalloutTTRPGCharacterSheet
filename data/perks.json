@@ -3685,7 +3685,12 @@
     "source": {
       "page": 48
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Eating a human, ghoul or super mutant dead less than 15 minutes heals HP equal to double your healing rate (once per 8-hour rest). Eating prepared human or ghoul flesh heals SP equal to your level."
+      }
+    ],
     "requirementText": "Human, Ghoul, or Super Mutant",
     "category": "race"
   },
@@ -3705,7 +3710,12 @@
     "source": {
       "page": 48
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Food and drinks never give you Irradiated levels."
+      }
+    ],
     "requirementText": "Human",
     "category": "race"
   },
@@ -3727,7 +3737,12 @@
     "source": {
       "page": 48
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "+2 DT against attacks from animals or insects. Eating animal or insect meat dead less than 15 minutes heals HP equal to your healing rate (once per 8-hour rest); prepared meat heals SP equal to your level."
+      }
+    ],
     "requirementText": "Human, Ghoul, or Super Mutant",
     "category": "race"
   },
@@ -3749,7 +3764,12 @@
     "source": {
       "page": 48
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Eating an abomination dead less than 15 minutes heals HP equal to double your healing rate (once per 8-hour rest). Prepared abomination flesh heals SP equal to your level."
+      }
+    ],
     "requirementText": "Human, Ghoul, or Super Mutant",
     "category": "race"
   },
@@ -3774,7 +3794,12 @@
     "source": {
       "page": 48
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Robots won't target you unless you are the only hostile target within 60 feet. Advantage on Breach checks with any computer."
+      }
+    ],
     "requirementText": "Robot or Synth, Level 5",
     "category": "race"
   },
@@ -3799,9 +3824,15 @@
     "source": {
       "page": 48
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Pick-time choice: reduce one ability score by 1, 2 or 3, and increase another ability score by the amount decreased plus 1."
+      }
+    ],
     "requirementText": "Robot or Synth, Level 10",
-    "category": "race"
+    "category": "race",
+    "needsReview": true
   },
   {
     "id": "factory-reset",
@@ -3824,9 +3855,15 @@
     "source": {
       "page": 48
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "On pick, the character returns to level 1 keeping all XP, and may be rebuilt with new traits, skill bonuses, abilities and perks. Memory is wiped."
+      }
+    ],
     "requirementText": "Robot or Synth, Level 10",
-    "category": "race"
+    "category": "race",
+    "needsReview": true
   },
   {
     "id": "determination-is-not-a-malfunction",
@@ -3849,7 +3886,16 @@
     "source": {
       "page": 48
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "immunity",
+        "to": "condition.frightened"
+      },
+      {
+        "type": "note",
+        "text": "If you have unused AP at the end of your turn, you recycle all of them on your next turn."
+      }
+    ],
     "requirementText": "Robot or Synth, Level 10",
     "category": "race"
   },
@@ -3869,9 +3915,15 @@
     "source": {
       "page": 48
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "While in an irradiated zone: advantage on all ability and skill checks, +1 AC, +2 DT, and temporary hit points equal to your level."
+      }
+    ],
     "requirementText": "Human",
-    "category": "race"
+    "category": "race",
+    "needsReview": true
   },
   {
     "id": "rad-absorption",
@@ -3889,7 +3941,12 @@
     "source": {
       "page": 48
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Each time you sleep outside an irradiated zone, your rad level decreases by 1."
+      }
+    ],
     "requirementText": "Human",
     "category": "race"
   },
@@ -3914,7 +3971,17 @@
     "source": {
       "page": 48
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "modifier",
+        "stat": "radiationDc",
+        "value": -3
+      },
+      {
+        "type": "note",
+        "text": "Ignore the negative effects of the first 3 levels of radiation."
+      }
+    ],
     "requirementText": "Human, Endurance 5",
     "category": "race"
   },
@@ -3939,9 +4006,15 @@
     "source": {
       "page": 48
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "While in an irradiated zone, gain AP equal to your Endurance modifier (max 15). If your AP is already 15, actions costing 4 AP or more cost 1 less."
+      }
+    ],
     "requirementText": "Human, Endurance 8",
-    "category": "race"
+    "category": "race",
+    "needsReview": true
   },
   {
     "id": "springboard-recovery",
@@ -3959,7 +4032,12 @@
     "source": {
       "page": 49
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Spend 3 AP to heal SP equal to your healing rate; usable again after a rest of at least 6 hours."
+      }
+    ],
     "requirementText": "Human",
     "category": "race"
   },
@@ -3979,7 +4057,12 @@
     "source": {
       "page": 49
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Once per turn, after an unarmed attack, spend 1 AP to make an additional one."
+      }
+    ],
     "requirementText": "Ghoul",
     "category": "race"
   },
@@ -3999,7 +4082,12 @@
     "source": {
       "page": 49
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "No negative effects from chem addiction. Syringes have no effect on you unless they are a stimpak or chem."
+      }
+    ],
     "requirementText": "Ghoul",
     "category": "race"
   },
@@ -4019,9 +4107,15 @@
     "source": {
       "page": 49
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "The first creature to damage your HP on a turn becomes marked; your next hit on it is an automatic critical hit (or doubles damage if already a crit). Only one creature marked until you rest."
+      }
+    ],
     "requirementText": "Ghoul",
-    "category": "race"
+    "category": "race",
+    "needsReview": true
   },
   {
     "id": "stitched-together",
@@ -4039,7 +4133,12 @@
     "source": {
       "page": 49
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Lost limbs (not the head) can be reattached in 5 minutes with a first aid kit and the limb. Spend 1 minute to heal HP equal to your healing rate; usable again after a rest of at least 6 hours."
+      }
+    ],
     "requirementText": "Ghoul",
     "category": "race"
   },
