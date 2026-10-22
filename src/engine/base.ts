@@ -7,6 +7,7 @@ import { mod } from "./math";
 
 const SOURCE = "base";
 const AP_MAX = 15;
+const ABILITY_MAX = 10;
 /** Levels that grant skill points (and no perk point): 5, 9, ..., 29. */
 const GRANT_LEVELS = [5, 9, 13, 17, 21, 25, 29];
 
@@ -31,7 +32,8 @@ export function baseAbilities(c: Character): Record<AbilityId, StatResult> {
   return Object.fromEntries(
     ABILITIES.map((a) => {
       const breakdown = [line("Score", c.abilities[a])];
-      const inc = c.abilityIncreases.filter((i) => i.ability === a && i.level <= c.level).length;
+      const picked = c.abilityIncreases.filter((i) => i.ability === a && i.level <= c.level).length;
+      const inc = Math.min(picked, Math.max(0, ABILITY_MAX - c.abilities[a]));
       if (inc > 0) breakdown.push(line("Perk point increases", inc, "perk points"));
       return [a, total(breakdown)];
     }),

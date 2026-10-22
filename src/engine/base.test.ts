@@ -117,6 +117,17 @@ describe("other base stats", () => {
   });
 });
 
+describe("ability increases", () => {
+  it("never raise a score past 10", () => {
+    const c = make({
+      abilities: { strength: 9 },
+      abilityIncreases: [1, 2, 3].map((level) => ({ ability: "strength" as const, level })),
+      level: 5,
+    });
+    expect(computeSheet(c, rules).abilities.strength.value).toBe(10);
+  });
+});
+
 describe("breakdowns", () => {
   it("every derived value is non-empty and sums to its value", () => {
     for (const level of [1, 2, 3, 20, 30]) {
