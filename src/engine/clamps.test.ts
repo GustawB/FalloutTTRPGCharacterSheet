@@ -114,4 +114,14 @@ describe("temporary modifiers", () => {
     expect(sheet({ race: { id: "ghoul", variants: [] }, temporaryModifiers: [{ stat: "radiationDc", value: 1, label: "x", active: true }] }).problems)
       .toHaveLength(1);
   });
+  it("is added before manual overrides and ignores inactive ones on missing stats", () => {
+    const s = sheet({
+      temporaryModifiers: [{ stat: "ability.strength", value: -2, label: "t", active: true }],
+      manualOverrides: [{ stat: "ability.strength", value: 1, note: "m" }],
+    });
+    expect(s.abilities.strength.value).toBe(4);
+    expect(s.abilities.strength.breakdown.slice(-2).map((c) => c.source)).toEqual(["temporary", "manual override"]);
+    const off = sheet({ race: { id: "ghoul", variants: [] }, temporaryModifiers: [{ stat: "radiationDc", value: 1, label: "x", active: false }] });
+    expect(off.problems).toEqual([]);
+  });
 });
