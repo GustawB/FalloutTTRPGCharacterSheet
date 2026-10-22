@@ -23,6 +23,7 @@ data/                 rules as data (extracted from the PDF, committed)
   traits.json         48 entries  (generated)
   perks.json          173 entries (generated)
   races.json          5 races     (hand-written, edit directly)
+  vocab.json          closed id lists (hand-written; read by the validator and, later, the TS types)
   overrides/<file>.json   hand curation for generated files, merged by id
 scripts/extract_rules.py  PDF → data/*.json (needs poppler `pdftotext`)
 scripts/validate_rules.py data/*.json vs. the schema below (no PDF, stdlib only)
@@ -110,6 +111,10 @@ Spending a perk point on an ability increase raises the ability score by 1
 
 ### Stat ids
 
+`data/vocab.json` is the single source for these lists (it also holds the skill
+→ default ability map with alternates, under `skillAbilities`). The lists below
+mirror it for reading; if they disagree, fix them to match the file.
+
 Abilities: `strength perception endurance charisma intelligence agility luck`
 (the effect target `ability.<id>` adds to the *score*).
 
@@ -143,7 +148,8 @@ Rolls (`rollMode.roll`): any stat id, `attack damage abilityCheck radiation
 addiction`, or `check.<ability>` for a check with one ability.
 
 New ids (stats, damage types, conditions, rolls) must be added here first, and
-to the matching constant in `scripts/validate_rules.py`.
+to `data/vocab.json`. `scripts/validate_rules.py` reads that file and holds no
+id constants.
 
 ## Data schema
 

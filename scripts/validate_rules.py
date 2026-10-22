@@ -4,7 +4,7 @@
 Usage: python3 scripts/validate_rules.py [--data data] [--quiet]
 
 Checks every entry's shape, every effect against the Effect union, ids against
-the closed vocabularies below (mirrored in CLAUDE.md, so update both together),
+the closed vocabularies in data/vocab.json (listed in CLAUDE.md),
 cross-references (grantPerk targets, background traits, variant `replaces`), and
 that data/overrides/*.json agrees with the generated files it patches. Exits 1
 on any error. Without --quiet it also prints encoding progress.
@@ -17,42 +17,34 @@ import json
 import sys
 from pathlib import Path
 
-ABILITIES = ["strength", "perception", "endurance", "charisma", "intelligence", "agility", "luck"]
-SKILLS = ["barter", "breach", "crafting", "energyWeapons", "explosives", "guns", "intimidation",
-          "medicine", "meleeWeapons", "science", "sneak", "speech", "survival", "unarmed"]
-DERIVED = ["hp", "sp", "ap", "apMax", "ac", "dt", "healingRate", "carryLoad", "passiveSense",
-           "combatSequence", "radiationDc", "karmaCaps", "deathSave", "skillPoints", "perkPoints",
-           "partyNerve", "groupSneak"]
-STATS = set(DERIVED) | {f"ability.{a}" for a in ABILITIES} | {f"skill.{s}" for s in SKILLS}
-RACES = ["human", "ghoul", "synth", "robot", "superMutant"]
 
-# p132 damage types, plus radiation (used throughout, missing from that list).
-DAMAGE_TYPES = ["acid", "ballistic", "bludgeoning", "cold", "electricity", "explosive", "fire",
-                "impact", "laser", "piercing", "plasma", "poison", "radiation", "slashing"]
-# p135 conditions, plus ones defined elsewhere: dying (p22), frightened (p135, four variants),
-# stunned (used in text, never defined) and limb (any limb condition, p130).
-CONDITIONS = ["blinded", "bleeding", "burning", "buzzed", "corroded", "dazed", "deafened",
-              "dehydration", "drunk", "dying", "encumbered", "exhaustion", "fatigue", "frightened",
-              "grappled", "hammered", "heavilyEncumbered", "hunger", "invisible", "limb", "poisoned",
-              "prone", "radiation", "restrained", "shadowed", "shock", "slowed", "stunned",
-              "unconscious", "wasted"]
-DEFENSE_TARGETS = ({f"damage.{d}" for d in DAMAGE_TYPES} | {f"condition.{c}" for c in CONDITIONS}
-                   | {"radiationLevels"})
-ROLLS = (STATS | {"attack", "damage", "abilityCheck", "radiation", "addiction"}
-         | {f"check.{a}" for a in ABILITIES})
+def load_vocab(path: Path) -> dict:
+    """Closed id lists from data/vocab.json (the single source, shared with the TS types)."""
+    return json.loads(path.read_text())
 
-EXPR_REFS = ({"level", "rank", "skillPointGrants"} | {f"ability.{a}" for a in ABILITIES}
-             | {f"mod.{a}" for a in ABILITIES})
+
 EXPR_ARITY = {"add": (2, None), "mul": (2, None), "min": (2, None), "max": (2, None),
               "sub": (2, 2), "div": (2, 2), "floor": (1, 1)}
 
-PERK_CATEGORIES = ["general", "race", *ABILITIES]
 TRAIT_CATEGORIES = ["race", "background", "character"]
 SIZES = ["small", "medium", "large"]
 
 
 class Checker:
-    def __init__(self) -> None:
+    def __init__(self, vocab: dict) -> None:
+        self.abilities = vocab["abilities"]
+        self.skills = vocab["skills"]
+        self.races = vocab["races"]
+        self.stats = (set(vocab["derived"]) | {f"ability.{a}" for a in self.abilities}
+                      | {f"skill.{s}" for s in self.skills})
+        self.defense_targets = ({f"damage.{d}" for d in vocab["damageTypes"]}
+                                | {f"condition.{c}" for c in vocab["conditions"]}
+                                | {"radiationLevels"})
+        self.rolls = (self.stats | set(vocab["rolls"]) | {f"check.{a}" for a in self.abilities})
+        self.expr_refs = ({"level", "rank", "skillPointGrants"}
+                          | {f"ability.{a}" for a in self.abilities}
+                          | {f"mod.{a}" for a in self.abilities})
+        self.perk_categories = ["general", "race", *self.abilities]
         self.errors: list[str] = []
         self.perk_ids: set[str] = set()
 
@@ -100,7 +92,7 @@ class Checker:
             self.err(where, f"expected a number or an expression object, got {e!r}")
         elif isinstance(e, dict) and "ref" in e:
             if self.keys(where, e, {"ref"}):
-                self.one_of(f"{where}.ref", e["ref"], EXPR_REFS)
+                self.one_of(f"{where}.ref", e["ref"], self.expr_refs)
                 if e["ref"] == "rank" and not allow_rank:
                     self.err(where, "ref 'rank' is only meaningful on perks")
         elif isinstance(e, dict):
@@ -128,11 +120,11 @@ class Checker:
         t = eff["type"]
         if t == "modifier":
             if self.keys(where, eff, {"type", "stat", "value"}):
-                self.one_of(f"{where}.stat", eff["stat"], STATS | {"skill.*"})
+                self.one_of(f"{where}.stat", eff["stat"], self.stats | {"skill.*"})
                 self.expr(f"{where}.value", eff["value"], allow_rank)
         elif t == "clamp":
             if self.keys(where, eff, {"type", "stat"}, {"min", "max"}):
-                self.one_of(f"{where}.stat", eff["stat"], STATS)
+                self.one_of(f"{where}.stat", eff["stat"], self.stats)
                 if "min" not in eff and "max" not in eff:
                     self.err(where, "clamp needs min, max or both")
                 for k in ("min", "max"):
@@ -143,17 +135,17 @@ class Checker:
                     self.err(where, "min > max")
         elif t == "rollMode":
             if self.keys(where, eff, {"type", "roll", "mode"}):
-                self.one_of(f"{where}.roll", eff["roll"], ROLLS)
+                self.one_of(f"{where}.roll", eff["roll"], self.rolls)
                 self.one_of(f"{where}.mode", eff["mode"], {"advantage", "disadvantage"})
         elif t in ("immunity", "resistance", "vulnerability"):
             if self.keys(where, eff, {"type", "to"}):
-                self.one_of(f"{where}.to", eff["to"], DEFENSE_TARGETS)
+                self.one_of(f"{where}.to", eff["to"], self.defense_targets)
         elif t == "grantPerk":
             if self.keys(where, eff, {"type", "perkId"}) and eff["perkId"] not in self.perk_ids:
                 self.err(f"{where}.perkId", f"no perk with id {eff['perkId']!r}")
         elif t == "countsAsRace":
             if self.keys(where, eff, {"type", "race", "for"}):
-                self.one_of(f"{where}.race", eff["race"], RACES)
+                self.one_of(f"{where}.race", eff["race"], self.races)
                 self.one_of(f"{where}.for", eff["for"], {"perkRequirements"})
         elif t == "note":
             if self.keys(where, eff, {"type", "text"}):
@@ -174,7 +166,7 @@ class Checker:
         kind = req.get("kind") if isinstance(req, dict) else None
         if kind == "ability":
             if self.keys(where, req, {"kind", "ability"}, {"min", "max"}):
-                self.one_of(f"{where}.ability", req["ability"], ABILITIES)
+                self.one_of(f"{where}.ability", req["ability"], self.abilities)
                 if "min" not in req and "max" not in req:
                     self.err(where, "ability requirement needs min, max or both")
                 for k in ("min", "max"):
@@ -189,7 +181,7 @@ class Checker:
                     self.err(f"{where}.anyOf", "expected a non-empty list")
                 else:
                     for i, r in enumerate(req["anyOf"]):
-                        self.one_of(f"{where}.anyOf[{i}]", r, RACES)
+                        self.one_of(f"{where}.anyOf[{i}]", r, self.races)
         elif kind == "level":
             if self.keys(where, req, {"kind", "min"}):
                 self.int_(f"{where}.min", req["min"], 1, 30)
@@ -214,7 +206,7 @@ class Checker:
                          {"requirementText", "repeat", "needsReview"}):
             return
         self.one_of(f"{where}.kind", p["kind"], {"perk"})
-        self.one_of(f"{where}.category", p["category"], PERK_CATEGORIES)
+        self.one_of(f"{where}.category", p["category"], self.perk_categories)
         for k in ("name", "description"):
             self.string(f"{where}.{k}", p[k])
         self.requirements(f"{where}.requirements", p["requirements"])
@@ -261,7 +253,7 @@ class Checker:
                 self.err(f"{where}.skills", "expected null or a list of at least 3 skills")
             else:
                 for i, s in enumerate(b["skills"]):
-                    self.one_of(f"{where}.skills[{i}]", s, SKILLS)
+                    self.one_of(f"{where}.skills[{i}]", s, self.skills)
         if b["traitId"] is not None:
             if b["traitId"] not in traits:
                 self.err(f"{where}.traitId", f"no trait with id {b['traitId']!r}")
@@ -271,7 +263,7 @@ class Checker:
             w = f"{where}.startingEquipment[{i}]"
             if self.keys(w, eq, {"races", "label", "items"}):
                 for j, r in enumerate(eq["races"]):
-                    self.one_of(f"{w}.races[{j}]", r, RACES)
+                    self.one_of(f"{w}.races[{j}]", r, self.races)
                 self.string(f"{w}.items", eq["items"])
 
     def features(self, where: str, feats) -> set[str]:
@@ -292,7 +284,7 @@ class Checker:
         if not self.keys(where, r, {"id", "name", "source", "size", "hasRadiationDc", "features",
                                     "variants"}, {"subtypes"}):
             return
-        self.one_of(f"{where}.id", r["id"], RACES)
+        self.one_of(f"{where}.id", r["id"], self.races)
         self.source(f"{where}.source", r["source"])
         for i, s in enumerate(r["size"]):
             self.one_of(f"{where}.size[{i}]", s, SIZES)
@@ -380,7 +372,7 @@ def main() -> None:
     ap.add_argument("--quiet", action="store_true", help="print errors only")
     args = ap.parse_args()
 
-    c = Checker()
+    c = Checker(load_vocab(args.data / "vocab.json"))
     perks, traits = load(args.data / "perks.json"), load(args.data / "traits.json")
     backgrounds, races = load(args.data / "backgrounds.json"), load(args.data / "races.json")
     perks_by_id, traits_by_id = index(c, "perks", perks), index(c, "traits", traits)
