@@ -2,20 +2,25 @@ import type { Character } from "./character";
 import type { Requirement, Rules } from "./rules";
 import type { EffectAccumulator, ExprContext } from "./effects";
 import { applyEffects } from "./effects";
+import { ABILITIES } from "./vocab";
+import type { AbilityId } from "./vocab";
 
 export const MAX_TRAITS = 2;
 
 /** Why a requirement isn't met, or `null` if it is. `condition` text is assumed met. */
 function unmet(r: Requirement, c: Character, ctx: ExprContext, acc: EffectAccumulator): string | null {
+  // Scores include ability modifiers from earlier stages (e.g. race).
+  const score = (a: AbilityId) =>
+    ctx.abilities[a] + (acc.modifiers.get(`ability.${a}`) ?? []).reduce((n, m) => n + m.value, 0);
   switch (r.kind) {
     case "ability": {
-      const v = ctx.abilities[r.ability];
+      const v = score(r.ability);
       if (r.min !== undefined && v < r.min) return `${r.ability} ${r.min}+`;
       if (r.max !== undefined && v > r.max) return `${r.ability} ${r.max} or less`;
       return null;
     }
     case "anyAbility":
-      return Object.values(ctx.abilities).some((v) => v <= r.max) ? null : `an ability score of ${r.max} or less`;
+      return ABILITIES.some((a) => score(a) <= r.max) ? null : `an ability score of ${r.max} or less`;
     case "race":
       return r.anyOf.includes(c.race.id) || acc.countsAsRace.some((x) => r.anyOf.includes(x.race))
         ? null

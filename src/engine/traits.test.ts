@@ -85,4 +85,11 @@ describe("traits", () => {
     expect(ww.derived.radiationDc?.value).toBe(12);
     expect(ww.derived.healingRate.breakdown.at(-1)).toMatchObject({ value: 1 });
   });
+
+  it("checks ability requirements against scores including race effects", () => {
+    const needsStr: Trait = { ...fixture, id: "needs-str", requirements: [{ kind: "ability", ability: "strength", min: 12 }] };
+    const r: Rules = { ...rules, traitById: new Map([...rules.traitById, ["needs-str", needsStr]]) };
+    const c = { ...withTraits([{ id: "needs-str", wildWasteland: false }]), abilities: { ...newCharacter("t").abilities, strength: 5 } };
+    expect(computeSheet(c, r).problems.some((p) => p.includes("requires strength 12+"))).toBe(true);
+  });
 });
