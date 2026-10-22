@@ -45,9 +45,12 @@ Title: [P<phase>.<n>] <imperative summary>
 ```
 
 Labels: `data`, `engine`, `ui`, `infra`, `docs`, plus `phase-<n>`. Create any
-that are missing. **Don't put `@claude` in issue bodies.** The maintainer
-triggers each issue by commenting `@claude` once its dependencies are merged.
-That comment doubles as the review gate.
+that are missing. **Don't put `@claude` in issue bodies.** Issues are picked
+up automatically: `.github/workflows/claude-next.yml` runs on every merge into
+`main` and implements the lowest-numbered open `phase-*` issue whose
+dependencies are closed, one at a time. Create issues in dependency order. The
+maintainer's review and merge is the gate. `@claude` comments still work for
+one-off requests and PR fixes.
 
 ## Phases
 
@@ -150,6 +153,4 @@ and `dt`. Needs the PDF, so the maintainer runs it in a local session.
 
 ## Known open items
 
-- `claude.yml` permissions must be `write` for this workflow to work. That's a
-  maintainer task.
 - Branch protection on `main` should require the `validate` check.
