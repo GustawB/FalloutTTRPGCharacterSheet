@@ -92,8 +92,7 @@
             "effects": [
               { "type": "immunity", "to": "damage.poison" },
               { "type": "grantPerk", "perkId": "stitched-together" }
-            ],
-            "needsReview": true
+            ]
           },
           {
             "id": "half-life",
@@ -221,8 +220,7 @@
             { "id": "drill", "name": "Drill", "text": "Melee Weapon. 6 AP. 1d8 slashing. Critical Hit: 20, 2d8 slashing. Special Properties: Durable, Mangle." },
             { "id": "gripper", "name": "Gripper", "text": "Two finger-like appendages that can grab, twist, operate, use weapons, and hold items, at similar efficiency to a human hand." },
             { "id": "torch", "name": "Torch", "text": "Ranged Weapon, 10 ft. line. 5 AP. 1d10 fire. Ammo: fuel, 5 rounds. Special Properties: Area of Effect, Durable, Incendiary." }
-          ],
-          "needsReview": true
+          ]
         }
       },
       {

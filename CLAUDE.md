@@ -160,10 +160,17 @@ type Effect =
       mode: "advantage" | "disadvantage" }
   | { type: "immunity" | "resistance" | "vulnerability"; to: string }
       // to: "damage.<type>" | "condition.<name>" | "radiationLevels"
-  | { type: "grantPerk"; perkId: string }        // free perk; costs no perk point, ignores requirements
+  | { type: "grantPerk"; perkId: string }        // free perk, see "grantPerk semantics"
   | { type: "countsAsRace"; race: RaceId; for: "perkRequirements" }
   | { type: "note"; text: string };              // situational: shown on the sheet, never computed
 ```
+
+**grantPerk semantics:** the granted perk costs no perk point and ignores
+its requirements. It counts as owned (rank 1) for everything: its effects
+apply, it satisfies other perks' requirements, and the picker shows it as
+"already owned (from <source>)". It can't be picked again unless it has a
+`repeat`, and then a manual pick adds a rank on top of the granted one. It
+never appears in `Character.perks`, because it's derived from its source.
 
 Entries:
 

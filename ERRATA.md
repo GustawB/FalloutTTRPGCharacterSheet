@@ -114,8 +114,7 @@ negative values.
   says "if you do not have at least two of these tools", which implies
   several picks.
 - **Ruling:** pick 3 tools (one per arm), with duplicates allowed (e.g. three
-  Grippers, which p11 mentions explicitly). Marked `needsReview` in
-  `data/races.json`.
+  Grippers, which p11 mentions explicitly). Confirmed 2026-10-22.
 
 ## Editorial (no ruling needed, just don't trust these references)
 - p4 steps 7 and 23 say traits are on "pg. 20". They're on p25.
