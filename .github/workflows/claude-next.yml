@@ -6,6 +6,9 @@ name: Claude Autopilot
 #
 # Merges use GITHUB_TOKEN, so they don't fire `pull_request: closed`. The loop
 # continues via `workflow_dispatch`, which GITHUB_TOKEN is allowed to trigger.
+#
+# Every iteration either merges its issue or labels it `blocked` (the `next`
+# job), so the loop can't stall on a crashed or empty run, and it always ends.
 
 on:
   pull_request:
@@ -35,6 +38,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     outputs:
+      issue: ${{ steps.pick.outputs.issue }}
       pr: ${{ steps.pr.outputs.number }}
     steps:
       - uses: actions/checkout@v4
@@ -46,29 +50,50 @@ jobs:
           gh label create autopilot --color 0e8a16 --description "PR opened by Claude Autopilot" --force
           gh label create blocked --color b60205 --description "Autopilot gave up; skipped" --force
 
-      - name: Implement next issue
+      # Lowest-numbered open phase-* issue, not blocked, whose "## Depends on"
+      # issues are all closed. Empty output = nothing left, and the loop ends.
+      - id: pick
+        name: Pick the next issue
+        run: |
+          for n in $(gh issue list --state open --limit 200 --json number,labels \
+              -q '[.[] | select(any(.labels[]; .name | startswith("phase-"))) | select(all(.labels[]; .name != "blocked")) | .number] | sort | .[]'); do
+            deps=$(gh issue view "$n" --json body -q .body | awk '/^## Depends on/{f=1; next} /^## /{f=0} f' | grep -o '#[0-9]\+' | tr -d '#' || true)
+            ok=1
+            for d in $deps; do
+              [ "$(gh issue view "$d" --json state -q .state)" = CLOSED ] || { ok=0; break; }
+            done
+            if [ "$ok" = 1 ]; then echo "issue=$n" >> "$GITHUB_OUTPUT"; echo "Picked #$n"; break; fi
+          done
+
+      - uses: actions/setup-node@v4
+        if: steps.pick.outputs.issue != ''
+        with:
+          node-version: "22"
+
+      # Agent mode allows only the tools listed here. Without Edit/Write the
+      # agent can't change a single file.
+      - name: Implement the issue
+        if: steps.pick.outputs.issue != ''
         uses: anthropics/claude-code-action@v1
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           claude_args: |
-            --allowed-tools "Bash(gh:*),Bash(git:*),Bash(python3:*),Bash(npm:*),Bash(npx:*),Bash(node:*)"
+            --allowed-tools "Bash,Read,Edit,MultiEdit,Write,Glob,Grep"
           prompt: |
             You are the autonomous build agent for this repo. No human will
             answer questions, so make every decision yourself. Read CLAUDE.md,
             ERRATA.md and ROADMAP.md first and follow ROADMAP.md's "How to work".
 
-            1. If an open PR labelled `autopilot` exists, do nothing: it gets
-               reviewed and merged after you.
-            2. List open issues labelled phase-* and NOT labelled `blocked`.
-               Pick the lowest-numbered one whose "Depends on" issues are all
-               closed. If none qualifies, do nothing.
-            3. Comment on the issue that you're starting. Implement it on a new
-               branch, run the checks from ROADMAP.md until they pass, and open
-               a PR labelled `autopilot` whose body says "Closes #<n>" and lists
-               any "Rulings to confirm".
+            Implement issue #${{ steps.pick.outputs.issue }}. Comment on it that
+            you're starting. Work on a new branch, run the checks from
+            ROADMAP.md until they pass, and open a PR labelled `autopilot`
+            whose body says "Closes #${{ steps.pick.outputs.issue }}" and lists
+            any "Rulings to confirm". If you can't finish, open no PR and
+            comment on the issue why.
 
       - id: pr
         name: Find the autopilot PR
+        if: steps.pick.outputs.issue != ''
         run: echo "number=$(gh pr list --label autopilot --state open --json number -q '.[0].number // empty')" >> "$GITHUB_OUTPUT"
 
   review:
@@ -81,13 +106,16 @@ jobs:
         with:
           fetch-depth: 0
       - run: gh pr checkout ${{ needs.build.outputs.pr }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
 
       - name: Review and fix
         uses: anthropics/claude-code-action@v1
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           claude_args: |
-            --allowed-tools "Bash(gh:*),Bash(git:*),Bash(python3:*),Bash(npm:*),Bash(npx:*),Bash(node:*)"
+            --allowed-tools "Bash,Read,Edit,MultiEdit,Write,Glob,Grep"
           prompt: |
             You are the reviewer for PR #${{ needs.build.outputs.pr }}, which is
             checked out. Another agent wrote it, so don't trust it. Read
@@ -133,17 +161,31 @@ jobs:
 
       - name: Merge
         if: steps.checks.outcome == 'success'
-        run: gh pr merge "$PR" --squash --delete-branch
-
-      - name: Give up on this issue
-        if: steps.checks.outcome != 'success'
         run: |
-          issue=$(gh pr view "$PR" --json closingIssuesReferences -q '.closingIssuesReferences[0].number // empty')
-          gh pr close "$PR" --delete-branch --comment "Autopilot: checks still fail after review. Closing; the issue is labelled blocked and skipped."
-          if [ -n "$issue" ]; then
-            gh issue edit "$issue" --add-label blocked
-            gh issue comment "$issue" --body "Autopilot couldn't get checks green (see the closed PR #$PR). Skipping. Remove the \`blocked\` label to retry."
+          gh pr merge "$PR" --squash --delete-branch
+          gh issue close "${{ needs.build.outputs.issue }}" --reason completed || true
+
+  # Runs whatever happened above, so a crash can't stop the chain. Whatever
+  # this iteration left unfinished gets closed or blocked, so every iteration
+  # makes progress and the loop terminates.
+  next:
+    needs: [build, review, merge]
+    if: always() && vars.CLAUDE_AUTOPILOT != 'off' && needs.build.outputs.issue != ''
+    runs-on: ubuntu-latest
+    env:
+      ISSUE: ${{ needs.build.outputs.issue }}
+      RESULTS: "build: ${{ needs.build.result }}, review: ${{ needs.review.result }}, merge: ${{ needs.merge.result }}"
+      RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+    steps:
+      - name: Block anything left unfinished
+        run: |
+          for pr in $(gh pr list -R "$GITHUB_REPOSITORY" --label autopilot --state open --json number -q '.[].number'); do
+            gh pr close "$pr" -R "$GITHUB_REPOSITORY" --delete-branch --comment "Autopilot: this iteration didn't finish ($RESULTS, $RUN_URL). Closing."
+          done
+          if [ "$(gh issue view "$ISSUE" -R "$GITHUB_REPOSITORY" --json state -q .state)" = OPEN ]; then
+            gh issue edit "$ISSUE" -R "$GITHUB_REPOSITORY" --add-label blocked
+            gh issue comment "$ISSUE" -R "$GITHUB_REPOSITORY" --body "Autopilot didn't get this merged ($RESULTS, $RUN_URL). Skipping. Remove the \`blocked\` label to retry."
           fi
 
       - name: Next iteration
-        run: gh workflow run claude-next.yml --ref main
+        run: gh workflow run claude-next.yml -R "$GITHUB_REPOSITORY" --ref main
