@@ -193,6 +193,32 @@ negative values.
   separate condition and is not covered.
 - **Status:** Provisional (agent, #18)
 
+### E24. Level-up bonus HP/SP traits apply from level 3
+- **Text (p27):** Long Days, Long Nights and Hardened by the Earth (Wild Wasteland)
+  give an extra point "whenever your stamina/hit points increase from leveling
+  up".
+- **Ruling:** HP and SP increase at levels 3, 5, ..., so the bonus is
+  `k = floor((L − 1) / 2)` points per extra point, not `k + 1`. Encoded as
+  `sp`/`hp` modifiers of `k` (2k for Long Days' Wild Wasteland variant).
+- **Status:** Provisional (agent, #19)
+
+### E25. Recluse and Talented change perk points, not perks directly
+- **Text (p27–28):** Recluse swaps the 1st-level perk for skill bonuses;
+  Talented grants extra perks at 1st level.
+- **Ruling:** encoded as `perkPoints` modifiers (−1 / +1; Wild Wasteland
+  −min(L, 2) / +2). Recluse's WW variant, "all skill modifiers +2", is
+  `skill.*` +2, and Talented's WW "all −2" is `skill.* −2`.
+- **Status:** Provisional (agent, #19)
+
+### E26. Race traits that cancel race features are notes
+- **Text (p26):** Activated Actinides removes the Ghoul's radiation immunity;
+  Endure the Battle removes Luck/END (and Party Nerve) from death saves.
+- **Ruling:** the effect schema cannot remove an existing contribution, so only
+  the additive part is encoded (radiation resistance and advantage) and the
+  removal is a note. The Ghoul Evolution immunity is therefore still applied by
+  the engine until a removal mechanism exists.
+- **Status:** Provisional (agent, #19)
+
 ## Editorial (no ruling needed, just don't trust these references)
 - p4 steps 7 and 23 say traits are on "pg. 20". They're on p25.
 - p5 says the perk list is on "page 27". It's on p32.
