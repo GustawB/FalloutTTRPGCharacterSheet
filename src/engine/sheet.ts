@@ -115,7 +115,7 @@ export function computeSheet(character: Character, rules: Rules): Sheet {
   for (const o of character.manualOverrides) {
     const isKnown =
       (o.stat in derived && derived[o.stat as keyof typeof derived] !== null) ||
-      o.stat.startsWith("ability.") || o.stat.startsWith("skill.");
+      ABILITIES.some((a) => o.stat === `ability.${a}`) || SKILLS.some((k) => o.stat === `skill.${k}`);
     if (!isKnown) problems.push(`Manual override on ${o.stat}, which this character does not have`);
   }
 

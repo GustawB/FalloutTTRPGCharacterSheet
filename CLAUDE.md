@@ -70,10 +70,13 @@ breakdowns:
 5. **perks** – effects × rank for repeatable perks, unless an effect says
    otherwise
 6. **manual overrides** – user-entered `{ stat, value, note }`, always shown
-   as such
+   as such. `value` is *added* to the stat (E28). An override on a stat the
+   character lacks is a `problem`.
 
-Clamps (AP ≤ `apMax`, AC ≥ 10) are applied last, and the clamp itself shows up
-in the breakdown.
+Clamps (`clamp` effects, AP ≤ `apMax`, AC ≥ 10) are applied last, and the clamp
+itself shows up in the breakdown. A `clamp` effect on a stat replaces that
+stat's default bound (E28). Ability scores outside 1–10 are a `problem`, never
+changed.
 
 ## Base formulas (after errata)
 

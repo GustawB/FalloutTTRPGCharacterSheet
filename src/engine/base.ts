@@ -59,7 +59,6 @@ export function baseDerived(
   const perLevel = (a: AbilityId, name: string) =>
     line(`${name} modifier ${m(a)} × ${k + 1}`, m(a) * (k + 1));
 
-
   const race = rules.raceById.get(c.race.id);
   if (!race) problems.push(`Unknown race: ${c.race.id}`);
   const radiationDc = race?.hasRadiationDc

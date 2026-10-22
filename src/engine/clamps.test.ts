@@ -74,6 +74,13 @@ describe("manual overrides", () => {
   });
 });
 
+describe("override validation", () => {
+  it("reports an unknown skill id", () => {
+    const s = sheet({ manualOverrides: [{ stat: "skill.bogus" as never, value: 1, note: "" }] });
+    expect(s.problems.join()).toContain("skill.bogus");
+  });
+});
+
 describe("ability range", () => {
   it.each([0, 11])("score %i is a problem and the value is unchanged", (n) => {
     const s = sheet(withStr(n));
