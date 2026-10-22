@@ -3149,7 +3149,12 @@
     "source": {
       "page": 46
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "When rolling a Luck check for loot, roll two checks and take either result."
+      }
+    ],
     "requirementText": "Luck 4",
     "category": "luck"
   },
@@ -3168,7 +3173,12 @@
     "source": {
       "page": 46
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "A natural 20 on a weapon attack roll is a critical hit and the crit's damage is doubled."
+      }
+    ],
     "requirementText": "Luck 4",
     "category": "luck"
   },
@@ -3187,9 +3197,15 @@
     "source": {
       "page": 46
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "+2 damage on all weapon damage. When you reduce a creature to 0 HP with a weapon attack, roll a DC 20 Luck check; on success the body bursts and creatures of your choice within 30 feet become frightened for 1 round."
+      }
+    ],
     "requirementText": "Luck 5",
-    "category": "luck"
+    "category": "luck",
+    "needsReview": true
   },
   {
     "id": "fortune-finder",
@@ -3206,7 +3222,12 @@
     "source": {
       "page": 46
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "On pick, gain 800 caps. Whenever you find bottle caps, you find extra caps equal to your Luck modifier."
+      }
+    ],
     "requirementText": "Luck 5",
     "category": "luck"
   },
@@ -3225,7 +3246,13 @@
     "source": {
       "page": 46
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "modifier",
+        "stat": "karmaCaps",
+        "value": 1
+      }
+    ],
     "requirementText": "Luck 5",
     "category": "luck"
   },
@@ -3244,7 +3271,12 @@
     "source": {
       "page": 46
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "When a weapon or armor would gain a level of decay, roll a Luck check (DC 12 + its current decay levels); on a success the new level applies no negative effects. Second rank: on a success it gains no level of decay at all."
+      }
+    ],
     "requirementText": "Luck 5",
     "repeat": {
       "text": "You can take this perk up to a maximum of twice, if you take it again; whenever you succeed the aforementioned Luck check, the weapon or armor gains no levels of decay instead.",
@@ -3267,7 +3299,12 @@
     "source": {
       "page": 46
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "When you or a party member misses an attack or fails an ability or skill check, flip a Karma Cap to turn it into a success (GM's discretion)."
+      }
+    ],
     "requirementText": "Luck 5",
     "category": "luck"
   },
@@ -3286,7 +3323,12 @@
     "source": {
       "page": 46
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Bringing a creature to 0 HP with a targeted attack gives 8 AP; a second one the same turn gives 6 AP; a third gives 4 AP."
+      }
+    ],
     "requirementText": "Luck 6",
     "category": "luck"
   },
@@ -3305,7 +3347,12 @@
     "source": {
       "page": 46
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Advantage on blind attack rolls, and the blind attack DC is halved."
+      }
+    ],
     "requirementText": "Luck 6",
     "category": "luck"
   },
@@ -3324,7 +3371,12 @@
     "source": {
       "page": 46
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "When crafting or repairing, reduce one random required material by your Luck modifier (minimum 1) and replace it with a random junk material. When consuming a food, drink or chem, you may roll a DC 15 Luck check to add one random property to it."
+      }
+    ],
     "requirementText": "Luck 6",
     "category": "luck"
   },
@@ -3343,7 +3395,12 @@
     "source": {
       "page": 46
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "On a critical hit you may deal no extra damage to gain a temporary karma cap (max one, lost when flipped); using it on an attack roll makes that attack an automatic critical hit."
+      }
+    ],
     "requirementText": "Luck 7",
     "category": "luck"
   },
@@ -3362,7 +3419,12 @@
     "source": {
       "page": 46
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "When another creature rolls a 1 on an attack roll against you, the attack hits them instead. When a creature within 30 feet makes an attack roll, flip a Karma Cap to turn the result into a 1."
+      }
+    ],
     "requirementText": "Luck 7",
     "category": "luck"
   },
@@ -3381,14 +3443,20 @@
     "source": {
       "page": 46
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Pick-time choice: a number from 2 to 19. When an attack roll of yours equals it, roll a d20 (optionally + Luck modifier): 1-9 target takes ballistic damage equal to 2 x level; 10-20 3 x level; 21-24 the attack is a critical hit (max dice if already one); 25+ the target dies."
+      }
+    ],
     "requirementText": "Luck 8",
     "repeat": {
       "text": "This perk can only be taken once and only by one player character.",
       "max": 1,
       "scope": "party"
     },
-    "category": "luck"
+    "category": "luck",
+    "needsReview": true
   },
   {
     "id": "dumb-luck",
@@ -3405,13 +3473,92 @@
     "source": {
       "page": 47
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "modifier",
+        "stat": "skill.*",
+        "value": {
+          "op": "add",
+          "args": [
+            {
+              "op": "sub",
+              "args": [
+                {
+                  "op": "max",
+                  "args": [
+                    {
+                      "ref": "mod.luck"
+                    },
+                    0
+                  ]
+                },
+                {
+                  "op": "floor",
+                  "args": [
+                    {
+                      "op": "div",
+                      "args": [
+                        {
+                          "op": "max",
+                          "args": [
+                            {
+                              "ref": "mod.luck"
+                            },
+                            0
+                          ]
+                        },
+                        2
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "op": "min",
+              "args": [
+                {
+                  "op": "add",
+                  "args": [
+                    {
+                      "ref": "mod.luck"
+                    },
+                    1
+                  ]
+                },
+                0
+              ]
+            },
+            {
+              "op": "mul",
+              "args": [
+                2,
+                {
+                  "op": "sub",
+                  "args": [
+                    {
+                      "ref": "rank"
+                    },
+                    1
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "type": "note",
+        "text": "The full Luck modifier is added to skill modifiers instead of half (the modifier adds the missing half; with a negative modifier it replaces the flat -1 from E7); the second rank adds a further +2 to all skills. When flipping a Karma Cap for advantage, add double your Luck modifier to the total (second rank: to the second roll when rerolling)."
+      }
+    ],
     "requirementText": "Luck 8",
     "repeat": {
       "text": "You can take this perk up to a maximum of twice, if you take it again; all your skill modifiers increase by 2. Additionally, whenever you flip your Karma Cap to gain reroll an ability or skill check, you can add double your Luck modifier to the second roll.",
       "max": 2
     },
-    "category": "luck"
+    "category": "luck",
+    "needsReview": true
   },
   {
     "id": "been-there-done-that",
@@ -3428,7 +3575,12 @@
     "source": {
       "page": 47
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Luck ability checks by you or an ally within 100 feet get +3. Whenever you gain XP, gain a bonus of (5d10 + the sum of every PC's Luck score) halved."
+      }
+    ],
     "requirementText": "Luck 9",
     "category": "luck"
   },
@@ -3447,14 +3599,20 @@
     "source": {
       "page": 47
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "When a PC flips a Karma Cap for advantage or a reroll, physically flick it; if it lands face up it stays face up. Each other PC with this perk lets you flip an additional time if yours lands face down."
+      }
+    ],
     "requirementText": "Luck 9",
     "repeat": {
       "text": "You can take this perk up to a maximum of once. If any other player character takes this perk, and if your Karma Cap lands face down; you can physically flip a number of times equal to the amount of player characters who have taken this perk past the first.",
       "max": 1,
       "scope": "party"
     },
-    "category": "luck"
+    "category": "luck",
+    "needsReview": true
   },
   {
     "id": "outrageous-advantage",
@@ -3471,7 +3629,12 @@
     "source": {
       "page": 47
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Whenever you or any PC rolls with advantage on an ability check, skill check or attack roll, roll three d20s and take the highest; each other PC with this perk adds one more d20."
+      }
+    ],
     "requirementText": "Luck 10",
     "repeat": {
       "text": "You can take this perk up to a maximum of once. If any other player character takes this perk, the amount of d20’s rolled with advantage increases by one.",
@@ -3495,7 +3658,12 @@
     "source": {
       "page": 47
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "When a creature hits you with an attack, flip a Karma Cap to turn it into a miss. While you have the dying condition, all attacks against you automatically miss."
+      }
+    ],
     "requirementText": "Luck 10",
     "category": "luck"
   },
