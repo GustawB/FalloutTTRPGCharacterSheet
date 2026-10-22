@@ -247,6 +247,18 @@ negative values.
   effects. Only picks (not grants) at or below the member's level count.
 - **Status:** Provisional (agent, #32)
 
+### E30. Ability-point choices: Adaptive Reflexes and Partition Reset
+- **Text (p32, p48):** Adaptive Reflexes gives 3 points (lost hand or foot) or
+  5 (lost arm or leg) to spend on ability scores. Partition Reset: "Reduce any
+  of your ability scores by 1, 2, or 3. You can increase any other ability score
+  by the amount you decreased plus 1."
+- **Ruling:** Adaptive Reflexes allows up to 5 points per rank, as +1 picks. The
+  character doesn't record the missing limb, so the player must keep to 3 for a
+  hand or foot. Partition Reset's increase is taken as always exactly
+  `amount + 1` (the "can" is not modelled, since not increasing is just not
+  picking it). Pick formats are in CLAUDE.md.
+- **Status:** Provisional (agent, #73)
+
 ## Editorial (no ruling needed, just don't trust these references)
 - p4 steps 7 and 23 say traits are on "pg. 20". They're on p25.
 - p5 says the perk list is on "page 27". It's on p32.

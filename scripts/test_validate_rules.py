@@ -117,6 +117,8 @@ class ValidateRulesTest(unittest.TestCase):
             {"type": "immunity", "to": "condition.stunned"},
             {"type": "grantPerk", "perkId": "stitched-together"},
             {"type": "modifier", "choice": {"id": "pick", "of": "skill", "count": 2}, "value": 5},
+            {"type": "abilityPoints", "choice": "pts", "points": {"op": "mul", "args": [5, {"ref": "rank"}]}},
+            {"type": "abilityTransfer", "choice": "swap", "max": 3, "bonus": 1},
             {"type": "note", "text": "Situational."},
         ]
         result = self.run_on(data)

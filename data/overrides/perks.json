@@ -15,8 +15,21 @@
   "adaptive-reflexes": {
     "effects": [
       {
+        "type": "abilityPoints",
+        "choice": "points",
+        "points": {
+          "op": "mul",
+          "args": [
+            5,
+            {
+              "ref": "rank"
+            }
+          ]
+        }
+      },
+      {
         "type": "note",
-        "text": "Pick-time choice: distribute 3 points (lost hand or foot) or 5 points (lost arm or leg) among ability scores, per missing limb. Foot or leg loss no longer limits movement to 20 feet."
+        "text": "Up to 3 points (lost hand or foot) or 5 (lost arm or leg) per missing limb, distributed among ability scores as +1 each; the engine allows up to 5 per rank and doesn't know which limb. Foot or leg loss no longer limits movement to 20 feet."
       }
     ],
     "needsReview": true
@@ -1383,8 +1396,14 @@
   "partition-reset": {
     "effects": [
       {
+        "type": "abilityTransfer",
+        "choice": "swap",
+        "max": 3,
+        "bonus": 1
+      },
+      {
         "type": "note",
-        "text": "Pick-time choice: reduce one ability score by 1, 2 or 3, and increase another ability score by the amount decreased plus 1."
+        "text": "Reduce one ability score by 1, 2 or 3 and increase another by the amount decreased plus 1 (picked as from, to, amount)."
       }
     ],
     "needsReview": true

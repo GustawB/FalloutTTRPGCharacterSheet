@@ -29,9 +29,19 @@ export type Expr =
  */
 export type Choice = { id: string; of: "skill" | "ability"; count?: number };
 
+/**
+ * Ability-point choices, stored in `Character.choices["<entry id>:<choice>"]`:
+ * - `abilityPoints`: up to `points` (an `Expr`) points to distribute. Each pick is an
+ *   ability id and gives +1, so repeats are allowed. Picks beyond `points` are a
+ *   problem and apply nothing; unspent points are fine.
+ * - `abilityTransfer`: picks are `[from, to, amount]`. `from` loses `amount`
+ *   (1..`max`), `to` gains `amount + bonus`. Incomplete or invalid picks are a problem.
+ */
 export type Effect =
   | { type: "modifier"; stat: StatId | "skill.*"; value: Expr }
   | { type: "modifier"; choice: Choice; value: Expr }
+  | { type: "abilityPoints"; choice: string; points: Expr }
+  | { type: "abilityTransfer"; choice: string; max: number; bonus: number }
   | { type: "clamp"; stat: StatId; min?: number; max?: number }
   | { type: "rollMode"; roll: RollId; mode: "advantage" | "disadvantage" }
   | {
