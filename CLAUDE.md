@@ -24,6 +24,7 @@ data/                 rules as data (extracted from the PDF, committed)
   races.json          5 races     (hand-written, edit directly)
   overrides/<file>.json   hand curation for generated files, merged by id
 scripts/extract_rules.py  PDF → data/*.json (needs poppler `pdftotext`)
+scripts/validate_rules.py data/*.json vs. the schema below (no PDF, stdlib only)
 src/engine/           pure TS: no React, no I/O, no Date.now(); fully unit-tested
 src/ui/               React components
 server/               local Node server: GET/PUT characters/<id>.json
@@ -42,6 +43,7 @@ the p6 level-up table, with the corrections from ERRATA.md applied.
   `python3 scripts/extract_rules.py <rulebook.pdf>`. If you don't have the
   PDF (CI doesn't), edit the override *and* apply the identical patch to the
   generated file, and say so in the PR.
+- Any change under `data/` must pass `python3 scripts/validate_rules.py`.
 - The engine must stay deterministic and pure: `(character, rules) → sheet`.
   No LLM calls anywhere in the app.
 - Every derived number carries a **breakdown**: a list of
@@ -124,7 +126,22 @@ partyNerve groupSneak`.
 Race ids: `human ghoul synth robot superMutant` (Gen-2 synth maps to
 `synth`).
 
-New stat ids must be added here first.
+Damage types (`damage.<id>`, p132 plus radiation): `acid ballistic bludgeoning
+cold electricity explosive fire impact laser piercing plasma poison radiation
+slashing`.
+
+Conditions (`condition.<id>`, p135 plus dying p22, frightened (all four
+variants), stunned (used but never defined), limb (any limb condition, p130)):
+`blinded bleeding burning buzzed corroded dazed deafened dehydration drunk
+dying encumbered exhaustion fatigue frightened grappled hammered
+heavilyEncumbered hunger invisible limb poisoned prone radiation restrained
+shadowed shock slowed stunned unconscious wasted`.
+
+Rolls (`rollMode.roll`): any stat id, `attack damage abilityCheck radiation
+addiction`, or `check.<ability>` for a check with one ability.
+
+New ids (stats, damage types, conditions, rolls) must be added here first, and
+to the matching constant in `scripts/validate_rules.py`.
 
 ## Data schema
 
@@ -142,7 +159,7 @@ type Requirement =
 
 type Repeat = {
   text: string;
-  max?: number | null;   // absent = 1 pick; null = unbounded/narrative
+  max?: number | null;   // absent or 1 = 1 pick; null = unbounded/narrative
   scope?: "party";       // limit applies to the whole party, not one PC
 };
 
@@ -156,10 +173,9 @@ type Expr =
 type Effect =
   | { type: "modifier"; stat: StatId | "skill.*"; value: Expr }   // skill.* = every skill
   | { type: "clamp"; stat: StatId; min?: number; max?: number }  // e.g. STR "cannot be lower than 6"
-  | { type: "rollMode"; roll: StatId | "attack" | "abilityCheck" | string;
-      mode: "advantage" | "disadvantage" }
-  | { type: "immunity" | "resistance" | "vulnerability"; to: string }
-      // to: "damage.<type>" | "condition.<name>" | "radiationLevels"
+  | { type: "rollMode"; roll: RollId; mode: "advantage" | "disadvantage" }
+  | { type: "immunity" | "resistance" | "vulnerability";
+      to: `damage.${DamageType}` | `condition.${ConditionId}` | "radiationLevels" }
   | { type: "grantPerk"; perkId: string }        // free perk, see "grantPerk semantics"
   | { type: "countsAsRace"; race: RaceId; for: "perkRequirements" }
   | { type: "note"; text: string };              // situational: shown on the sheet, never computed
@@ -189,7 +205,12 @@ type Perk = {
 type Trait = Omit<Perk, "kind" | "category" | "repeat"> & {
   kind: "trait";
   category: "race" | "background" | "character";
-  wildWasteland?: { description: string; effects: Effect[]; requirements?: Requirement[] }[];
+  wildWasteland?: {
+    label?: string;               // e.g. "option 2, true to the original"
+    requirementText?: string;     // original WW prerequisite text
+    requirements?: Requirement[];
+    description: string; effects: Effect[];
+  }[];
 };
 
 type Background = {
@@ -228,8 +249,9 @@ Override files are `{ "<id>": { ...fields to replace } }`. A `wildWasteland`
 array is patched element-wise by index, and every other key replaces the
 field wholesale.
 
-Effects are **all empty** right now. Encoding them is tracked as a separate
-task. Anything an effect can't express exactly becomes a `note`, plus a
+Race effects are encoded. Perk and trait effects are still empty, and the
+validator prints progress. `{ ref: "rank" }` is only allowed on perks.
+Anything an effect can't express exactly becomes a `note`, plus a
 `modifier` for the part that is computable.
 
 ## Character file (proposed; finalised by the first engine PR)
