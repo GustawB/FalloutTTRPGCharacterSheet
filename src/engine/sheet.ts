@@ -6,6 +6,7 @@ import type {
 import { baseAbilities, baseDerived } from "./base";
 import { newAccumulator } from "./effects";
 import { applyRace } from "./race";
+import { baseSkills, skillPointsSpent } from "./skills";
 import { ABILITIES, SKILLS } from "./vocab";
 
 /** One line of a breakdown: where a number came from and how much it added. */
@@ -38,6 +39,8 @@ export type Sheet = {
     /** `null` unless the race has `hasRadiationDc` (humans). */
     radiationDc: StatResult | null;
   };
+  /** Skill points allocated; compare with `derived.skillPoints` (available). */
+  skillPointsSpent: StatResult;
   party: PartyStats;
   notes: SheetNote[];
   rollModes: RollModeResult[];
@@ -48,8 +51,6 @@ export type Sheet = {
   problems: string[];
 };
 
-const empty = (): StatResult => ({ value: 0, breakdown: [] });
-
 /** Appends contributions to a stat; the value stays the sum of the breakdown. */
 function append(stat: StatResult, extra: Breakdown | undefined): StatResult {
   if (!extra?.length) return stat;
@@ -58,8 +59,8 @@ function append(stat: StatResult, extra: Breakdown | undefined): StatResult {
 }
 
 /**
- * Pure: `(character, rules) → sheet`. The base and race stages exist so far;
- * skills only carry effect contributions until the later stages land.
+ * Pure: `(character, rules) → sheet`. Base, race and background stages exist
+ * so far; traits and perks land later.
  */
 export function computeSheet(character: Character, rules: Rules): Sheet {
   const problems: string[] = [];
@@ -83,11 +84,20 @@ export function computeSheet(character: Character, rules: Rules): Sheet {
     if (stat) derived[id] = append(stat, acc.modifiers.get(id));
   }
 
+  const baseSk = baseSkills(character, rules, abilities, problems);
+  const skills = Object.fromEntries(
+    SKILLS.map((s) => [s, append(baseSk[s], acc.modifiers.get(`skill.${s}`))]),
+  ) as Sheet["skills"];
+
+  const spent = skillPointsSpent(character, problems);
+  if (spent > derived.skillPoints.value) {
+    problems.push(`Spent ${spent} skill points but only ${derived.skillPoints.value} are available`);
+  }
+
   return {
     abilities,
-    skills: Object.fromEntries(
-      SKILLS.map((s) => [s, append(empty(), acc.modifiers.get(`skill.${s}`))]),
-    ) as Sheet["skills"],
+    skills,
+    skillPointsSpent: { value: spent, breakdown: [{ source: "skill points", label: "Allocated to skills", value: spent }] },
     derived,
     party: { partyNerve: null, groupSneak: null },
     notes: acc.notes,
