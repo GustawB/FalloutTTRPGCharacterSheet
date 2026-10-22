@@ -1,4 +1,4 @@
-import { mkdtemp, readdir, rm } from "node:fs/promises";
+import { mkdtemp, readdir, rm, writeFile } from "node:fs/promises";
 import type { AddressInfo } from "node:net";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -48,6 +48,13 @@ describe("save server", () => {
       { id: "a", name: "Al", level: 1 },
       { id: "b", name: "Bea", level: 3 },
     ]);
+  });
+
+  it("omits files whose names are not valid ids from the list", async () => {
+    await writeFile(join(dir, "a.b.json"), JSON.stringify(newCharacter("a.b")));
+    await put("ok", newCharacter("ok", "Ok"));
+    const ids = ((await (await fetch(`${base}/api/characters`)).json()) as { id: string }[]).map((c) => c.id);
+    expect(ids).toEqual(["ok"]);
   });
 
   it("rejects an unknown schemaVersion with 409", async () => {

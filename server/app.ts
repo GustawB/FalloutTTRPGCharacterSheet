@@ -62,7 +62,7 @@ export function createServer(dir: string): Server {
         throw e;
       });
       const list: { id: string; name: unknown; level: unknown }[] = [];
-      for (const file of files.filter((f) => f.endsWith(".json")).sort()) {
+      for (const file of files.filter((f) => f.endsWith(".json") && ID_PATTERN.test(f.slice(0, -5))).sort()) {
         try {
           const c: unknown = JSON.parse(await readFile(join(dir, file), "utf8"));
           if (isRecord(c)) list.push({ id: file.slice(0, -5), name: c.name, level: c.level });
