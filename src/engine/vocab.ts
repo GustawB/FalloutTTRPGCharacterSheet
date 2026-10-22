@@ -1,4 +1,4 @@
-// Closed id lists. data/vocab.json is the single source; vocab.test.ts fails if
+// Closed id lists. data/vocab.json is the single source; rules.test.ts fails if
 // these literals drift from it (TS cannot infer literal types from JSON).
 export const ABILITIES = ["strength", "perception", "endurance", "charisma", "intelligence", "agility", "luck"] as const;
 export const SKILLS = [

@@ -23,7 +23,7 @@ data/                 rules as data (extracted from the PDF, committed)
   traits.json         48 entries  (generated)
   perks.json          173 entries (generated)
   races.json          5 races     (hand-written, edit directly)
-  vocab.json          closed id lists (hand-written; read by the validator and, later, the TS types)
+  vocab.json          closed id lists (hand-written; read by the validator; mirrored by src/engine/vocab.ts)
   overrides/<file>.json   hand curation for generated files, merged by id
 scripts/extract_rules.py  PDF → data/*.json (needs poppler `pdftotext`)
 scripts/validate_rules.py data/*.json vs. the schema below (no PDF, stdlib only)
@@ -148,7 +148,7 @@ Rolls (`rollMode.roll`): any stat id, `attack damage abilityCheck radiation
 addiction`, or `check.<ability>` for a check with one ability.
 
 New ids (stats, damage types, conditions, rolls) must be added here first, and
-to `data/vocab.json`. `scripts/validate_rules.py` reads that file and holds no
+to `data/vocab.json` and `src/engine/vocab.ts` (a test fails if they drift). `scripts/validate_rules.py` reads that file and holds no
 id constants.
 
 ## Data schema
