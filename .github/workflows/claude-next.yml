@@ -95,7 +95,15 @@ jobs:
       - id: pr
         name: Find the autopilot PR
         if: steps.pick.outputs.issue != ''
-        run: echo "number=$(gh pr list --label autopilot --state open --json number -q '.[0].number // empty')" >> "$GITHUB_OUTPUT"
+        # Not `gh pr list --label`: that goes through the search API, which can
+        # lag a fresh PR by seconds (PR #57 was missed and then closed).
+        run: |
+          for _ in 1 2 3 4 5 6; do
+            n=$(gh pr list --state open --json number,labels -q '[.[] | select(any(.labels[]; .name == "autopilot")) | .number][0] // empty')
+            [ -n "$n" ] && break
+            sleep 10
+          done
+          echo "number=$n" >> "$GITHUB_OUTPUT"
 
   review:
     needs: build
@@ -181,7 +189,7 @@ jobs:
     steps:
       - name: Block anything left unfinished
         run: |
-          for pr in $(gh pr list -R "$GITHUB_REPOSITORY" --label autopilot --state open --json number -q '.[].number'); do
+          for pr in $(gh pr list -R "$GITHUB_REPOSITORY" --state open --json number,labels -q '.[] | select(any(.labels[]; .name == "autopilot")) | .number'); do
             gh pr close "$pr" -R "$GITHUB_REPOSITORY" --delete-branch --comment "Autopilot: this iteration didn't finish ($RESULTS, $RUN_URL). Closing."
           done
           if [ "$(gh issue view "$ISSUE" -R "$GITHUB_REPOSITORY" --json state -q .state)" = OPEN ]; then
