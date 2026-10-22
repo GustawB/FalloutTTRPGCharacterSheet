@@ -2223,7 +2223,12 @@
     "source": {
       "page": 42
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "After another PC succeeds a Barter, Breach, Crafting, Intimidation, Medicine, Science, Sneak, Speech or Survival check, you get +3 (max +3) on your next roll of that skill. Skill Magazine effects last 8 hours instead of 1."
+      }
+    ],
     "requirementText": "Intelligence 4",
     "category": "intelligence"
   },
@@ -2242,7 +2247,12 @@
     "source": {
       "page": 42
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Targeted attacks cost half the additional AP (rounded up). Calculated attack: ranged, costs 6 AP regardless of the weapon; can target a creature behind cover if a surface lets the projectile ricochet (GM's discretion); damage is reduced by 1 per 10 feet travelled after the ricochet."
+      }
+    ],
     "requirementText": "Intelligence 4",
     "category": "intelligence"
   },
@@ -2261,7 +2271,12 @@
     "source": {
       "page": 42
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Crafting a Chem uses one less material (minimum one). You can make any Chem potent (effects doubled, addiction DC +2) or diluted (effects halved, no addiction) by using one of its crafting materials."
+      }
+    ],
     "requirementText": "Intelligence 5",
     "category": "intelligence"
   },
@@ -2280,7 +2295,12 @@
     "source": {
       "page": 42
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Heal a creature up to their healing rate. That creature can't be healed this way again until they rest at least 8 hours."
+      }
+    ],
     "requirementText": "Intelligence 5",
     "category": "intelligence"
   },
@@ -2299,7 +2319,12 @@
     "source": {
       "page": 42
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Resting XP bonus for discovering new locations is 50% higher. You can learn the direction and distance of any three named locations (GM's discretion)."
+      }
+    ],
     "requirementText": "Intelligence 5",
     "category": "intelligence"
   },
@@ -2318,7 +2343,12 @@
     "source": {
       "page": 42
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "You always know which way is north, the weather for the next three days, and whether the area you travel in is populated or empty."
+      }
+    ],
     "requirementText": "Intelligence 5",
     "category": "intelligence"
   },
@@ -2337,7 +2367,12 @@
     "source": {
       "page": 42
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Crafting no longer needs a workbench, but you must carry your tools (5 Load)."
+      }
+    ],
     "requirementText": "Intelligence 5",
     "category": "intelligence"
   },
@@ -2356,7 +2391,12 @@
     "source": {
       "page": 42
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "When damage reduces you to 0 HP, your Armor decays only 1 level. When you take damage to HP, you can have your armor absorb it: the damage becomes 0 and the armor decays 1 level per 10 damage absorbed."
+      }
+    ],
     "requirementText": "Intelligence 6",
     "category": "intelligence"
   },
@@ -2375,7 +2415,17 @@
     "source": {
       "page": 42
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "rollMode",
+        "roll": "addiction",
+        "mode": "advantage"
+      },
+      {
+        "type": "note",
+        "text": "The duration of any chem you take is doubled."
+      }
+    ],
     "requirementText": "Intelligence 6",
     "category": "intelligence"
   },
@@ -2394,9 +2444,15 @@
     "source": {
       "page": 42
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Crafted ammunition gets +2 to attack and damage rolls made with it, or (instead) you double the amount of ammunition you craft. Choose per craft."
+      }
+    ],
     "requirementText": "Intelligence 6",
-    "category": "intelligence"
+    "category": "intelligence",
+    "needsReview": true
   },
   {
     "id": "nerd-rage",
@@ -2413,7 +2469,12 @@
     "source": {
       "page": 42
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "If you start your turn with less than half your total HP, your DT increases by 2."
+      }
+    ],
     "requirementText": "Intelligence 7",
     "category": "intelligence"
   },
@@ -2432,9 +2493,23 @@
     "source": {
       "page": 43
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "resistance",
+        "to": "damage.laser"
+      },
+      {
+        "type": "resistance",
+        "to": "damage.plasma"
+      },
+      {
+        "type": "note",
+        "text": "Each time you are hit with laser or plasma damage, roll a Luck check. On 19 or higher the beam refracts and deals the same damage to the attacker."
+      }
+    ],
     "requirementText": "Intelligence 7",
-    "category": "intelligence"
+    "category": "intelligence",
+    "needsReview": true
   },
   {
     "id": "computer-whiz",
@@ -2451,7 +2526,12 @@
     "source": {
       "page": 43
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "When you fail a Breach check on a computer, you can spend 10 minutes to succeed automatically (GM's discretion)."
+      }
+    ],
     "requirementText": "Intelligence 8",
     "category": "intelligence"
   },
@@ -2470,9 +2550,15 @@
     "source": {
       "page": 43
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "You ignore 2 points of DT when damaging Robots. Out of combat, you can shut down a robot with a Science check, DC = the robot's Intelligence score + 10."
+      }
+    ],
     "requirementText": "Intelligence 8",
-    "category": "intelligence"
+    "category": "intelligence",
+    "needsReview": true
   },
   {
     "id": "quick-repair",
@@ -2489,7 +2575,12 @@
     "source": {
       "page": 43
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Spend 6 AP to remove two levels of decay from an item. Usable once per 8-hour rest; each additional rank grants one more use per rest."
+      }
+    ],
     "requirementText": "Intelligence 9",
     "repeat": {
       "text": "You can take this perk up to a maximum of three times. When you take it again you can Quick repair an additional time per 8 hour rest.",
@@ -2512,13 +2603,19 @@
     "source": {
       "page": 43
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Spend 6 AP and two stimpaks to heal each non-robotic creature within 20 feet by their healing rate, or 6 AP and two robot repair kits to do the same for each robotic creature. Rank 2: use four stimpaks or robot repair kits to heal double their healing rate."
+      }
+    ],
     "requirementText": "Intelligence 9",
     "repeat": {
       "text": "You can take this perk up to a maximum of twice. If you take this perk again, you can use four stimpaks or robot repair kits to have each creature heal double their healing rate.",
       "max": 2
     },
-    "category": "intelligence"
+    "category": "intelligence",
+    "needsReview": true
   },
   {
     "id": "overcharge",
@@ -2535,7 +2632,12 @@
     "source": {
       "page": 43
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Once per turn, when making a ranged attack roll, spend up to 3 additional AP to add that many extra damage dice."
+      }
+    ],
     "requirementText": "Intelligence 10",
     "category": "intelligence"
   },
@@ -2554,7 +2656,12 @@
     "source": {
       "page": 43
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Crafting an item uses two fewer of each listed material (minimum one)."
+      }
+    ],
     "requirementText": "Intelligence 10",
     "category": "intelligence"
   },
