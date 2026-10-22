@@ -83,8 +83,8 @@ describe("variants", () => {
 
   it("applies skill.* to every skill", () => {
     const s = sheet({ id: "ghoul", variants: ["variant-ghoul"] });
-    expect(s.skills.sneak.value).toBe(2);
-    expect(s.skills.barter.breakdown).toHaveLength(1);
+    expect(s.skills.sneak.value).toBe(2); // AGI 0, Luck 0, +2 from the variant
+    expect(s.skills.barter.breakdown.at(-1)).toMatchObject({ value: 2 });
     expect(s.derived.perkPoints.value).toBe(2);
   });
 
