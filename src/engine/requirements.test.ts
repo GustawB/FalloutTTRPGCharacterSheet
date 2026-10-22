@@ -156,6 +156,7 @@ describe("ability-point choices", () => {
     expect(s.abilities.strength.breakdown).toContainEqual({
       source: "Perk: Adaptive Reflexes", label: "Adaptive Reflexes (choice: strength)", value: 1,
     });
+    expect(computeSheet(pick(["strength", "bogus"]), real).problems).toHaveLength(1);
     const over = computeSheet(pick(Array(6).fill("luck")), real);
     expect(over.problems).toHaveLength(1);
     expect(over.abilities.luck.value).toBe(base0.luck.value + 5);

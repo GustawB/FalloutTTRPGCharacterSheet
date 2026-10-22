@@ -124,7 +124,9 @@ export function applyEffects(
           problems.push(`${source}: ${(err as Error).message}`);
           break;
         }
-        const picks = (ctx.picks?.[e.choice] ?? []).filter((p) => (ABILITIES as readonly string[]).includes(p));
+        const all = ctx.picks?.[e.choice] ?? [];
+        const picks = all.filter((p) => (ABILITIES as readonly string[]).includes(p));
+        if (picks.length < all.length) problems.push(`${source}: choice "${e.choice}" has ${all.length - picks.length} pick(s) that are not abilities`);
         if (picks.length > points) problems.push(`${source}: choice "${e.choice}" spends ${picks.length} point(s), only ${points} available`);
         for (const p of picks.slice(0, Math.max(0, points))) {
           addModifier(acc, `ability.${p}`, { source, label: `${label} (choice: ${p})`, value: 1 });
