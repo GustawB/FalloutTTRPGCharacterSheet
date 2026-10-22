@@ -296,9 +296,19 @@
     "source": {
       "page": 34
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "immunity",
+        "to": "condition.encumbered"
+      },
+      {
+        "type": "note",
+        "text": "Spend 6 AP for a heavy unarmed attack: an unarmed attack with damage increased by 2d4. You can still become heavily encumbered."
+      }
+    ],
     "requirementText": "Strength 4",
-    "category": "strength"
+    "category": "strength",
+    "needsReview": true
   },
   {
     "id": "weapon-handling",
@@ -315,9 +325,15 @@
     "source": {
       "page": 34
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "No disadvantage on attack rolls with weapons whose Strength requirement you don't meet. Ignore the negative effects of the first two levels of decay on all weapons."
+      }
+    ],
     "requirementText": "Strength 4",
-    "category": "strength"
+    "category": "strength",
+    "needsReview": true
   },
   {
     "id": "butcher",
@@ -334,7 +350,12 @@
     "source": {
       "page": 34
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "+2 to damage rolls from melee weapon attacks. A targeted bladed melee attack to an arm or leg that deals more than double the creature's level in HP damage severs the limb."
+      }
+    ],
     "requirementText": "Strength 5",
     "category": "strength"
   },
@@ -353,9 +374,15 @@
     "source": {
       "page": 34
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "+3 to damage rolls from unarmed attacks that damage a target's stamina points. A targeted unarmed attack to the head dealing more than the creature's level in HP damage makes it dazed for 8 - its Endurance score rounds (minimum 1)."
+      }
+    ],
     "requirementText": "Strength 5",
-    "category": "strength"
+    "category": "strength",
+    "needsReview": true
   },
   {
     "id": "heave-ho",
@@ -372,7 +399,12 @@
     "source": {
       "page": 34
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "The distance you can throw an object or creature is doubled."
+      }
+    ],
     "requirementText": "Strength 5",
     "category": "strength"
   },
@@ -391,9 +423,20 @@
     "source": {
       "page": 34
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "modifier",
+        "stat": "carryLoad",
+        "value": 50
+      },
+      {
+        "type": "note",
+        "text": "You don't become slowed when carrying heavy objects."
+      }
+    ],
     "requirementText": "Strength 5",
-    "category": "strength"
+    "category": "strength",
+    "needsReview": true
   },
   {
     "id": "assert-power",
@@ -410,7 +453,12 @@
     "source": {
       "page": 34
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Spend 4 AP to frighten a creature within 30 feet. You can't frighten a creature you have already frightened."
+      }
+    ],
     "requirementText": "Strength 5",
     "category": "strength"
   },
@@ -429,7 +477,12 @@
     "source": {
       "page": 34
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Long jumps clear an additional 10 feet and high jumps an additional 3 feet. Impact damage from falls is halved."
+      }
+    ],
     "requirementText": "Strength 6",
     "category": "strength"
   },
@@ -448,9 +501,15 @@
     "source": {
       "page": 34
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "After spending AP to move at least 15 feet in a straight line, your next unarmed or melee weapon attack has advantage. If it hits and damages HP, the target falls prone or is knocked back 5 x your Strength modifier feet."
+      }
+    ],
     "requirementText": "Strength 6",
-    "category": "strength"
+    "category": "strength",
+    "needsReview": true
   },
   {
     "id": "stonewall",
@@ -467,9 +526,20 @@
     "source": {
       "page": 34
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "modifier",
+        "stat": "dt",
+        "value": 2
+      },
+      {
+        "type": "note",
+        "text": "Advantage on Strength or ability checks to resist being grappled, restrained or knocked prone, or flip a Karma Cap to automatically succeed."
+      }
+    ],
     "requirementText": "Strength 6",
-    "category": "strength"
+    "category": "strength",
+    "needsReview": true
   },
   {
     "id": "k-o",
@@ -486,7 +556,12 @@
     "source": {
       "page": 34
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "The first time you deal damage to a creature's HP with an unarmed or melee weapon attack, it becomes dazed for 2 rounds."
+      }
+    ],
     "requirementText": "Strength 7",
     "category": "strength"
   },
@@ -505,7 +580,12 @@
     "source": {
       "page": 34
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Unarmed and melee weapon damage reduces the target's DT by your Strength modifier (minimum DT 0)."
+      }
+    ],
     "requirementText": "Strength 7",
     "category": "strength"
   },
@@ -524,9 +604,15 @@
     "source": {
       "page": 34
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Hitting a single target with at least three melee attacks in a turn gives it 2 levels of fatigue. At 4 levels of fatigue this way it is paralyzed until the end of its next turn, and can't be paralyzed this way again until you roll combat sequence."
+      }
+    ],
     "requirementText": "Strength 8",
-    "category": "strength"
+    "category": "strength",
+    "needsReview": true
   },
   {
     "id": "rooted",
@@ -543,9 +629,15 @@
     "source": {
       "page": 35
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Spend 4 AP to become Rooted (3 AP to end it). While Rooted: +5 DT, +2 damage on unarmed and melee weapon attacks, and moving 5 feet costs 2 AP."
+      }
+    ],
     "requirementText": "Strength 8",
-    "category": "strength"
+    "category": "strength",
+    "needsReview": true
   },
   {
     "id": "unstoppable-force",
@@ -562,7 +654,12 @@
     "source": {
       "page": 35
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Damage from unarmed and melee weapon attacks against a creature's HP ignores its DT."
+      }
+    ],
     "requirementText": "Strength 9",
     "category": "strength"
   },
@@ -581,7 +678,12 @@
     "source": {
       "page": 35
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Attacks with an improvised weapon increase damage by 1 die rank and decrease critical hit chance by 1."
+      }
+    ],
     "requirementText": "Strength 9",
     "category": "strength"
   },
@@ -600,9 +702,15 @@
     "source": {
       "page": 35
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Use a creature as an improvised weapon (grapple check if unwilling): 6 AP, Melee Weapons skill, crit 20 (x2), impact damage 3d6 small / 4d6 medium / 5d6 large (not huge or larger). Throw them 2 x your Strength score feet; a creature thrown into another and dealing impact damage to HP makes both fall prone. The used creature takes half the impact damage dealt to HP."
+      }
+    ],
     "requirementText": "Strength 10",
-    "category": "strength"
+    "category": "strength",
+    "needsReview": true
   },
   {
     "id": "slayer",
@@ -619,9 +727,15 @@
     "source": {
       "page": 35
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Gain 1 AP whenever you spend AP to make an unarmed or melee weapon attack. Critical hit chance with all unarmed and melee weapons decreases by 1."
+      }
+    ],
     "requirementText": "Strength 10",
-    "category": "strength"
+    "category": "strength",
+    "needsReview": true
   },
   {
     "id": "careful-aim",
