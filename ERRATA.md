@@ -239,6 +239,14 @@ negative values.
   that stat, e.g. AC's 10.
 - **Status:** Provisional (agent, #29)
 
+### E29. Party-scoped perk limits: the later party member loses the pick
+- **Text (p32):** Here and Now "cannot be taken again by any other player
+  characters" once taken.
+- **Ruling:** "first" is the member's position in the list given to
+  `computePartySheet`. The later member's pick is a `problem` and gives no
+  effects. Only picks (not grants) at or below the member's level count.
+- **Status:** Provisional (agent, #32)
+
 ## Editorial (no ruling needed, just don't trust these references)
 - p4 steps 7 and 23 say traits are on "pg. 20". They're on p25.
 - p5 says the perk list is on "page 27". It's on p32.

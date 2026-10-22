@@ -39,6 +39,8 @@ export function applyPerks(
   ctx: ExprContext,
   acc: EffectAccumulator,
   problems: string[],
+  /** Perk ids already picked by earlier party members, for `repeat.scope: "party"`. */
+  partyTaken: ReadonlySet<string> = new Set(),
 ): PerkStage {
   const rows = c.perks.filter((p) => p.level <= c.level);
   const picked = new Map<string, number>();
@@ -72,7 +74,12 @@ export function applyPerks(
       continue;
     }
     const free = granted.has(id) ? 1 : 0;
-    const picks = picked.get(id) ?? 0;
+    let picks = picked.get(id) ?? 0;
+    if (picks > 0 && perk.repeat?.scope === "party" && partyTaken.has(id)) {
+      problems.push(`Perk ${perk.name} was already taken by another party member`);
+      picks = 0; // the pick gives nothing; a granted copy still applies
+      if (!free) continue;
+    }
     const max = maxRanks(perk);
     let rank = free + picks;
     if (rank > max) {

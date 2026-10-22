@@ -48,6 +48,7 @@ export function baseDerived(
   rules: Rules,
   abilities: Record<AbilityId, StatResult>,
   problems: string[],
+  partyNerve?: StatResult | null,
 ): Derived {
   const L = c.level;
   const k = Math.floor((L - 1) / 2);
@@ -99,7 +100,7 @@ export function baseDerived(
     karmaCaps: total([line("1", 1), line("Luck 10", score("luck") === 10 ? 1 : 0)]),
     deathSave: total([
       line(`${dsName} modifier (${score(dsAbility)} − 5)`, m(dsAbility)),
-      line("Party Nerve (until party stats land)", 0),
+      ...(partyNerve ? [line("Party Nerve", partyNerve.value, "party")] : []),
     ]),
     skillPoints: total(skillPointsBreakdown),
     perkPoints: total(perkPointsBreakdown),
