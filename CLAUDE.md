@@ -280,11 +280,11 @@ How perk, trait and feature effects are encoded. Every batch follows these.
 - New ids (stats, damage types, conditions, rolls) go in this file and in
   `data/vocab.json` (which the validator reads) in the same PR.
 
-## Character file (proposed; finalised by the first engine PR)
+## Character file (final; `src/engine/character.ts`)
 
 ```ts
 type Character = {
-  id: string; name: string; schemaVersion: 1;
+  id: string; name: string; schemaVersion: 1;   // CHARACTER_SCHEMA_VERSION
   race: { id: RaceId; subtype?: string; variants: string[]; tools?: string[] };
   level: number; xp: number;
   abilities: Record<AbilityId, number>;       // after creation-point allocation (pre-perk)
@@ -302,6 +302,13 @@ type Character = {
   partyId?: string;
 };
 ```
+
+`src/engine/sheet.ts` defines the result: `computeSheet(character, rules) → Sheet`
+with `StatResult = { value, breakdown: Contribution[] }` for abilities, skills
+and derived stats, plus `party` (`null` stats when unknown), `notes`,
+`rollModes`, `resistances`/`immunities`/`vulnerabilities` and `problems`.
+`derived.radiationDc` is `null` when the race has no radiation DC.
+`newCharacter(id, name?)` builds a level 1 default human.
 
 ## UI requirements
 
