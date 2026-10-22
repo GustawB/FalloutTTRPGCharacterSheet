@@ -87,3 +87,17 @@ function pickVariants(c: Character, race: Race, problems: string[]) {
   });
   return chosen;
 }
+
+/** Why `variantId` can't be added to the chosen variants (they share a replaced feature), or `null`. */
+export function variantConflict(race: Race, chosen: string[], variantId: string): string | null {
+  const variant = race.variants.find((v) => v.id === variantId);
+  if (!variant) return null;
+  for (const id of chosen) {
+    if (id === variantId) continue;
+    const other = race.variants.find((v) => v.id === id);
+    if (other && other.replaces.some((r) => variant.replaces.includes(r))) {
+      return `Conflicts with ${other.name} (both replace the same feature)`;
+    }
+  }
+  return null;
+}

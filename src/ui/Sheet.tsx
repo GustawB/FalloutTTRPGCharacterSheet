@@ -6,6 +6,7 @@ import { computeSheet, type PartyContext, type StatResult } from "../engine/shee
 import { skillAbilityFor, skillAbilityOptions } from "../engine/skills";
 import { ABILITIES, SKILLS } from "../engine/vocab";
 import { Breakdown } from "./Breakdown";
+import { Build } from "./Build";
 
 const DERIVED_ROWS = [
   ["hp", "Hit points"], ["sp", "Stamina"], ["ap", "Action points"], ["apMax", "AP max"],
@@ -45,6 +46,8 @@ export function Sheet({
           XP <input type="number" value={character.xp} onChange={(e) => set({ xp: num(e.target.value, 0) })} />
         </label>
       </section>
+
+      <Build character={character} rules={rules} onChange={onChange} />
 
       {sheet.problems.length > 0 && (
         <section aria-label="Problems" role="alert">
