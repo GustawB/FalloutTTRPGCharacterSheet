@@ -3,7 +3,7 @@ import type { Contribution, Defense, RollModeResult, SheetNote } from "./sheet";
 import type { AbilityId, RaceId } from "./vocab";
 import { mod } from "./math";
 import { skillPointGrants } from "./base";
-import { SKILLS } from "./vocab";
+import { ABILITIES, SKILLS } from "./vocab";
 
 /** What an `Expr` can refer to. `rank` is only set for perks. */
 export type ExprContext = {
@@ -11,6 +11,8 @@ export type ExprContext = {
   /** Ability scores the effects see (before any effect adds to them). */
   abilities: Record<AbilityId, number>;
   rank?: number;
+  /** Stored picks of the perk or trait whose effects are applied, by choice id. */
+  picks?: Record<string, string[]>;
 };
 
 /** Everything effects have produced so far. */
@@ -98,6 +100,16 @@ export function applyEffects(
           value = evalExpr(e.value, ctx);
         } catch (err) {
           problems.push(`${source}: ${(err as Error).message}`);
+          break;
+        }
+        if ("choice" in e) {
+          const { id, of, count = 1 } = e.choice;
+          const valid: readonly string[] = of === "skill" ? SKILLS : ABILITIES;
+          const picks = [...new Set(ctx.picks?.[id] ?? [])].filter((p) => valid.includes(p)).slice(0, count);
+          if (picks.length < count) problems.push(`${source}: choice "${id}" needs ${count} ${of} pick(s), has ${picks.length}`);
+          for (const p of picks) {
+            addModifier(acc, `${of}.${p}`, { source, label: `${label} (choice: ${p})`, value: value * scale });
+          }
           break;
         }
         const targets = e.stat === "skill.*" ? SKILLS.map((s) => `skill.${s}`) : [e.stat];

@@ -1,7 +1,7 @@
 import type { Character } from "./character";
 import type { Rules } from "./rules";
 import type {
-  AbilityId, ConditionId, DamageType, DerivedId, RollId, SkillId,
+  AbilityId, ConditionId, DamageType, DerivedId, RaceId, RollId, SkillId,
 } from "./vocab";
 import { baseAbilities, baseDerived } from "./base";
 import { newAccumulator } from "./effects";
@@ -53,6 +53,8 @@ export type Sheet = {
   resistances: Defense[];
   immunities: Defense[];
   vulnerabilities: Defense[];
+  /** Races that count as another race for requirements (`countsAsRace` effects). */
+  countsAsRace: { race: RaceId; source: string }[];
   /** Things wrong with the character (unknown ids, unmet requirements, ...). */
   problems: string[];
 };
@@ -152,6 +154,7 @@ export function computeSheet(character: Character, rules: Rules): Sheet {
     resistances: acc.resistances,
     immunities: acc.immunities,
     vulnerabilities: acc.vulnerabilities,
+    countsAsRace: acc.countsAsRace,
     problems,
   };
 }

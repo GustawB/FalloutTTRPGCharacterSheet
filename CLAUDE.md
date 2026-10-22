@@ -183,6 +183,7 @@ type Expr =
 
 type Effect =
   | { type: "modifier"; stat: StatId | "skill.*"; value: Expr }   // skill.* = every skill
+  | { type: "modifier"; choice: Choice; value: Expr }             // applies to each pick, see "Pick-time choices"
   | { type: "clamp"; stat: StatId; min?: number; max?: number }  // e.g. STR "cannot be lower than 6"
   | { type: "rollMode"; roll: RollId; mode: "advantage" | "disadvantage" }
   | { type: "immunity" | "resistance" | "vulnerability";
@@ -191,6 +192,18 @@ type Effect =
   | { type: "countsAsRace"; race: RaceId; for: "perkRequirements" }
   | { type: "note"; text: string };              // situational: shown on the sheet, never computed
 ```
+
+```ts
+type Choice = { id: string; of: "skill" | "ability"; count?: number };  // count defaults to 1
+```
+
+**Pick-time choices:** a `modifier` with `choice` instead of `stat` adds `value`
+to each skill or ability the player picked. Picks live in
+`Character.choices["<perk or trait id>:<choice.id>"]` (ids of skills or
+abilities). Until `count` distinct valid picks are stored, the missing ones
+apply nothing and a `problem` says so. Each applied pick shows in the breakdown
+as `<name> (choice: <id>)`. Choices of other kinds (damage types, weapons,
+ability redistribution) are still `note`s.
 
 **grantPerk semantics:** the granted perk costs no perk point and ignores
 its requirements. It counts as owned (rank 1) for everything: its effects
@@ -276,9 +289,9 @@ How perk, trait and feature effects are encoded. Every batch follows these.
   entry may be a lone `note`.
 - Per-rank scaling uses `{ ref: "rank" }`. Don't repeat the effect per rank.
   A `note` for a repeatable perk states the per-rank amount.
-- Pick-time choices ("increase one skill by 5", "+3 points to any
-  abilities") become a `note` for now and are listed in the PR. The engine
-  will need a "choice" mechanism.
+- Pick-time choices of skills or abilities ("increase one skill by 5") use a
+  `modifier` with a `choice`. Other pick-time choices ("+3 points to any
+  abilities", damage types) become a `note` for now and are listed in the PR.
 - Set `needsReview: true` when you were less than sure.
 - New ids (stats, damage types, conditions, rolls) go in this file and in
   `data/vocab.json` (which the validator reads) in the same PR.
@@ -295,6 +308,7 @@ type Character = {
   traits: { id: string; wildWasteland: boolean; variant?: number }[];   // 0–2; variant = index into Trait.wildWasteland (default 0)
   perks: { id: string; level: number }[];             // one row per pick; repeats = multiple rows
   abilityIncreases: { ability: AbilityId; level: number }[];  // perk points spent on +1
+  choices: Record<string, string[]>;         // pick-time choices, key "<perk or trait id>:<choice id>"
   skillPointAllocations: Partial<Record<SkillId, number>>;
   skillAbility: Partial<Record<"breach" | "intimidation" | "medicine", AbilityId>>;
   deathSaveAbility?: "luck" | "endurance";   // absent = the higher modifier
@@ -317,6 +331,11 @@ and derived stats, plus `party` (`null` stats when unknown), `notes`,
 `sheet.skillPointsSpent` is the sum of `skillPointAllocations`; spending more than
 `derived.skillPoints` is a `problem`, as is a background skill outside the
 background's list (custom backgrounds allow any 3).
+`sheet.countsAsRace` lists races granted by `countsAsRace` effects.
+`checkRequirements(entry, character, sheet)` (`src/engine/requirements.ts`)
+returns `{ eligible, unmet: { requirement, reason }[] }`; pass a sheet from
+`sheetWithout(character, rules, entry)` so the entry's own effects can't satisfy
+its requirements.
 `newCharacter(id, name?)` builds a level 1 default human.
 
 ## UI requirements

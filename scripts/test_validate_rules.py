@@ -116,6 +116,7 @@ class ValidateRulesTest(unittest.TestCase):
             {"type": "rollMode", "roll": "check.luck", "mode": "advantage"},
             {"type": "immunity", "to": "condition.stunned"},
             {"type": "grantPerk", "perkId": "stitched-together"},
+            {"type": "modifier", "choice": {"id": "pick", "of": "skill", "count": 2}, "value": 5},
             {"type": "note", "text": "Situational."},
         ]
         result = self.run_on(data)
@@ -124,6 +125,16 @@ class ValidateRulesTest(unittest.TestCase):
     def test_unknown_stat(self) -> None:
         self.assert_error(lambda d: self.perk(d)["effects"].append(
             {"type": "modifier", "stat": "skill.lockpick", "value": 1}), "'skill.lockpick'")
+
+    def test_bad_choice(self) -> None:
+        self.assert_error(lambda d: self.perk(d)["effects"].append(
+            {"type": "modifier", "choice": {"id": "p", "of": "damage"}, "value": 1}), "choice.of")
+        self.assert_error(lambda d: self.perk(d)["effects"].append(
+            {"type": "modifier", "choice": {"id": "p", "of": "ability", "count": 8}, "value": 1}),
+            "choice.count")
+        self.assert_error(lambda d: self.perk(d)["effects"].append(
+            {"type": "modifier", "choice": {"id": "p", "of": "skill"}, "stat": "hp", "value": 1}),
+            "unknown key 'stat'")
 
     def test_unknown_effect_type(self) -> None:
         self.assert_error(lambda d: self.perk(d)["effects"].append({"type": "buff"}),

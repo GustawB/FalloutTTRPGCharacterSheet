@@ -49,7 +49,8 @@ function checkExpr(e: Expr, where: string): void {
 function checkEffect(e: Effect, where: string): void {
   switch (e.type) {
     case "modifier":
-      expect(e.stat === "skill.*" || stats.has(e.stat), `${where}: stat ${e.stat}`).toBe(true);
+      if ("choice" in e) expect(["skill", "ability"], where).toContain(e.choice.of);
+      else expect(e.stat === "skill.*" || stats.has(e.stat), `${where}: stat ${e.stat}`).toBe(true);
       checkExpr(e.value, where);
       break;
     case "clamp":

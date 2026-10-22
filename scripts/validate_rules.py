@@ -113,12 +113,24 @@ class Checker:
 
     # ----------------------------------------------------------------- effects
 
+    def choice(self, where: str, ch) -> None:
+        if self.keys(where, ch, {"id", "of"}, {"count"}):
+            self.string(f"{where}.id", ch["id"])
+            self.one_of(f"{where}.of", ch["of"], {"skill", "ability"})
+            if "count" in ch:
+                n = len(self.abilities if ch["of"] == "ability" else self.skills)
+                self.int_(f"{where}.count", ch["count"], 1, n)
+
     def effect(self, where: str, eff, allow_rank: bool) -> None:
         if not isinstance(eff, dict) or "type" not in eff:
             self.err(where, "expected an object with a 'type'")
             return
         t = eff["type"]
-        if t == "modifier":
+        if t == "modifier" and "choice" in eff:
+            if self.keys(where, eff, {"type", "choice", "value"}):
+                self.choice(f"{where}.choice", eff["choice"])
+                self.expr(f"{where}.value", eff["value"], allow_rank)
+        elif t == "modifier":
             if self.keys(where, eff, {"type", "stat", "value"}):
                 self.one_of(f"{where}.stat", eff["stat"], self.stats | {"skill.*"})
                 self.expr(f"{where}.value", eff["value"], allow_rank)

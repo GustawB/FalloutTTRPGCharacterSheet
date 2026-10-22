@@ -10,16 +10,24 @@
         ],
         "effects": [
           {
-            "type": "note",
-            "text": "Pick-time choice: increase one skill modifier by 5."
+            "type": "modifier",
+            "choice": {
+              "id": "skills",
+              "of": "skill"
+            },
+            "value": 5
           }
         ]
       }
     ],
     "effects": [
       {
-        "type": "note",
-        "text": "Pick-time choice: increase one skill modifier by 2."
+        "type": "modifier",
+        "choice": {
+          "id": "skills",
+          "of": "skill"
+        },
+        "value": 2
       }
     ]
   },
@@ -976,8 +984,13 @@
         "value": -1
       },
       {
-        "type": "note",
-        "text": "Pick-time choice: instead of a 1st-level perk, five different skill modifiers of your choice increase by 2."
+        "type": "modifier",
+        "choice": {
+          "id": "skills",
+          "of": "skill",
+          "count": 5
+        },
+        "value": 2
       }
     ],
     "wildWasteland": [
@@ -1274,8 +1287,13 @@
         "value": 1
       },
       {
-        "type": "note",
-        "text": "Pick-time choice: five different skill modifiers of your choice decrease by 2."
+        "type": "modifier",
+        "choice": {
+          "id": "skills",
+          "of": "skill",
+          "count": 5
+        },
+        "value": -2
       }
     ],
     "wildWasteland": [
