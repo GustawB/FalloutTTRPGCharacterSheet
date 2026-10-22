@@ -1489,5 +1489,192 @@
         "text": "Lost limbs (not the head) can be reattached in 5 minutes with a first aid kit and the limb. Spend 1 minute to heal HP equal to your healing rate; usable again after a rest of at least 6 hours."
       }
     ]
+  },
+  "savage-sprint": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "Sprinting costs 3 AP instead of 5. Long jumps clear an additional 10 feet and high jumps an additional 3 feet."
+      }
+    ]
+  },
+  "how-do-you-do-fellow-ghouls": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "Feral Ghouls won't target you unless you are the only hostile target within 60 feet. Advantage on Speech checks with any ghoul."
+      }
+    ]
+  },
+  "cant-put-me-down": {
+    "effects": [
+      {
+        "type": "modifier",
+        "stat": "dt",
+        "value": 1
+      },
+      {
+        "type": "rollMode",
+        "roll": "deathSave",
+        "mode": "advantage"
+      },
+      {
+        "type": "note",
+        "text": "If you already have advantage on Death Saves, roll three d20s and take the highest."
+      }
+    ]
+  },
+  "reanimated": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "While dying your speed isn't halved and you gain an additional AP at the start of your turn. When you die you immediately gain 20 AP; once they are used, or your turn ends, you die."
+      }
+    ]
+  },
+  "pain-train": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "If you sprint through the space of a creature with a Strength score equal to or less than yours, it is knocked prone."
+      }
+    ]
+  },
+  "hardware-upgrade": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "Pick-time choice: any two weapons become Robot weapons, provided you can buy, craft or already own them."
+      }
+    ]
+  },
+  "thick-plating": {
+    "effects": [
+      {
+        "type": "modifier",
+        "stat": "ac",
+        "value": {
+          "ref": "rank"
+        }
+      },
+      {
+        "type": "modifier",
+        "stat": "dt",
+        "value": {
+          "ref": "rank"
+        }
+      },
+      {
+        "type": "note",
+        "text": "Each rank gives +1 AC and +1 DT."
+      }
+    ]
+  },
+  "adamantium-skeleton": {
+    "effects": [
+      {
+        "type": "immunity",
+        "to": "condition.limb"
+      },
+      {
+        "type": "note",
+        "text": "Damage to hit points from a targeted attack is halved."
+      }
+    ]
+  },
+  "light-step": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "You never set off placed explosives or traps."
+      }
+    ]
+  },
+  "pump-the-coolant": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "Spend 6 AP to heal stamina equal to double your healing rate. Usable once per 8-hour rest."
+      }
+    ]
+  },
+  "reinforced-recovery": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "Spend 6 AP to heal hit points equal to your healing rate. Usable once per sleep."
+      }
+    ]
+  },
+  "fine-toothed-giant": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "You no longer suffer the Bulky racial trait; the schema can't remove a feature's contribution (see E26). Crafting checks to repair an item have their DC reduced by 5."
+      }
+    ],
+    "needsReview": true
+  },
+  "wasteland-camel": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "You no longer need double the daily water to avoid dehydration. Dirty water has the hydrating property for you."
+      }
+    ]
+  },
+  "no-gods-no-masters": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "Super mutants won't target you unless you are the only hostile target within 60 feet. Spend 3 AP to learn the total ability scores of one super mutant within 60 feet."
+      }
+    ]
+  },
+  "feel-no-wounds": {
+    "effects": [
+      {
+        "type": "modifier",
+        "stat": "dt",
+        "value": 1
+      },
+      {
+        "type": "note",
+        "text": "If you end your turn with at least 6 AP, when you take damage to hit points you can spend 6 AP to halve it (rounded down)."
+      }
+    ]
+  },
+  "evolution": {
+    "effects": [
+      {
+        "type": "modifier",
+        "stat": "ac",
+        "value": 1
+      },
+      {
+        "type": "modifier",
+        "stat": "dt",
+        "value": 1
+      },
+      {
+        "type": "modifier",
+        "stat": "hp",
+        "value": {
+          "ref": "level"
+        }
+      },
+      {
+        "type": "modifier",
+        "stat": "sp",
+        "value": {
+          "ref": "level"
+        }
+      },
+      {
+        "type": "note",
+        "text": "Pick-time choice: one damage type; damage of that type to hit points is halved (rounded down)."
+      }
+    ],
+    "needsReview": true
   }
 }
