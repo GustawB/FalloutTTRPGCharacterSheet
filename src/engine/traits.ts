@@ -2,34 +2,20 @@ import type { Character } from "./character";
 import type { Requirement, Rules } from "./rules";
 import type { EffectAccumulator, ExprContext } from "./effects";
 import { applyEffects } from "./effects";
-import { ABILITIES } from "./vocab";
-import type { AbilityId } from "./vocab";
+import { unmetReason } from "./requirements";
+import { picksFor } from "./choices";
 
 export const MAX_TRAITS = 2;
 
-/** Why a requirement isn't met, or `null` if it is. `condition` text is assumed met. */
+/** Why a requirement isn't met, or `null` if it is. */
 function unmet(r: Requirement, c: Character, ctx: ExprContext, acc: EffectAccumulator): string | null {
   // Scores include ability modifiers from earlier stages (e.g. race).
-  const score = (a: AbilityId) =>
-    ctx.abilities[a] + (acc.modifiers.get(`ability.${a}`) ?? []).reduce((n, m) => n + m.value, 0);
-  switch (r.kind) {
-    case "ability": {
-      const v = score(r.ability);
-      if (r.min !== undefined && v < r.min) return `${r.ability} ${r.min}+`;
-      if (r.max !== undefined && v > r.max) return `${r.ability} ${r.max} or less`;
-      return null;
-    }
-    case "anyAbility":
-      return ABILITIES.some((a) => score(a) <= r.max) ? null : `an ability score of ${r.max} or less`;
-    case "race":
-      return r.anyOf.includes(c.race.id) || acc.countsAsRace.some((x) => r.anyOf.includes(x.race))
-        ? null
-        : `race ${r.anyOf.join(" or ")}`;
-    case "level":
-      return ctx.level >= r.min ? null : `level ${r.min}+`;
-    case "condition":
-      return null;
-  }
+  return unmetReason(r, {
+    level: ctx.level,
+    race: c.race.id,
+    countsAsRace: acc.countsAsRace.map((x) => x.race),
+    score: (a) => ctx.abilities[a] + (acc.modifiers.get(`ability.${a}`) ?? []).reduce((n, m) => n + m.value, 0),
+  });
 }
 
 /**
@@ -78,7 +64,7 @@ export function applyTraits(
       const why = unmet(r, c, ctx, acc);
       if (why) problems.push(`Trait ${trait.name} requires ${why}`);
     }
-    applyEffects(effects, source, trait.name, ctx, acc, problems);
+    applyEffects(effects, source, trait.name, { ...ctx, picks: picksFor(c, pick.id) }, acc, problems);
   }
 }
 

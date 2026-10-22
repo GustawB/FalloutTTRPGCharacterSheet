@@ -23,8 +23,15 @@ export type Expr =
   | { op: "add" | "sub" | "mul" | "div" | "min" | "max"; args: Expr[] }
   | { op: "floor"; args: [Expr] };
 
+/**
+ * A pick-time choice: the player picks `count` (default 1) distinct skills or
+ * abilities, stored in `Character.choices`. The modifier applies to each pick.
+ */
+export type Choice = { id: string; of: "skill" | "ability"; count?: number };
+
 export type Effect =
   | { type: "modifier"; stat: StatId | "skill.*"; value: Expr }
+  | { type: "modifier"; choice: Choice; value: Expr }
   | { type: "clamp"; stat: StatId; min?: number; max?: number }
   | { type: "rollMode"; roll: RollId; mode: "advantage" | "disadvantage" }
   | {

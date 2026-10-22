@@ -2,6 +2,7 @@ import type { Character } from "./character";
 import type { Effect, Expr, Perk, Rules } from "./rules";
 import type { EffectAccumulator, ExprContext } from "./effects";
 import { applyEffects } from "./effects";
+import { picksFor } from "./choices";
 
 /** True if the expression reads `rank`, i.e. it already scales itself. */
 function usesRank(e: Expr): boolean {
@@ -81,7 +82,7 @@ export function applyPerks(
     }
     const source = `Perk: ${perk.name}`;
     const label = rank > 1 ? `${perk.name} (rank ${rank})` : perk.name;
-    const pctx = { ...ctx, rank };
+    const pctx = { ...ctx, rank, picks: picksFor(c, id) };
     // Only modifiers scale; notes, resistances and the like apply once.
     for (const e of perk.effects as Effect[]) {
       const scale = e.type === "modifier" && usesRank(e.value) ? 1 : rank;

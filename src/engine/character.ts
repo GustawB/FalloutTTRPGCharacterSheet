@@ -20,6 +20,8 @@ export type Character = {
   perks: { id: string; level: number }[];
   /** Perk points spent on +1 to an ability. */
   abilityIncreases: { ability: AbilityId; level: number }[];
+  /** Pick-time choices, keyed `<perk or trait id>:<choice id>`; values are skill or ability ids. */
+  choices: Record<string, string[]>;
   skillPointAllocations: Partial<Record<SkillId, number>>;
   skillAbility: Partial<Record<"breach" | "intimidation" | "medicine", AbilityId>>;
   /** Which ability the death save uses; absent = whichever modifier is higher. */
@@ -48,6 +50,7 @@ export function newCharacter(id: string, name = ""): Character {
     traits: [],
     perks: [],
     abilityIncreases: [],
+    choices: {},
     skillPointAllocations: {},
     skillAbility: {},
     manualOverrides: [],
