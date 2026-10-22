@@ -1687,8 +1687,16 @@
     },
     "effects": [
       {
+        "type": "resistance",
+        "choice": {
+          "id": "damage",
+          "of": "damage",
+          "count": 3
+        }
+      },
+      {
         "type": "note",
-        "text": "Pick-time/use-time choice: spend 3 AP to gain resistance to three damage types of your choice for 3 rounds; then unusable until you rest 1 hour or roll combat sequence."
+        "text": "Choose three damage types when activating the implant (3 AP, 3 rounds; then unusable until you rest 1 hour or roll combat sequence). Resistance is listed on the sheet always, not only while active."
       }
     ],
     "requirementText": "Endurance 9",
@@ -4648,8 +4656,16 @@
         }
       },
       {
+        "type": "resistance",
+        "choice": {
+          "id": "damage",
+          "of": "damage",
+          "count": 1
+        }
+      },
+      {
         "type": "note",
-        "text": "Pick-time choice: one damage type; damage of that type to hit points is halved (rounded down)."
+        "text": "Damage of the chosen type to hit points is halved (rounded down); modelled as resistance."
       }
     ],
     "requirementText": "Super Mutant, Level 10",

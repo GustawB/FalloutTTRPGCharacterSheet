@@ -3,7 +3,7 @@ import type { Contribution, Defense, RollModeResult, SheetNote } from "./sheet";
 import type { AbilityId, RaceId } from "./vocab";
 import { mod } from "./math";
 import { skillPointGrants } from "./base";
-import { ABILITIES, SKILLS } from "./vocab";
+import { ABILITIES, DAMAGE_TYPES, SKILLS } from "./vocab";
 
 /** What an `Expr` can refer to. `rank` is only set for perks. */
 export type ExprContext = {
@@ -149,14 +149,21 @@ export function applyEffects(
         acc.rollModes.push({ roll: e.roll, mode: e.mode, source });
         break;
       case "resistance":
-        acc.resistances.push({ to: e.to, source });
-        break;
       case "immunity":
-        acc.immunities.push({ to: e.to, source });
+      case "vulnerability": {
+        const list = e.type === "resistance" ? acc.resistances
+          : e.type === "immunity" ? acc.immunities : acc.vulnerabilities;
+        if ("choice" in e) {
+          const { id, count = 1 } = e.choice;
+          const valid: readonly string[] = DAMAGE_TYPES;
+          const picks = [...new Set(ctx.picks?.[id] ?? [])].filter((p) => valid.includes(p)).slice(0, count);
+          if (picks.length < count) problems.push(`${source}: choice "${id}" needs ${count} damage type pick(s), has ${picks.length}`);
+          for (const p of picks) list.push({ to: `damage.${p}` as Defense["to"], source });
+        } else {
+          list.push({ to: e.to, source });
+        }
         break;
-      case "vulnerability":
-        acc.vulnerabilities.push({ to: e.to, source });
-        break;
+      }
       case "countsAsRace":
         acc.countsAsRace.push({ race: e.race, source });
         break;

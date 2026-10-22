@@ -203,6 +203,8 @@ type Effect =
   | { type: "rollMode"; roll: RollId; mode: "advantage" | "disadvantage" }
   | { type: "immunity" | "resistance" | "vulnerability";
       to: `damage.${DamageType}` | `condition.${ConditionId}` | "radiationLevels" }
+  | { type: "immunity" | "resistance" | "vulnerability";
+      choice: { id: string; of: "damage"; count?: number } }          // applies to each picked damage type
   | { type: "grantPerk"; perkId: string }        // free perk, see "grantPerk semantics"
   | { type: "countsAsRace"; race: RaceId; for: "perkRequirements" }
   | { type: "note"; text: string };              // situational: shown on the sheet, never computed
@@ -217,8 +219,13 @@ to each skill or ability the player picked. Picks live in
 `Character.choices["<perk or trait id>:<choice.id>"]` (ids of skills or
 abilities). Until `count` distinct valid picks are stored, the missing ones
 apply nothing and a `problem` says so. Each applied pick shows in the breakdown
-as `<name> (choice: <id>)`. Choices of other kinds (damage types, weapons,
-ability redistribution) are still `note`s.
+as `<name> (choice: <id>)`. Choices of other kinds (weapons, tools) are still `note`s.
+
+**Damage-type choices:** a `resistance`/`immunity`/`vulnerability` with a `choice`
+(`of: "damage"`) applies to each picked damage type (picks are `DamageType` ids,
+stored like the others). Duplicate and unknown picks are ignored; until `count`
+distinct valid picks are stored, the missing ones apply nothing and a `problem`
+says so (E31). Defenses carry no numbers, so they have no breakdown.
 
 **Ability-point choices:** `abilityPoints` takes picks that are ability ids, +1
 each (repeats allowed), up to `points`; surplus picks are a `problem` and

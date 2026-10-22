@@ -259,6 +259,17 @@ negative values.
   picking it). Pick formats are in CLAUDE.md.
 - **Status:** Provisional (agent, #73)
 
+### E31. Damage-type choices: NEMEAN Sub-Dermal Armor and Evolution
+- **Text (p39, p50):** NEMEAN gives resistance to three damage types of your
+  choice for 3 rounds after activation. Evolution halves (rounded down) damage
+  of one chosen type to hit points.
+- **Ruling:** both are resistances on the picked types, listed on the sheet
+  always. NEMEAN's activation (3 AP, 3 rounds, cooldown) is not tracked, so
+  its resistance shows even when the implant is inactive. Evolution's halving
+  is read as the same as resistance. Duplicate or unknown picks are ignored and
+  reported as missing picks.
+- **Status:** Provisional (agent, #74)
+
 ## Editorial (no ruling needed, just don't trust these references)
 - p4 steps 7 and 23 say traits are on "pg. 20". They're on p25.
 - p5 says the perk list is on "page 27". It's on p32.

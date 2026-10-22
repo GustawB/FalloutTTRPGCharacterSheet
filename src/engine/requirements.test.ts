@@ -177,3 +177,27 @@ describe("ability-point choices", () => {
     }
   });
 });
+
+describe("damage-type choices", () => {
+  const sheet = (perk: string, level: number, picks: string[], race: Character["race"] = base().race) =>
+    computeSheet(base({ race, level, perks: [{ id: perk, level }], choices: { [`${perk}:damage`]: picks } }), real);
+  const tos = (s: ReturnType<typeof sheet>) => s.resistances.map((d) => d.to);
+
+  it("nemean-sub-dermal-armor gives resistance to three picked types", () => {
+    const s = sheet("nemean-sub-dermal-armor", 5, ["fire", "acid", "laser"]);
+    expect(s.problems.filter((p) => p.includes("NEMEAN"))).toEqual([]);
+    expect(tos(s)).toEqual(["damage.fire", "damage.acid", "damage.laser"]);
+  });
+
+  it("missing, duplicate or invalid picks are a problem and apply nothing", () => {
+    const s = sheet("nemean-sub-dermal-armor", 5, ["fire", "fire", "bogus"]);
+    expect(s.problems.filter((p) => p.includes("NEMEAN"))).toHaveLength(1);
+    expect(tos(s)).toEqual(["damage.fire"]);
+  });
+
+  it("evolution gives resistance to one picked type", () => {
+    const s = sheet("evolution", 10, ["radiation"], { id: "superMutant", variants: [] });
+    expect(tos(s)).toEqual(["damage.radiation"]);
+    expect(sheet("evolution", 10, [], { id: "superMutant", variants: [] }).problems.some((p) => p.includes("Evolution"))).toBe(true);
+  });
+});

@@ -35,6 +35,7 @@ class Checker:
         self.abilities = vocab["abilities"]
         self.skills = vocab["skills"]
         self.races = vocab["races"]
+        self.damage_types = vocab["damageTypes"]
         self.stats = (set(vocab["derived"]) | {f"ability.{a}" for a in self.abilities}
                       | {f"skill.{s}" for s in self.skills})
         self.defense_targets = ({f"damage.{d}" for d in vocab["damageTypes"]}
@@ -158,6 +159,14 @@ class Checker:
             if self.keys(where, eff, {"type", "roll", "mode"}):
                 self.one_of(f"{where}.roll", eff["roll"], self.rolls)
                 self.one_of(f"{where}.mode", eff["mode"], {"advantage", "disadvantage"})
+        elif t in ("immunity", "resistance", "vulnerability") and "choice" in eff:
+            if self.keys(where, eff, {"type", "choice"}):
+                ch = eff["choice"]
+                if self.keys(f"{where}.choice", ch, {"id", "of"}, {"count"}):
+                    self.string(f"{where}.choice.id", ch["id"])
+                    self.one_of(f"{where}.choice.of", ch["of"], {"damage"})
+                    if "count" in ch:
+                        self.int_(f"{where}.choice.count", ch["count"], 1, len(self.damage_types))
         elif t in ("immunity", "resistance", "vulnerability"):
             if self.keys(where, eff, {"type", "to"}):
                 self.one_of(f"{where}.to", eff["to"], self.defense_targets)
