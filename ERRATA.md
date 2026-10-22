@@ -148,6 +148,20 @@ negative values.
   minutes in place), so it stays a `note`.
 - **Status:** Provisional (agent, #10)
 
+### E18. Grit: second rank gives 2 AP in total
+- **Text (perks, p32–50):** rank 1 gives "an additional action point" while
+  dying; the repeat text says "If you take this perk again, you gain 2
+  additional action points".
+- **Ruling:** 2 additional AP in total at rank 2, not 1 + 2. Note only.
+- **Status:** Provisional (agent, #11)
+
+### E19. Beyond the Sea: direction of the water-movement change
+- **Text (perks, p32–50):** "you can spend 1 action point to move 5 feet
+  instead of 10". Read literally that is a penalty.
+- **Ruling:** a perk wouldn't penalise, so the intent is 10 feet per AP
+  instead of 5. Note only.
+- **Status:** Provisional (agent, #11)
+
 ## Editorial (no ruling needed, just don't trust these references)
 - p4 steps 7 and 23 say traits are on "pg. 20". They're on p25.
 - p5 says the perk list is on "page 27". It's on p32.

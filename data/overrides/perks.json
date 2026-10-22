@@ -446,5 +446,194 @@
         "text": "When you roll Combat Sequence, swap the rolls of any number of willing creatures. Second rank: up to three additional creatures, which need not be willing."
       }
     ]
+  },
+  "master-chef": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "Cooked food you make always has the filling property, and bland food becomes tasty. Creatures eating it gain temporary stamina points equal to their level."
+      }
+    ]
+  },
+  "lifegiver": {
+    "effects": [
+      {
+        "type": "modifier",
+        "stat": "hp",
+        "value": {
+          "op": "mul",
+          "args": [
+            10,
+            {
+              "ref": "rank"
+            }
+          ]
+        }
+      },
+      {
+        "type": "note",
+        "text": "Each other player character's maximum hit points increase by 1 per rank."
+      }
+    ],
+    "needsReview": true
+  },
+  "toughness": {
+    "effects": [
+      {
+        "type": "modifier",
+        "stat": "dt",
+        "value": {
+          "ref": "rank"
+        }
+      },
+      {
+        "type": "note",
+        "text": "Whenever you become frightened, you can always choose to be frightened (fight)."
+      }
+    ]
+  },
+  "beyond-the-sea": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "Moving through water: 1 AP moves you 10 feet instead of 5 (ERRATA E19). Drinking dirty water gives no irradiated levels."
+      }
+    ],
+    "needsReview": true
+  },
+  "mad-dash": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "Sprinting moves you 80 feet in a line instead of 50."
+      }
+    ]
+  },
+  "trailblazers-instinct": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "Once per day when you start traveling, roll Survival DC 12 (+2 for difficult terrain, a route over 3 days, or unfamiliar territory); on success you and your travel companions move 2 miles per hour faster. You also have advantage on encounter rolls."
+      }
+    ]
+  },
+  "survivorship-bias": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "Against a creature whose type and subtype you have rolled combat sequence with: spend 3 AP to learn its HP, SP, AP, AC or DT, or 6 AP to learn one attack or weakness. Each additional rank (max 3) lets you learn one more statistic, action or weakness."
+      }
+    ],
+    "needsReview": true
+  },
+  "grit": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "While dying, movement costs no extra AP and you gain 1 additional AP at the start of your turn (2 additional in total at the second rank; ERRATA E18)."
+      }
+    ],
+    "needsReview": true
+  },
+  "the-long-road": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "While traveling, you and each PC can travel an additional hour before gaining a level of exhaustion. You regain all stamina points after resting 1 hour instead of 8."
+      }
+    ]
+  },
+  "alive-and-kickin": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "You ignore the negative effects of the first three levels of exhaustion."
+      }
+    ]
+  },
+  "solar-powered": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "After resting at least 1 hour in direct sunlight, gain temporary stamina points equal to your level. When rolling damage, you can lose any number of those temporary stamina points to add that much damage."
+      }
+    ]
+  },
+  "roughin-it": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "After resting outside for at least 1 hour, gain temporary HP and SP equal to your level for 8 hours. Second rank: other creatures of your choice resting with you gain the same bonus."
+      }
+    ],
+    "needsReview": true
+  },
+  "pure-determination": {
+    "effects": [
+      {
+        "type": "immunity",
+        "to": "condition.shock"
+      },
+      {
+        "type": "note",
+        "text": "The first time each turn you fall to 0 HP, you can flip a Karma Cap to heal HP equal to your healing rate."
+      }
+    ]
+  },
+  "quick-recovery": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "Spend 3 AP to heal SP or HP equal to your healing rate (once until you rest 6 hours). Whenever you heal hit points, you gain a bonus equal to your Endurance modifier."
+      }
+    ],
+    "needsReview": true
+  },
+  "implant-y-7": {
+    "effects": [
+      {
+        "type": "modifier",
+        "stat": "hp",
+        "value": {
+          "op": "mul",
+          "args": [
+            2,
+            {
+              "ref": "level"
+            }
+          ]
+        }
+      },
+      {
+        "type": "modifier",
+        "stat": "healingRate",
+        "value": 2
+      }
+    ]
+  },
+  "nemean-sub-dermal-armor": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "Pick-time/use-time choice: spend 3 AP to gain resistance to three damage types of your choice for 3 rounds; then unusable until you rest 1 hour or roll combat sequence."
+      }
+    ],
+    "needsReview": true
+  },
+  "indomitable-spirit": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "When you roll combat sequence, you and creatures of your choice gain temporary HP equal to your Endurance modifier. Spend 3 AP on a dying creature within 5 feet to give it one successful death save."
+      }
+    ]
+  },
+  "phoenix-implant": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "Spend 3 AP to activate: heal HP equal to your healing rate at the start of each of your turns for 6 rounds. Unusable again until you rest 1 hour or roll combat sequence."
+      }
+    ]
   }
 }
