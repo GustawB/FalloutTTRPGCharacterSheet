@@ -8,6 +8,8 @@ import { newAccumulator } from "./effects";
 import { applyRace } from "./race";
 import { applyTraits } from "./traits";
 import { applyPerks } from "./perks";
+import { finalizeStat } from "./clamps";
+import type { Bounds } from "./clamps";
 import { baseSkills, skillPointsSpent } from "./skills";
 import { ABILITIES, SKILLS } from "./vocab";
 
@@ -68,8 +70,8 @@ const total = (breakdown: Breakdown): StatResult => ({
 });
 
 /**
- * Pure: `(character, rules) → sheet`. Base, race, background, trait and perk
- * stages exist so far.
+ * Pure: `(character, rules) → sheet`. Base, race, background, trait, perk,
+ * manual override and clamp stages.
  */
 export function computeSheet(character: Character, rules: Rules): Sheet {
   const problems: string[] = [];
@@ -87,19 +89,42 @@ export function computeSheet(character: Character, rules: Rules): Sheet {
   // Stage 5: perks (ranks, grantPerk, repeat limits).
   const perkStage = applyPerks(character, rules, ctx, acc, problems);
 
-  // Ability effects come first: everything derived reads the final scores.
+  // Ability effects, overrides and clamps come first: everything derived reads the final scores.
   const abilities = Object.fromEntries(
-    ABILITIES.map((a) => [a, append(base[a], acc.modifiers.get(`ability.${a}`))]),
+    ABILITIES.map((a) => {
+      const key = `ability.${a}`;
+      const stat = finalizeStat(key, append(base[a], acc.modifiers.get(key)), character, acc);
+      if (stat.value < 1 || stat.value > 10) {
+        problems.push(`${a} is ${stat.value}; ability scores range from 1 to 10`);
+      }
+      return [a, stat];
+    }),
   ) as Record<AbilityId, StatResult>;
   const derived = baseDerived(character, rules, abilities, problems);
-  for (const id of Object.keys(derived) as (keyof typeof derived)[]) {
+  // apMax first: the AP cap reads its final value. AC never drops below 10 unless a clamp effect says so.
+  const order = ["apMax", ...Object.keys(derived).filter((k) => k !== "apMax")] as (keyof typeof derived)[];
+  for (const id of order) {
     const stat = derived[id];
-    if (stat) derived[id] = append(stat, acc.modifiers.get(id));
+    if (!stat) continue;
+    const defaults: Bounds =
+      id === "ap" ? { max: { value: derived.apMax.value, why: "apMax" } }
+      : id === "ac" ? { min: { value: 10, why: "AC floor" } }
+      : {};
+    derived[id] = finalizeStat(id, append(stat, acc.modifiers.get(id)), character, acc, defaults);
+  }
+  for (const o of character.manualOverrides) {
+    const isKnown =
+      (o.stat in derived && derived[o.stat as keyof typeof derived] !== null) ||
+      o.stat.startsWith("ability.") || o.stat.startsWith("skill.");
+    if (!isKnown) problems.push(`Manual override on ${o.stat}, which this character does not have`);
   }
 
   const baseSk = baseSkills(character, rules, abilities, problems);
   const skills = Object.fromEntries(
-    SKILLS.map((s) => [s, append(baseSk[s], acc.modifiers.get(`skill.${s}`))]),
+    SKILLS.map((s) => [
+      s,
+      finalizeStat(`skill.${s}`, append(baseSk[s], acc.modifiers.get(`skill.${s}`)), character, acc),
+    ]),
   ) as Sheet["skills"];
 
   const spent = skillPointsSpent(character, problems);

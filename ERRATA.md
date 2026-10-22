@@ -228,6 +228,17 @@ negative values.
   note remain.
 - **Status:** Provisional (agent, #19)
 
+### E28. Manual overrides add to the value
+- **Text:** CLAUDE.md pipeline stage 6 says manual overrides are
+  `{ stat, value, note }`, "always shown as such". It doesn't say whether
+  `value` replaces the stat or adjusts it.
+- **Ruling:** `value` is added to the stat (a signed adjustment), so a breakdown
+  still sums to the stat's value. It appears as a `manual override` line with
+  the note. Clamps (AP ≤ apMax, AC ≥ 10, `clamp` effects) apply after it. A
+  clamp effect with a `min` (or `max`) replaces the default floor (or cap) of
+  that stat, e.g. AC's 10.
+- **Status:** Provisional (agent, #29)
+
 ## Editorial (no ruling needed, just don't trust these references)
 - p4 steps 7 and 23 say traits are on "pg. 20". They're on p25.
 - p5 says the perk list is on "page 27". It's on p32.

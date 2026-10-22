@@ -23,6 +23,8 @@ export type EffectAccumulator = {
   vulnerabilities: Defense[];
   notes: SheetNote[];
   countsAsRace: { race: RaceId; source: string }[];
+  /** `clamp` effects, applied last by the clamp stage. */
+  clamps: { stat: string; min?: number; max?: number; source: string }[];
   /** Free perks granted by `grantPerk` effects, with where each came from. */
   grants: { perkId: string; source: string }[];
 };
@@ -35,6 +37,7 @@ export const newAccumulator = (): EffectAccumulator => ({
   vulnerabilities: [],
   notes: [],
   countsAsRace: [],
+  clamps: [],
   grants: [],
 });
 
@@ -73,7 +76,7 @@ const addModifier = (acc: EffectAccumulator, stat: string, c: Contribution) => {
 
 /**
  * Applies effects to the accumulator. `source` is shown in breakdowns and notes.
- * `clamp` belongs to a later pipeline stage and is skipped here. `grantPerk`
+ * `clamp` is recorded in `acc.clamps` for the clamp stage. `grantPerk`
  * is recorded in `acc.grants` for the perk stage. Modifier values are
  * multiplied by `scale` (a perk's rank).
  * Problems (a bad expression) are reported, never thrown.
@@ -123,6 +126,7 @@ export function applyEffects(
         acc.grants.push({ perkId: e.perkId, source });
         break;
       case "clamp":
+        acc.clamps.push({ stat: e.stat, min: e.min, max: e.max, source });
         break;
     }
   }
