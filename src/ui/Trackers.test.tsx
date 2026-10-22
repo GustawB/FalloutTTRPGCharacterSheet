@@ -17,6 +17,7 @@ function Harness({ initial, full }: { initial: Character; full?: boolean }) {
   latest = c;
   return full ? <Sheet character={c} rules={rules} onChange={setC} /> : <Trackers character={c} rules={rules} onChange={setC} />;
 }
+const val = (id: string) => screen.getByTestId(id).querySelector("strong")!.textContent;
 const t = (name: string) => within(screen.getByTestId(`tracker-${name}`));
 
 describe("Trackers", () => {
@@ -25,9 +26,9 @@ describe("Trackers", () => {
     c.current.hp = 7;
     const d = computeSheet(c, rules).derived;
     render(<Harness initial={c} />);
-    expect(screen.getByTestId("tracker-HP-max").textContent).toBe(String(d.hp.value));
-    expect(screen.getByTestId("tracker-SP-max").textContent).toBe(String(d.sp.value));
-    expect(screen.getByTestId("tracker-AP-max").textContent).toBe(String(d.ap.value));
+    expect(val("tracker-HP-max")).toBe(String(d.hp.value));
+    expect(val("tracker-SP-max")).toBe(String(d.sp.value));
+    expect(val("tracker-AP-max")).toBe(String(d.ap.value));
     expect((t("HP").getByLabelText("Current HP") as HTMLInputElement).value).toBe("7");
   });
 
@@ -54,20 +55,20 @@ describe("Trackers", () => {
     const c = newCharacter("a");
     c.abilities.luck = 9;
     const { unmount } = render(<Harness initial={c} />);
-    expect(screen.getByTestId("tracker-Karma caps flipped-max").textContent).toBe("1");
+    expect(val("tracker-Karma caps flipped-max")).toBe("1");
     unmount();
     c.abilities.luck = 10;
     render(<Harness initial={c} />);
-    expect(screen.getByTestId("tracker-Karma caps flipped-max").textContent).toBe("2");
+    expect(val("tracker-Karma caps flipped-max")).toBe("2");
   });
 
   it("spending skill points updates spent/available and warns when over", () => {
     const c = newCharacter("a");
     const avail = computeSheet(c, rules).derived.skillPoints.value;
     render(<Harness initial={c} full />);
-    expect(screen.getByTestId("tracker-skillPoints").textContent).toContain(`spent 0 / available ${avail}`);
+    expect([val("skillPoints-spent"), val("skillPoints-available")]).toEqual(["0", String(avail)]);
     fireEvent.change(screen.getByLabelText("Points Guns"), { target: { value: String(avail) } });
-    expect(screen.getByTestId("tracker-skillPoints").textContent).toContain(`spent ${avail} / available ${avail}`);
+    expect([val("skillPoints-spent"), val("skillPoints-available")]).toEqual([String(avail), String(avail)]);
     expect(t("skillPoints").queryByRole("note")).toBeNull();
     fireEvent.change(screen.getByLabelText("Points Guns"), { target: { value: String(avail + 2) } });
     expect(t("skillPoints").getByRole("note").textContent).toMatch(/over by 2/);
@@ -77,11 +78,11 @@ describe("Trackers", () => {
     const c = newCharacter("a");
     render(<Harness initial={c} full />);
     const avail = computeSheet(c, rules).derived.perkPoints.value;
-    expect(screen.getByTestId("tracker-perkPoints").textContent).toContain(`spent 0 / available ${avail}`);
+    expect([val("perkPoints-spent"), val("perkPoints-available")]).toEqual(["0", String(avail)]);
     c.abilityIncreases = Array.from({ length: avail + 1 }, () => ({ ability: "strength" as const, level: 1 }));
     cleanup();
     render(<Harness initial={c} full />);
-    expect(screen.getByTestId("tracker-perkPoints").textContent).toContain(`spent ${avail + 1} / available ${avail}`);
+    expect([val("perkPoints-spent"), val("perkPoints-available")]).toEqual([String(avail + 1), String(avail)]);
     expect(t("perkPoints").getByRole("note").textContent).toMatch(/over by 1/);
   });
 });
