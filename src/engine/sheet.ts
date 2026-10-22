@@ -124,11 +124,16 @@ export function computeSheet(character: Character, rules: Rules, party?: PartyCo
       : {};
     derived[id] = finalizeStat(id, append(stat, acc.modifiers.get(id)), character, acc, defaults);
   }
+  const isKnown = (stat: string) =>
+    (stat in derived && derived[stat as keyof typeof derived] !== null) ||
+    ABILITIES.some((a) => stat === `ability.${a}`) || SKILLS.some((k) => stat === `skill.${k}`);
   for (const o of character.manualOverrides) {
-    const isKnown =
-      (o.stat in derived && derived[o.stat as keyof typeof derived] !== null) ||
-      ABILITIES.some((a) => o.stat === `ability.${a}`) || SKILLS.some((k) => o.stat === `skill.${k}`);
-    if (!isKnown) problems.push(`Manual override on ${o.stat}, which this character does not have`);
+    if (!isKnown(o.stat)) problems.push(`Manual override on ${o.stat}, which this character does not have`);
+  }
+  for (const t of character.temporaryModifiers) {
+    if (t.active && !isKnown(t.stat)) {
+      problems.push(`Temporary modifier "${t.label}" on ${t.stat}, which this character does not have`);
+    }
   }
 
   const baseSk = baseSkills(character, rules, abilities, problems);

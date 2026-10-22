@@ -88,3 +88,40 @@ describe("ability range", () => {
     expect(s.problems.some((p) => p.includes("strength"))).toBe(true);
   });
 });
+
+describe("temporary modifiers", () => {
+  const temp = (active: boolean, stat: "ac" | "ability.strength" | "skill.guns" = "ability.strength", value = -2) =>
+    ({ temporaryModifiers: [{ stat, value, label: "Stealth field", active }] });
+  it("changes the stat and shows up as temporary when active", () => {
+    const s = sheet(temp(true));
+    expect(s.abilities.strength.value).toBe(3);
+    expect(s.abilities.strength.breakdown.at(-1)).toMatchObject({ source: "temporary", value: -2 });
+    expect(s.derived.carryLoad.value).toBe(30);
+  });
+  it("does nothing when inactive", () => {
+    const s = sheet(temp(false));
+    expect(s.abilities.strength.value).toBe(5);
+    expect(s.abilities.strength.breakdown.some((c) => c.source === "temporary")).toBe(false);
+  });
+  it("is subject to clamps", () => {
+    const s = sheet({ ...temp(true), ...withPerks("strFloor"), ...withStr(6) });
+    expect(s.abilities.strength.value).toBe(6);
+    expect(s.abilities.strength.breakdown.at(-1)).toMatchObject({ source: "clamp", value: 2 });
+    expect(sheet(temp(true, "ac", -5)).derived.ac.value).toBe(10);
+  });
+  it("flags an active modifier on a stat the character lacks", () => {
+    expect(sheet(temp(true, "ability.strength")).problems).toEqual([]);
+    expect(sheet({ race: { id: "ghoul", variants: [] }, temporaryModifiers: [{ stat: "radiationDc", value: 1, label: "x", active: true }] }).problems)
+      .toHaveLength(1);
+  });
+  it("is added before manual overrides and ignores inactive ones on missing stats", () => {
+    const s = sheet({
+      temporaryModifiers: [{ stat: "ability.strength", value: -2, label: "t", active: true }],
+      manualOverrides: [{ stat: "ability.strength", value: 1, note: "m" }],
+    });
+    expect(s.abilities.strength.value).toBe(4);
+    expect(s.abilities.strength.breakdown.slice(-2).map((c) => c.source)).toEqual(["temporary", "manual override"]);
+    const off = sheet({ race: { id: "ghoul", variants: [] }, temporaryModifiers: [{ stat: "radiationDc", value: 1, label: "x", active: false }] });
+    expect(off.problems).toEqual([]);
+  });
+});
