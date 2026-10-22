@@ -7,7 +7,14 @@ import { skillAbilityFor, skillAbilityOptions } from "../engine/skills";
 import { ABILITIES, SKILLS } from "../engine/vocab";
 import { Breakdown } from "./Breakdown";
 import { Build } from "./Build";
+import { EntryTooltip } from "./EntryTooltip";
 import { Perks } from "./Perks";
+
+/** The perk or trait whose name is `source`, as a tooltip; undefined for other sources (races, backgrounds). */
+const entryNamed = (rules: Rules, source: string) => {
+  const entry = rules.perks.find((p) => p.name === source) ?? rules.traits.find((t) => t.name === source);
+  return entry && <EntryTooltip entry={entry} />;
+};
 
 const DERIVED_ROWS = [
   ["hp", "Hit points"], ["sp", "Stamina"], ["ap", "Action points"], ["apMax", "AP max"],
@@ -134,7 +141,7 @@ export function Sheet({
       {sheet.notes.length > 0 && (
         <section aria-label="Notes">
           <h2>Notes</h2>
-          <ul>{sheet.notes.map((n, i) => <li key={i}>{n.source}: {n.text}</li>)}</ul>
+          <ul>{sheet.notes.map((n, i) => <li key={i}>{entryNamed(rules, n.source) ?? n.source}: {n.text}</li>)}</ul>
         </section>
       )}
     </div>

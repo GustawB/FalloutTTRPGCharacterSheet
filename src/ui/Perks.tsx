@@ -1,4 +1,5 @@
 import type { Character } from "../engine/character";
+import { computeSheet } from "../engine/sheet";
 import { perkPointsLeft, withPerk } from "../engine/picker";
 import type { Rules } from "../engine/rules";
 import { ABILITIES } from "../engine/vocab";
@@ -12,7 +13,7 @@ const ABILITY_MAX = 10;
 export function Perks({ character, rules, onChange }: { character: Character; rules: Rules; onChange: (c: Character) => void }) {
   const left = perkPointsLeft(character, rules);
   const blocked = left <= 0 ? "No perk points left" : null;
-  const increased = (a: (typeof ABILITIES)[number]) => character.abilityIncreases.filter((i) => i.ability === a).length;
+  const abilities = computeSheet(character, rules).abilities;
   return (
     <section aria-label="Perks">
       <h2>Perks</h2>
@@ -34,7 +35,7 @@ export function Perks({ character, rules, onChange }: { character: Character; ru
         onPick={(id) => onChange(withPerk(character, id))} />
       <h3>Ability increases</h3>
       {ABILITIES.map((a) => {
-        const full = character.abilities[a] + increased(a) >= ABILITY_MAX;
+        const full = abilities[a].value >= ABILITY_MAX;
         return (
           <button key={a} type="button" disabled={left <= 0 || full}
             onClick={() => onChange({ ...character, abilityIncreases: [...character.abilityIncreases, { ability: a, level: character.level }] })}>
