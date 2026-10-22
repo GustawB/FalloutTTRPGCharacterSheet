@@ -1,8 +1,11 @@
-name: Claude Next Issue
+name: Claude Autopilot
 
-# Picks up the next unblocked roadmap issue whenever a PR is merged into main,
-# so the maintainer only reviews and merges. Only human merges trigger this, so
-# it can't loop: at most one new PR per merge.
+# Fully autonomous build loop: implement the next unblocked roadmap issue,
+# review it, merge it if checks pass, then dispatch itself again. It stops when
+# no work is left. Kill switch: set the repo variable CLAUDE_AUTOPILOT=off.
+#
+# Merges use GITHUB_TOKEN, so they don't fire `pull_request: closed`. The loop
+# continues via `workflow_dispatch`, which GITHUB_TOKEN is allowed to trigger.
 
 on:
   pull_request:
@@ -11,44 +14,136 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: claude-next
+  group: claude-autopilot
   cancel-in-progress: false
 
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+  id-token: write
+  actions: write
+
+env:
+  GH_TOKEN: ${{ github.token }}
+
 jobs:
-  next:
-    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.merged == true
+  build:
+    if: >-
+      vars.CLAUDE_AUTOPILOT != 'off' &&
+      (github.event_name == 'workflow_dispatch' || github.event.pull_request.merged == true)
     runs-on: ubuntu-latest
     timeout-minutes: 60
-    permissions:
-      contents: write
-      pull-requests: write
-      issues: write
-      id-token: write
-      actions: read
+    outputs:
+      pr: ${{ steps.pr.outputs.number }}
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
-          fetch-depth: 1
+          fetch-depth: 0
 
-      - name: Run Claude Code
+      - name: Ensure labels
+        run: |
+          gh label create autopilot --color 0e8a16 --description "PR opened by Claude Autopilot" --force
+          gh label create blocked --color b60205 --description "Autopilot gave up; skipped" --force
+
+      - name: Implement next issue
         uses: anthropics/claude-code-action@v1
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
-          additional_permissions: |
-            actions: read
           claude_args: |
-            --allowed-tools "Bash(gh issue:*),Bash(gh label:*),Bash(gh pr:*),Bash(python3:*),Bash(npm:*),Bash(npx:*),Bash(git:*)"
+            --allowed-tools "Bash(gh:*),Bash(git:*),Bash(python3:*),Bash(npm:*),Bash(npx:*),Bash(node:*)"
           prompt: |
-            You are the build agent for this repo. Read CLAUDE.md, ERRATA.md and
-            ROADMAP.md first and follow ROADMAP.md's "How to work" rules.
+            You are the autonomous build agent for this repo. No human will
+            answer questions, so make every decision yourself. Read CLAUDE.md,
+            ERRATA.md and ROADMAP.md first and follow ROADMAP.md's "How to work".
 
-            1. If an open PR already closes an issue labelled phase-*, stop:
-               work is already in review.
-            2. List open issues labelled phase-*. Pick the lowest-numbered one
-               whose "Depends on" issues are all closed. If none qualifies, stop.
-            3. Comment on the issue that you're starting, implement it on a new
-               branch, run the checks from ROADMAP.md, and open a PR whose body
-               says "Closes #<n>" and lists any "Rulings to confirm".
-            4. If you can't finish, push what you have, open a draft PR, and
-               explain what's left.
+            1. If an open PR labelled `autopilot` exists, do nothing: it gets
+               reviewed and merged after you.
+            2. List open issues labelled phase-* and NOT labelled `blocked`.
+               Pick the lowest-numbered one whose "Depends on" issues are all
+               closed. If none qualifies, do nothing.
+            3. Comment on the issue that you're starting. Implement it on a new
+               branch, run the checks from ROADMAP.md until they pass, and open
+               a PR labelled `autopilot` whose body says "Closes #<n>" and lists
+               any "Rulings to confirm".
+
+      - id: pr
+        name: Find the autopilot PR
+        run: echo "number=$(gh pr list --label autopilot --state open --json number -q '.[0].number // empty')" >> "$GITHUB_OUTPUT"
+
+  review:
+    needs: build
+    if: needs.build.outputs.pr != ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: gh pr checkout ${{ needs.build.outputs.pr }}
+
+      - name: Review and fix
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          claude_args: |
+            --allowed-tools "Bash(gh:*),Bash(git:*),Bash(python3:*),Bash(npm:*),Bash(npx:*),Bash(node:*)"
+          prompt: |
+            You are the reviewer for PR #${{ needs.build.outputs.pr }}, which is
+            checked out. Another agent wrote it, so don't trust it. Read
+            CLAUDE.md, ERRATA.md, ROADMAP.md, the linked issue and the full diff.
+
+            Check correctness against the rules, the issue's acceptance
+            criteria, test coverage, the breakdown rule for derived numbers,
+            and that docs match the code. Fix every problem you find yourself,
+            commit, and push to the PR branch. Don't wait for anyone. Then run
+            the checks from ROADMAP.md until they pass, and post a short review
+            comment on the PR listing what you changed.
+
+  merge:
+    needs: [build, review]
+    if: always() && needs.build.outputs.pr != '' && needs.build.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      PR: ${{ needs.build.outputs.pr }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: gh pr checkout "$PR"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Checks
+        id: checks
+        continue-on-error: true
+        run: |
+          python3 -m unittest discover -s scripts
+          python3 scripts/validate_rules.py --quiet
+          if [ -f package.json ]; then
+            npm ci
+            npm run typecheck --if-present
+            npm test --if-present
+          fi
+
+      - name: Merge
+        if: steps.checks.outcome == 'success'
+        run: gh pr merge "$PR" --squash --delete-branch
+
+      - name: Give up on this issue
+        if: steps.checks.outcome != 'success'
+        run: |
+          issue=$(gh pr view "$PR" --json closingIssuesReferences -q '.closingIssuesReferences[0].number // empty')
+          gh pr close "$PR" --delete-branch --comment "Autopilot: checks still fail after review. Closing; the issue is labelled blocked and skipped."
+          if [ -n "$issue" ]; then
+            gh issue edit "$issue" --add-label blocked
+            gh issue comment "$issue" --body "Autopilot couldn't get checks green (see the closed PR #$PR). Skipping. Remove the \`blocked\` label to retry."
+          fi
+
+      - name: Next iteration
+        run: gh workflow run claude-next.yml --ref main
