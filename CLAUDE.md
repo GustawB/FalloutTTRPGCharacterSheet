@@ -356,7 +356,7 @@ its requirements.
 - **Trait/perk picker:** a searchable combobox. Eligible entries come first.
   Ineligible ones are greyed out with the unmet requirement as the reason,
   and a toggle hides them.
-- **Tooltips:** anywhere a perk or trait name appears, show the full
+- **Tooltips:** (`EntryTooltip`; the picker is `EntryPicker`, fed by `pickerEntries` in `src/engine/picker.ts`) anywhere a perk or trait name appears, show the full
   description, requirements, repeat rule and page on hover.
 - **Breakdown on hover** for every derived number.
 - **Perk proposals:** eligible perks plus perks that are "1 SPECIAL point

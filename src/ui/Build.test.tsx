@@ -4,6 +4,7 @@ import { useState } from "react";
 import { afterEach, describe, expect, it } from "vitest";
 import { newCharacter, type Character } from "../engine/character";
 import { loadBundledRules } from "../engine/data";
+import { pickerEntries } from "../engine/picker";
 import { Sheet } from "./Sheet";
 
 const rules = loadBundledRules();
@@ -86,21 +87,21 @@ describe("Build", () => {
 
   it("cannot select more than 2 traits", () => {
     render(<Harness initial={newCharacter("a")} />);
-    const [a, b, c] = rules.traits.map((t) => t.id);
-    pick("Add trait", a!);
-    pick("Add trait", b!);
-    const add = screen.getByLabelText("Add trait") as HTMLSelectElement;
-    expect(add.disabled).toBe(true);
-    fireEvent.change(add, { target: { value: c! } });
+    const [a, b, c] = pickerEntries("trait", newCharacter("a"), rules).filter((e) => e.eligible).map((e) => e.entry.id);
+    const add = (id: string) => fireEvent.click(screen.getByRole("button", { name: `Pick ${rules.traitById.get(id)!.name}` }));
+    add(a!);
+    add(b!);
+    expect(screen.getByRole("button", { name: `Pick ${rules.traitById.get(c!)!.name}` }).hasAttribute("disabled")).toBe(true);
+    add(c!);
     expect(latest.traits.map((t) => t.id)).toEqual([a, b]);
     fireEvent.click(screen.getAllByRole("button", { name: /^Remove/ })[0]!);
-    expect(add.disabled).toBe(false);
+    expect(latest.traits.length).toBe(1);
   });
 
   it("toggles Wild Wasteland on a trait", () => {
     render(<Harness initial={newCharacter("a")} />);
     const ww = rules.traits.find((t) => t.wildWasteland?.length)!;
-    pick("Add trait", ww.id);
+    fireEvent.click(screen.getByRole("button", { name: `Pick ${ww.name}` }));
     fireEvent.click(screen.getByLabelText(/Wild Wasteland/));
     expect(latest.traits[0]!.wildWasteland).toBe(true);
   });

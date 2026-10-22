@@ -4,6 +4,8 @@ import type { Character } from "../engine/character";
 import type { Rules } from "../engine/rules";
 import { variantConflict } from "../engine/race";
 import { MAX_TRAITS } from "../engine/traits";
+import { EntryPicker } from "./EntryPicker";
+import { EntryTooltip } from "./EntryTooltip";
 
 const label = (id: string) => id.replace(/([A-Z])/g, " $1").replace(/^./, (c) => c.toUpperCase());
 
@@ -24,7 +26,6 @@ export function Build({ character, rules, onChange }: { character: Character; ru
 
   const setTrait = (i: number, patch: Partial<Character["traits"][number]>) =>
     onChange({ ...character, traits: character.traits.map((t, j) => (j === i ? { ...t, ...patch } : t)) });
-  const takenTraits = new Set(character.traits.map((t) => t.id));
 
   return (
     <section aria-label="Build">
@@ -151,7 +152,7 @@ export function Build({ character, rules, onChange }: { character: Character; ru
         const variants = trait?.wildWasteland ?? [];
         return (
           <div key={t.id}>
-            <strong>{trait?.name ?? t.id}</strong>{" "}
+            {trait ? <EntryTooltip entry={trait} /> : <strong>{t.id}</strong>}{" "}
             {variants.length > 0 && (
               <label>
                 <input type="checkbox" checked={t.wildWasteland} onChange={(e) => setTrait(i, { wildWasteland: e.target.checked })} />{" "}
@@ -172,17 +173,9 @@ export function Build({ character, rules, onChange }: { character: Character; ru
           </div>
         );
       })}
-      <label>
-        Add trait{" "}
-        <select
-          value=""
-          disabled={character.traits.length >= MAX_TRAITS}
-          onChange={(e) => e.target.value && character.traits.length < MAX_TRAITS && onChange({ ...character, traits: [...character.traits, { id: e.target.value, wildWasteland: false }] })}
-        >
-          <option value="">{character.traits.length >= MAX_TRAITS ? `Maximum of ${MAX_TRAITS} traits` : "Choose a trait…"}</option>
-          {rules.traits.filter((t) => !takenTraits.has(t.id)).map((t) => <option key={t.id} value={t.id}>{t.name}</option>)}
-        </select>
-      </label>
+      <EntryPicker kind="trait" label="Add trait" character={character} rules={rules}
+        blocked={character.traits.length >= MAX_TRAITS ? `Maximum of ${MAX_TRAITS} traits` : null}
+        onPick={(id) => character.traits.length < MAX_TRAITS && onChange({ ...character, traits: [...character.traits, { id, wildWasteland: false }] })} />
     </section>
   );
 }
