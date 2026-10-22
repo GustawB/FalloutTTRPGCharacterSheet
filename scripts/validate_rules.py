@@ -134,6 +134,15 @@ class Checker:
             if self.keys(where, eff, {"type", "stat", "value"}):
                 self.one_of(f"{where}.stat", eff["stat"], self.stats | {"skill.*"})
                 self.expr(f"{where}.value", eff["value"], allow_rank)
+        elif t == "abilityPoints":
+            if self.keys(where, eff, {"type", "choice", "points"}):
+                self.string(f"{where}.choice", eff["choice"])
+                self.expr(f"{where}.points", eff["points"], allow_rank)
+        elif t == "abilityTransfer":
+            if self.keys(where, eff, {"type", "choice", "max", "bonus"}):
+                self.string(f"{where}.choice", eff["choice"])
+                self.int_(f"{where}.max", eff["max"], 1)
+                self.int_(f"{where}.bonus", eff["bonus"], 0)
         elif t == "clamp":
             if self.keys(where, eff, {"type", "stat"}, {"min", "max"}):
                 self.one_of(f"{where}.stat", eff["stat"], self.stats)

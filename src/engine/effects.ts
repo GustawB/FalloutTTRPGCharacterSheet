@@ -116,6 +116,35 @@ export function applyEffects(
         for (const stat of targets) addModifier(acc, stat, { source, label, value: value * scale });
         break;
       }
+      case "abilityPoints": {
+        let points: number;
+        try {
+          points = evalExpr(e.points, ctx);
+        } catch (err) {
+          problems.push(`${source}: ${(err as Error).message}`);
+          break;
+        }
+        const all = ctx.picks?.[e.choice] ?? [];
+        const picks = all.filter((p) => (ABILITIES as readonly string[]).includes(p));
+        if (picks.length < all.length) problems.push(`${source}: choice "${e.choice}" has ${all.length - picks.length} pick(s) that are not abilities`);
+        if (picks.length > points) problems.push(`${source}: choice "${e.choice}" spends ${picks.length} point(s), only ${points} available`);
+        for (const p of picks.slice(0, Math.max(0, points))) {
+          addModifier(acc, `ability.${p}`, { source, label: `${label} (choice: ${p})`, value: 1 });
+        }
+        break;
+      }
+      case "abilityTransfer": {
+        const [from, to, amountText] = ctx.picks?.[e.choice] ?? [];
+        const amount = Number(amountText);
+        const valid = (a: string | undefined): a is string => a !== undefined && (ABILITIES as readonly string[]).includes(a);
+        if (!valid(from) || !valid(to) || from === to || !Number.isInteger(amount) || amount < 1 || amount > e.max) {
+          problems.push(`${source}: choice "${e.choice}" needs two different abilities and an amount from 1 to ${e.max}`);
+          break;
+        }
+        addModifier(acc, `ability.${from}`, { source, label: `${label} (choice: ${from})`, value: -amount * scale });
+        addModifier(acc, `ability.${to}`, { source, label: `${label} (choice: ${to})`, value: (amount + e.bonus) * scale });
+        break;
+      }
       case "rollMode":
         acc.rollModes.push({ roll: e.roll, mode: e.mode, source });
         break;

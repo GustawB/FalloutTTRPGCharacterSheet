@@ -197,6 +197,8 @@ type Expr =
 type Effect =
   | { type: "modifier"; stat: StatId | "skill.*"; value: Expr }   // skill.* = every skill
   | { type: "modifier"; choice: Choice; value: Expr }             // applies to each pick, see "Pick-time choices"
+  | { type: "abilityPoints"; choice: string; points: Expr }       // distribute ≤ points among abilities
+  | { type: "abilityTransfer"; choice: string; max: number; bonus: number }  // reduce one ability, raise another
   | { type: "clamp"; stat: StatId; min?: number; max?: number }  // e.g. STR "cannot be lower than 6"
   | { type: "rollMode"; roll: RollId; mode: "advantage" | "disadvantage" }
   | { type: "immunity" | "resistance" | "vulnerability";
@@ -217,6 +219,12 @@ abilities). Until `count` distinct valid picks are stored, the missing ones
 apply nothing and a `problem` says so. Each applied pick shows in the breakdown
 as `<name> (choice: <id>)`. Choices of other kinds (damage types, weapons,
 ability redistribution) are still `note`s.
+
+**Ability-point choices:** `abilityPoints` takes picks that are ability ids, +1
+each (repeats allowed), up to `points`; surplus picks are a `problem` and
+apply nothing, unspent points are fine. `abilityTransfer` takes
+`[from, to, amount]`: `from` −`amount` (1..`max`), `to` +`amount + bonus`; bad or
+missing picks are a `problem`. Both show per pick in the breakdown (E30).
 
 **grantPerk semantics:** the granted perk costs no perk point and ignores
 its requirements. It counts as owned (rank 1) for everything: its effects

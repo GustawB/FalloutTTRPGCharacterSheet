@@ -141,3 +141,39 @@ describe("pick-time choices", () => {
     expect(computeSheet(c(false, {}), real).problems.some((p) => p.includes("choice"))).toBe(true);
   });
 });
+
+describe("ability-point choices", () => {
+  const abilities = (c: Character) => computeSheet(c, real).abilities;
+  const base0 = abilities(base());
+
+  it("adaptive-reflexes distributes points as +1 each, up to 5 per rank", () => {
+    const pick = (picks: string[]) =>
+      base({ perks: [{ id: "adaptive-reflexes", level: 1 }], choices: { "adaptive-reflexes:points": picks } });
+    const s = computeSheet(pick(["strength", "strength", "luck"]), real);
+    expect(s.problems).toEqual([]);
+    expect(s.abilities.strength.value).toBe(base0.strength.value + 2);
+    expect(s.abilities.luck.value).toBe(base0.luck.value + 1);
+    expect(s.abilities.strength.breakdown).toContainEqual({
+      source: "Perk: Adaptive Reflexes", label: "Adaptive Reflexes (choice: strength)", value: 1,
+    });
+    expect(computeSheet(pick(["strength", "bogus"]), real).problems).toHaveLength(1);
+    const over = computeSheet(pick(Array(6).fill("luck")), real);
+    expect(over.problems).toHaveLength(1);
+    expect(over.abilities.luck.value).toBe(base0.luck.value + 5);
+  });
+
+  it("partition-reset moves points with a bonus", () => {
+    const c = (picks: string[]) =>
+      base({ race: { id: "robot", subtype: "mister-handy", variants: [] }, level: 10,
+             perks: [{ id: "partition-reset", level: 10 }], choices: { "partition-reset:swap": picks } });
+    const ok = computeSheet(c(["strength", "luck", "2"]), real);
+    expect(ok.problems.filter((p) => p.includes("Partition"))).toEqual([]);
+    expect(ok.abilities.strength.value).toBe(base0.strength.value - 2);
+    expect(ok.abilities.luck.value).toBe(base0.luck.value + 3);
+    for (const bad of [[], ["strength", "strength", "1"], ["strength", "luck", "4"], ["strength", "luck"]]) {
+      const s = computeSheet(c(bad), real);
+      expect(s.problems.filter((p) => p.includes("Partition"))).toHaveLength(1);
+      expect(s.abilities.luck.value).toBe(base0.luck.value);
+    }
+  });
+});
