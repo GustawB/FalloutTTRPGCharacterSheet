@@ -20,9 +20,12 @@ repeat them.
 - **Rulings: decide, record, flag.** If a rule is unclear, don't stop and
   wait. Pick the most plausible reading, add an ERRATA.md entry marked
   `**Status:** Provisional (agent, #<issue>)`, and list it in the PR under
-  "Rulings to confirm". The maintainer confirms or overrules in review.
+  "Rulings to confirm". Nobody confirms them during the build: the
+  maintainer audits `Provisional` entries afterwards.
 - **Don't edit `.github/workflows/`.** The action's token can't push workflow
-  changes. If one is needed, describe the change in the PR.
+  changes. If one is needed, describe the change in the PR. That includes npm
+  CI: the autopilot's merge job already runs `npm ci`, `typecheck` and `test`
+  once `package.json` exists.
 - **No PDF in CI.** Anything that needs the rulebook PDF (re-extraction,
   items) is marked *local only* below. Don't attempt it from an issue. For data
   fixes, follow the "no PDF" rule in CLAUDE.md: patch the override *and* the
@@ -45,12 +48,23 @@ Title: [P<phase>.<n>] <imperative summary>
 ```
 
 Labels: `data`, `engine`, `ui`, `infra`, `docs`, plus `phase-<n>`. Create any
-that are missing. **Don't put `@claude` in issue bodies.** Issues are picked
-up automatically: `.github/workflows/claude-next.yml` runs on every merge into
-`main` and implements the lowest-numbered open `phase-*` issue whose
-dependencies are closed, one at a time. Create issues in dependency order. The
-maintainer's review and merge is the gate. `@claude` comments still work for
-one-off requests and PR fixes.
+that are missing. **Don't put `@claude` in issue bodies.**
+
+### Autopilot
+
+There is no human in the loop. `.github/workflows/claude-next.yml` (Claude
+Autopilot) runs one iteration at a time:
+
+1. **build:** implements the lowest-numbered open `phase-*` issue that isn't
+   labelled `blocked` and whose dependencies are closed. It opens a PR
+   labelled `autopilot`.
+2. **review:** a separate agent reviews the PR adversarially and pushes fixes.
+3. **merge:** re-runs the checks. Green → squash-merge. Red → close the PR and
+   label the issue `blocked`, so it's skipped.
+
+Then it dispatches itself again, until nothing qualifies. So create issues in
+dependency order, and make acceptance criteria testable, because tests are
+the only gate. Kill switch: the repo variable `CLAUDE_AUTOPILOT=off`.
 
 ## Phases
 
