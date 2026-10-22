@@ -752,7 +752,12 @@
     "source": {
       "page": 35
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Ranged weapon attacks: spend 1 extra AP to add 1 to the attack roll, up to 3 extra AP (+3 total)."
+      }
+    ],
     "requirementText": "Perception 4",
     "category": "perception"
   },
@@ -771,7 +776,12 @@
     "source": {
       "page": 35
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "No disadvantage on attack rolls, ability checks or skill checks from low-light conditions. Second rank: night vision out to 100 feet."
+      }
+    ],
     "requirementText": "Perception 4",
     "repeat": {
       "text": "If you take this perk again, you’ve mutated or upgraded to adapt to the darkness. You have night vision out to 100 feet.",
@@ -794,9 +804,15 @@
     "source": {
       "page": 35
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "After staying within a 20 foot radius for at least 10 minutes, passive sense gains a bonus (rulebook text says your Perception score, but its parenthetical gives 12 + double your Perception modifier, i.e. a bonus equal to modPER; see ERRATA E17)."
+      }
+    ],
     "requirementText": "Perception 5",
-    "category": "perception"
+    "category": "perception",
+    "needsReview": true
   },
   {
     "id": "infiltrator",
@@ -813,7 +829,12 @@
     "source": {
       "page": 35
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Spend 3 AP and examine a lock or computer within 5 feet to learn its Breach DC. On a failed Breach check, flip a Karma Cap to succeed instead."
+      }
+    ],
     "requirementText": "Perception 5",
     "category": "perception"
   },
@@ -832,13 +853,19 @@
     "source": {
       "page": 35
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Energy weapon damage rolls get one additional damage die per rank. On a critical hit with an energy weapon, make one extra attack (max one per turn) or double the critical damage."
+      }
+    ],
     "requirementText": "Perception 5",
     "repeat": {
       "text": "You can take this perk up to a maximum of three times, each time increasing your energy weapon damage dice by one.",
       "max": 3
     },
-    "category": "perception"
+    "category": "perception",
+    "needsReview": true
   },
   {
     "id": "standoff",
@@ -855,7 +882,12 @@
     "source": {
       "page": 36
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "When you roll Combat Sequence, you and creatures within 30 feet gain a bonus equal to your Perception modifier. Affects one other creature, plus one more per additional rank."
+      }
+    ],
     "requirementText": "Perception 5",
     "repeat": {
       "text": "You can take this perk up to a maximum of three times, each time you take it increases the amount of creature you can affect by one.",
@@ -878,7 +910,12 @@
     "source": {
       "page": 36
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Stimpak, first aid kit or doctor's bag used on another creature heals an additional 2 HP per rank, or flip a Karma Cap to heal double."
+      }
+    ],
     "requirementText": "Perception 5",
     "repeat": {
       "text": "You can take this perk up to a maximum of three times, each time increasing the number healed by 2.",
@@ -901,13 +938,32 @@
     "source": {
       "page": 36
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "modifier",
+        "stat": "carryLoad",
+        "value": {
+          "op": "mul",
+          "args": [
+            10,
+            {
+              "ref": "rank"
+            }
+          ]
+        }
+      },
+      {
+        "type": "note",
+        "text": "Applies to each player character's carry load (+10 per rank). Items you carry with a load less than 3 count as load 1."
+      }
+    ],
     "requirementText": "Perception 6",
     "repeat": {
       "text": "You can take this perk up to a maximum of three times, each time increasing each player character’s carry load by 10.",
       "max": 3
     },
-    "category": "perception"
+    "category": "perception",
+    "needsReview": true
   },
   {
     "id": "splash-damage",
@@ -924,7 +980,12 @@
     "source": {
       "page": 36
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Area of effect of your attacks is increased by half; a second rank doubles the area."
+      }
+    ],
     "requirementText": "Perception 6",
     "repeat": {
       "text": "If you take this perk again, area of effect size is increased by half (effectively doubling your area of effect size).",
@@ -947,7 +1008,12 @@
     "source": {
       "page": 36
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Thrown, unplaced explosives: exclude a 5 foot radius from the effect, or reduce the area of effect radius by up to 5 feet."
+      }
+    ],
     "requirementText": "Perception 6",
     "category": "perception"
   },
@@ -966,7 +1032,12 @@
     "source": {
       "page": 36
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Energy weapon attacks can target up to three creatures in a line; a second rank raises it to six."
+      }
+    ],
     "requirementText": "Perception 7",
     "repeat": {
       "text": "You can take this perk up to a maximum of twice. If you take this perk again you can target up to six creatures in a line.",
@@ -989,7 +1060,12 @@
     "source": {
       "page": 36
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Damage dealt with an explosive is increased by one additional die per rank."
+      }
+    ],
     "requirementText": "Perception 7",
     "repeat": {
       "text": "You can take this perk up to a maximum of three times.",
@@ -1012,7 +1088,12 @@
     "source": {
       "page": 36
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Explosive damage to your stamina points is halved."
+      }
+    ],
     "requirementText": "Perception 8",
     "repeat": {
       "text": "You can take this perk up to a maximum of once.",
@@ -1035,7 +1116,12 @@
     "source": {
       "page": 36
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "When a laser, plasma or electricity weapon attack brings a creature to 0 HP, it can explode: each creature within 10 feet takes damage equal to the amount you dealt."
+      }
+    ],
     "requirementText": "Perception 8",
     "repeat": {
       "text": "You can take this perk up to a maximum of once.",
@@ -1058,7 +1144,12 @@
     "source": {
       "page": 36
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Two-handed ranged weapon attacks: spend 1 extra AP to add 2 to the attack roll, up to 3 extra AP (+6 total). A targeted head attack with a scoped rifle critically hits and kills a target that can't live without its head and has no power armor helmet."
+      }
+    ],
     "requirementText": "Perception 9",
     "category": "perception"
   },
@@ -1077,7 +1168,12 @@
     "source": {
       "page": 37
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Throwing an explosive costs 1 less AP (minimum 3). On a natural 20 on the Explosives check, the explosive detonates at the end of your turn and deals extra damage equal to double the damage dice."
+      }
+    ],
     "requirementText": "Perception 9",
     "category": "perception"
   },
@@ -1096,7 +1192,12 @@
     "source": {
       "page": 37
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "When another creature rests 1 hour, heal half of its total HP with a first aid kit, stimpak or doctor's bag; after 4 hours of rest, heal all of it. Second rank: heal all HP after 1 hour."
+      }
+    ],
     "requirementText": "Perception 10",
     "repeat": {
       "text": "If you take this perk again, when another creature rests for at least an hour, you can use a first aid kit, stimpak, or doctor’s bag to heal them of all their hit points.",
@@ -1119,7 +1220,12 @@
     "source": {
       "page": 37
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "When you roll Combat Sequence, swap the rolls of any number of willing creatures. Second rank: up to three additional creatures, which need not be willing."
+      }
+    ],
     "requirementText": "Perception 10",
     "repeat": {
       "text": "If you take this perk again, whenever you roll Combat Sequence, you can swap the combat sequence rolls of up to three additional creatures (they do not have to be willing).",
