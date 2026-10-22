@@ -49,6 +49,9 @@ export function CharacterList({
   return (
     <section>
       <h2>Characters</h2>
+      <p>
+        <a href="#/party">Party view</a>
+      </p>
       {error && <p role="alert">{error}</p>}
       {rows === null && !error && <p>Loading…</p>}
       {rows?.length === 0 && <p>No characters yet.</p>}
