@@ -4,6 +4,119 @@
       "text": "Once this perk has been taken, it cannot be taken again by any other player characters.",
       "max": 1,
       "scope": "party"
-    }
+    },
+    "effects": [
+      {
+        "type": "note",
+        "text": "On pick, you and each other PC immediately gain 1000 XP."
+      }
+    ]
+  },
+  "adaptive-reflexes": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "Pick-time choice: distribute 3 points (lost hand or foot) or 5 points (lost arm or leg) among ability scores, per missing limb. Foot or leg loss no longer limits movement to 20 feet."
+      }
+    ],
+    "needsReview": true
+  },
+  "blind-devil": {
+    "effects": [
+      {
+        "type": "modifier",
+        "stat": "passiveSense",
+        "value": 5
+      },
+      {
+        "type": "rollMode",
+        "roll": "combatSequence",
+        "mode": "advantage"
+      },
+      {
+        "type": "note",
+        "text": "You can \"see\" any target within 5 x your Perception score feet."
+      }
+    ]
+  },
+  "cowboy": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "Drawing a lever action rifle, cowboy repeater or revolver costs 1 AP. Attacks that hit a surprised creature with those weapons critically hit."
+      }
+    ]
+  },
+  "deadeye": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "+2 to attack and damage rolls with ranged weapons per rank; an extra +2 per rank on targeted attack rolls to the head with ranged weapons."
+      }
+    ]
+  },
+  "duelist": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "+2 to attack and damage rolls with unarmed or melee weapons per rank."
+      }
+    ]
+  },
+  "educated": {
+    "effects": [
+      {
+        "type": "modifier",
+        "stat": "skillPoints",
+        "value": {
+          "ref": "skillPointGrants"
+        }
+      },
+      {
+        "type": "note",
+        "text": "4 skill points per grant instead of 3, and retroactive points as if INT were 5. The modifier adds 1 per grant reached on top of the base 3 (requires INT 4 or lower)."
+      }
+    ],
+    "needsReview": true
+  },
+  "entomologist": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "Damage rolled against insects ignores their DT."
+      }
+    ]
+  },
+  "fight-the-power": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "Per rank: +1 DT against damage to HP from faction-affiliated creatures, and +1 damage to faction-affiliated creatures."
+      }
+    ]
+  },
+  "purifier": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "+3 per rank to unarmed or melee attack rolls against abominations."
+      }
+    ]
+  },
+  "sneering-imperialist": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "+3 per rank to damage from attack rolls against humanoids with no faction affiliation."
+      }
+    ]
+  },
+  "swift-learner": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "Whenever the GM awards XP, you and each other PC gain an additional 20% bonus."
+      }
+    ]
   }
 }

@@ -262,6 +262,24 @@ validator prints progress. `{ ref: "rank" }` is only allowed on perks.
 Anything an effect can't express exactly becomes a `note`, plus a
 `modifier` for the part that is computable.
 
+## Encoding conventions
+
+How perk, trait and feature effects are encoded. Every batch follows these.
+
+- Computable, unconditional numbers become `modifier`s.
+- Conditional, situational or reactive effects (Karma Cap flips, "when you
+  hit …", "against insects") and AP-cost changes become a `note`, plus a
+  `modifier` for the computable part if there is one. A purely situational
+  entry may be a lone `note`.
+- Per-rank scaling uses `{ ref: "rank" }`. Don't repeat the effect per rank.
+  A `note` for a repeatable perk states the per-rank amount.
+- Pick-time choices ("increase one skill by 5", "+3 points to any
+  abilities") become a `note` for now and are listed in the PR. The engine
+  will need a "choice" mechanism.
+- Set `needsReview: true` when you were less than sure.
+- New ids (stats, damage types, conditions, rolls) go in this file and in
+  `data/vocab.json` (which the validator reads) in the same PR.
+
 ## Character file (proposed; finalised by the first engine PR)
 
 ```ts

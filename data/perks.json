@@ -13,13 +13,19 @@
     "source": {
       "page": 32
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Pick-time choice: distribute 3 points (lost hand or foot) or 5 points (lost arm or leg) among ability scores, per missing limb. Foot or leg loss no longer limits movement to 20 feet."
+      }
+    ],
     "requirementText": "Missing Hand, Arm, Foot, or Leg",
     "repeat": {
       "text": "You can take this perk as many times as you have missing arms or legs.",
       "max": null
     },
-    "category": "general"
+    "category": "general",
+    "needsReview": true
   },
   {
     "id": "blind-devil",
@@ -35,7 +41,22 @@
     "source": {
       "page": 32
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "modifier",
+        "stat": "passiveSense",
+        "value": 5
+      },
+      {
+        "type": "rollMode",
+        "roll": "combatSequence",
+        "mode": "advantage"
+      },
+      {
+        "type": "note",
+        "text": "You can \"see\" any target within 5 x your Perception score feet."
+      }
+    ],
     "requirementText": "Permanently Blinded",
     "category": "general"
   },
@@ -48,7 +69,12 @@
     "source": {
       "page": 32
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Drawing a lever action rifle, cowboy repeater or revolver costs 1 AP. Attacks that hit a surprised creature with those weapons critically hit."
+      }
+    ],
     "category": "general"
   },
   {
@@ -60,7 +86,12 @@
     "source": {
       "page": 32
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "+2 to attack and damage rolls with ranged weapons per rank; an extra +2 per rank on targeted attack rolls to the head with ranged weapons."
+      }
+    ],
     "repeat": {
       "text": "You can take this perk up to a maximum of three times",
       "max": 3
@@ -76,7 +107,12 @@
     "source": {
       "page": 32
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "+2 to attack and damage rolls with unarmed or melee weapons per rank."
+      }
+    ],
     "repeat": {
       "text": "You can take this perk up to a maximum of three times",
       "max": 3
@@ -98,9 +134,22 @@
     "source": {
       "page": 32
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "modifier",
+        "stat": "skillPoints",
+        "value": {
+          "ref": "skillPointGrants"
+        }
+      },
+      {
+        "type": "note",
+        "text": "4 skill points per grant instead of 3, and retroactive points as if INT were 5. The modifier adds 1 per grant reached on top of the base 3 (requires INT 4 or lower)."
+      }
+    ],
     "requirementText": "Intelligence 4 or lower",
-    "category": "general"
+    "category": "general",
+    "needsReview": true
   },
   {
     "id": "entomologist",
@@ -111,7 +160,12 @@
     "source": {
       "page": 32
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Damage rolled against insects ignores their DT."
+      }
+    ],
     "category": "general"
   },
   {
@@ -123,7 +177,12 @@
     "source": {
       "page": 32
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Per rank: +1 DT against damage to HP from faction-affiliated creatures, and +1 damage to faction-affiliated creatures."
+      }
+    ],
     "repeat": {
       "text": "You can take this perk up to a maximum of twice.",
       "max": 2
@@ -144,7 +203,12 @@
     "source": {
       "page": 32
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "On pick, you and each other PC immediately gain 1000 XP."
+      }
+    ],
     "requirementText": "Level 3",
     "category": "general",
     "repeat": {
@@ -162,7 +226,12 @@
     "source": {
       "page": 33
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "+3 per rank to unarmed or melee attack rolls against abominations."
+      }
+    ],
     "repeat": {
       "text": "You can take this perk up to a maximum of three times.",
       "max": 3
@@ -178,7 +247,12 @@
     "source": {
       "page": 33
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "+3 per rank to damage from attack rolls against humanoids with no faction affiliation."
+      }
+    ],
     "repeat": {
       "text": "You can take this perk up to a maximum of twice.",
       "max": 2
@@ -194,7 +268,12 @@
     "source": {
       "page": 33
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Whenever the GM awards XP, you and each other PC gain an additional 20% bonus."
+      }
+    ],
     "repeat": {
       "text": "This perk can be taken up to a maximum of twice by one player character or once by a total of two player characters.",
       "max": 2,

@@ -118,6 +118,25 @@ negative values.
 - **Ruling:** pick 3 tools (one per arm), with duplicates allowed (e.g. three
   Grippers, which p11 mentions explicitly). Confirmed 2026-10-22.
 
+## Perks
+
+### E15. Educated adds one skill point per grant
+- **Text (perks, p32–50):** "You gain 4 skill points when you reach 5th, 9th, … level
+  instead of 3. Additionally, you gain a number of skill points equal to the
+  total available at your level as if your Intelligence ability score is equal
+  to 5."
+- **Ruling:** the perk requires INT ≤ 4 (modINT ≤ −1, 3 points per grant by
+  E4), so it is encoded as `skillPoints + skillPointGrants` (4 per grant). The
+  retroactive clause is covered because the total is computed from the current
+  level. If INT later rises to 5 or more, the engine should instead take
+  `max(base, 4)` per grant; revisit with the engine's skill-point stage.
+- **Status:** Provisional (agent, #8)
+
+### E16. Blind Devil: advantage on combat sequence
+- **Text (perks, p32–50):** "you have advantage on all your combat sequence rolls".
+- **Ruling:** encoded as `rollMode` on the `combatSequence` stat id.
+- **Status:** Provisional (agent, #8)
+
 ## Editorial (no ruling needed, just don't trust these references)
 - p4 steps 7 and 23 say traits are on "pg. 20". They're on p25.
 - p5 says the perk list is on "page 27". It's on p32.
