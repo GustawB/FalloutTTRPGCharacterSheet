@@ -23,6 +23,8 @@ export type EffectAccumulator = {
   vulnerabilities: Defense[];
   notes: SheetNote[];
   countsAsRace: { race: RaceId; source: string }[];
+  /** Free perks granted by `grantPerk` effects, with where each came from. */
+  grants: { perkId: string; source: string }[];
 };
 
 export const newAccumulator = (): EffectAccumulator => ({
@@ -33,6 +35,7 @@ export const newAccumulator = (): EffectAccumulator => ({
   vulnerabilities: [],
   notes: [],
   countsAsRace: [],
+  grants: [],
 });
 
 /** Evaluates an expression. Throws on a ref that has no value (e.g. `rank` outside perks). */
@@ -70,7 +73,9 @@ const addModifier = (acc: EffectAccumulator, stat: string, c: Contribution) => {
 
 /**
  * Applies effects to the accumulator. `source` is shown in breakdowns and notes.
- * `clamp` and `grantPerk` belong to later pipeline stages and are skipped here.
+ * `clamp` belongs to a later pipeline stage and is skipped here. `grantPerk`
+ * is recorded in `acc.grants` for the perk stage. Modifier values are
+ * multiplied by `scale` (a perk's rank).
  * Problems (a bad expression) are reported, never thrown.
  */
 export function applyEffects(
@@ -80,6 +85,7 @@ export function applyEffects(
   ctx: ExprContext,
   acc: EffectAccumulator,
   problems: string[],
+  scale = 1,
 ): void {
   for (const e of effects) {
     switch (e.type) {
@@ -92,7 +98,7 @@ export function applyEffects(
           break;
         }
         const targets = e.stat === "skill.*" ? SKILLS.map((s) => `skill.${s}`) : [e.stat];
-        for (const stat of targets) addModifier(acc, stat, { source, label, value });
+        for (const stat of targets) addModifier(acc, stat, { source, label, value: value * scale });
         break;
       }
       case "rollMode":
@@ -113,8 +119,10 @@ export function applyEffects(
       case "note":
         acc.notes.push({ source, text: e.text });
         break;
-      case "clamp":
       case "grantPerk":
+        acc.grants.push({ perkId: e.perkId, source });
+        break;
+      case "clamp":
         break;
     }
   }

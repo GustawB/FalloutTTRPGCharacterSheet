@@ -309,6 +309,8 @@ with `StatResult = { value, breakdown: Contribution[] }` for abilities, skills
 and derived stats, plus `party` (`null` stats when unknown), `notes`,
 `rollModes`, `resistances`/`immunities`/`vulnerabilities` and `problems`.
 `derived.radiationDc` is `null` when the race has no radiation DC.
+`sheet.perkPointsSpent` is perks picked plus ability increases; spending more than
+`derived.perkPoints`, or exceeding a perk's `repeat.max`, is a `problem`.
 `sheet.skillPointsSpent` is the sum of `skillPointAllocations`; spending more than
 `derived.skillPoints` is a `problem`, as is a background skill outside the
 background's list (custom backgrounds allow any 3).

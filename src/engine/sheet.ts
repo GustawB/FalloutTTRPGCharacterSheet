@@ -7,6 +7,7 @@ import { baseAbilities, baseDerived } from "./base";
 import { newAccumulator } from "./effects";
 import { applyRace } from "./race";
 import { applyTraits } from "./traits";
+import { applyPerks } from "./perks";
 import { baseSkills, skillPointsSpent } from "./skills";
 import { ABILITIES, SKILLS } from "./vocab";
 
@@ -42,6 +43,8 @@ export type Sheet = {
   };
   /** Skill points allocated; compare with `derived.skillPoints` (available). */
   skillPointsSpent: StatResult;
+  /** Perk points spent (perks picked plus ability increases); compare with `derived.perkPoints`. */
+  perkPointsSpent: StatResult;
   party: PartyStats;
   notes: SheetNote[];
   rollModes: RollModeResult[];
@@ -59,9 +62,14 @@ function append(stat: StatResult, extra: Breakdown | undefined): StatResult {
   return { value: breakdown.reduce((sum, c) => sum + c.value, 0), breakdown };
 }
 
+const total = (breakdown: Breakdown): StatResult => ({
+  value: breakdown.reduce((sum, c) => sum + c.value, 0),
+  breakdown,
+});
+
 /**
- * Pure: `(character, rules) → sheet`. Base, race, background and trait stages
- * exist so far; perks land later.
+ * Pure: `(character, rules) → sheet`. Base, race, background, trait and perk
+ * stages exist so far.
  */
 export function computeSheet(character: Character, rules: Rules): Sheet {
   const problems: string[] = [];
@@ -76,6 +84,8 @@ export function computeSheet(character: Character, rules: Rules): Sheet {
   applyRace(character, rules, ctx, acc, problems);
   // Stage 4: traits (Wild Wasteland variants replace the base effects).
   applyTraits(character, rules, ctx, acc, problems);
+  // Stage 5: perks (ranks, grantPerk, repeat limits).
+  const perkStage = applyPerks(character, rules, ctx, acc, problems);
 
   // Ability effects come first: everything derived reads the final scores.
   const abilities = Object.fromEntries(
@@ -97,10 +107,19 @@ export function computeSheet(character: Character, rules: Rules): Sheet {
     problems.push(`Spent ${spent} skill points but only ${derived.skillPoints.value} are available`);
   }
 
+  if (perkStage.spent > derived.perkPoints.value) {
+    problems.push(`Spent ${perkStage.spent} perk points but only ${derived.perkPoints.value} are available`);
+  }
+  const increases = perkStage.spent - perkStage.picks;
+
   return {
     abilities,
     skills,
     skillPointsSpent: { value: spent, breakdown: [{ source: "skill points", label: "Allocated to skills", value: spent }] },
+    perkPointsSpent: total([
+      { source: "perks", label: "Perks picked", value: perkStage.picks },
+      { source: "perks", label: "Ability increases", value: increases },
+    ]),
     derived,
     party: { partyNerve: null, groupSneak: null },
     notes: acc.notes,
