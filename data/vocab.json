@@ -1,0 +1,33 @@
+{
+  "abilities": ["strength", "perception", "endurance", "charisma", "intelligence", "agility", "luck"],
+  "skills": ["barter", "breach", "crafting", "energyWeapons", "explosives", "guns", "intimidation",
+             "medicine", "meleeWeapons", "science", "sneak", "speech", "survival", "unarmed"],
+  "skillAbilities": {
+    "barter": { "default": "charisma" },
+    "breach": { "default": "perception", "alternates": ["intelligence"] },
+    "crafting": { "default": "intelligence" },
+    "energyWeapons": { "default": "perception" },
+    "explosives": { "default": "perception" },
+    "guns": { "default": "agility" },
+    "intimidation": { "default": "strength", "alternates": ["charisma"] },
+    "medicine": { "default": "perception", "alternates": ["intelligence"] },
+    "meleeWeapons": { "default": "strength" },
+    "science": { "default": "intelligence" },
+    "sneak": { "default": "agility" },
+    "speech": { "default": "charisma" },
+    "survival": { "default": "endurance" },
+    "unarmed": { "default": "strength" }
+  },
+  "derived": ["hp", "sp", "ap", "apMax", "ac", "dt", "healingRate", "carryLoad", "passiveSense",
+              "combatSequence", "radiationDc", "karmaCaps", "deathSave", "skillPoints", "perkPoints",
+              "partyNerve", "groupSneak"],
+  "races": ["human", "ghoul", "synth", "robot", "superMutant"],
+  "damageTypes": ["acid", "ballistic", "bludgeoning", "cold", "electricity", "explosive", "fire",
+                  "impact", "laser", "piercing", "plasma", "poison", "radiation", "slashing"],
+  "conditions": ["blinded", "bleeding", "burning", "buzzed", "corroded", "dazed", "deafened",
+                 "dehydration", "drunk", "dying", "encumbered", "exhaustion", "fatigue", "frightened",
+                 "grappled", "hammered", "heavilyEncumbered", "hunger", "invisible", "limb", "poisoned",
+                 "prone", "radiation", "restrained", "shadowed", "shock", "slowed", "stunned",
+                 "unconscious", "wasted"],
+  "rolls": ["attack", "damage", "abilityCheck", "radiation", "addiction"]
+}

@@ -17,12 +17,15 @@ FILES = ("perks", "traits", "backgrounds", "races")
 class ValidateRulesTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
+        cls.vocab = json.loads((DATA / "vocab.json").read_text())
         cls.real = {f: json.loads((DATA / f"{f}.json").read_text()) for f in FILES}
 
-    def run_on(self, data: dict, overrides: dict | None = None) -> subprocess.CompletedProcess:
+    def run_on(self, data: dict, overrides: dict | None = None,
+               vocab: dict | None = None) -> subprocess.CompletedProcess:
         with tempfile.TemporaryDirectory() as tmp:
             for f, entries in data.items():
                 (Path(tmp) / f"{f}.json").write_text(json.dumps(entries))
+            (Path(tmp) / "vocab.json").write_text(json.dumps(vocab or self.vocab))
             if overrides:
                 (Path(tmp) / "overrides").mkdir()
                 for f, o in overrides.items():
@@ -39,6 +42,47 @@ class ValidateRulesTest(unittest.TestCase):
 
     def perk(self, data: dict, id_: str = "adaptive-reflexes") -> dict:
         return next(p for p in data["perks"] if p["id"] == id_)
+
+    def test_vocab_contents(self) -> None:
+        v = self.vocab
+        self.assertEqual(v["abilities"], ["strength", "perception", "endurance", "charisma",
+                                          "intelligence", "agility", "luck"])
+        self.assertEqual(len(v["skills"]), 14)
+        self.assertEqual(set(v["skills"]), {
+            "barter", "breach", "crafting", "energyWeapons", "explosives", "guns", "intimidation",
+            "medicine", "meleeWeapons", "science", "sneak", "speech", "survival", "unarmed"})
+        self.assertEqual(set(v["skillAbilities"]), set(v["skills"]))
+        for skill, a in v["skillAbilities"].items():
+            for ability in [a["default"], *a.get("alternates", [])]:
+                self.assertIn(ability, v["abilities"], skill)
+        self.assertEqual({k: x["alternates"] for k, x in v["skillAbilities"].items()
+                          if "alternates" in x},
+                         {"breach": ["intelligence"], "intimidation": ["charisma"],
+                          "medicine": ["intelligence"]})
+        self.assertEqual(v["races"], ["human", "ghoul", "synth", "robot", "superMutant"])
+        self.assertEqual(len(v["damageTypes"]), 14)  # p132's 13 plus radiation
+        self.assertIn("radiation", v["damageTypes"])
+        self.assertEqual(len(v["conditions"]), 30)
+        self.assertEqual(set(v["derived"]), {
+            "hp", "sp", "ap", "apMax", "ac", "dt", "healingRate", "carryLoad", "passiveSense",
+            "combatSequence", "radiationDc", "karmaCaps", "deathSave", "skillPoints",
+            "perkPoints", "partyNerve", "groupSneak"})
+        self.assertEqual(v["rolls"], ["attack", "damage", "abilityCheck", "radiation", "addiction"])
+
+    def test_no_hardcoded_vocab_constants(self) -> None:
+        src = SCRIPT.read_text()
+        for name in ("ABILITIES", "SKILLS", "DERIVED", "RACES", "DAMAGE_TYPES", "CONDITIONS"):
+            self.assertNotRegex(src, rf"^{name}\s*=", name)
+
+    def test_id_missing_from_vocab_is_rejected(self) -> None:
+        # Real data uses 'sneak'; drop it from vocab.json and the validator must object.
+        vocab = copy.deepcopy(self.vocab)
+        vocab["skills"].remove("sneak")
+        data = copy.deepcopy(self.real)
+        self.perk(data)["effects"].append({"type": "modifier", "stat": "skill.sneak", "value": 1})
+        result = self.run_on(data, vocab=vocab)
+        self.assertEqual(result.returncode, 1, result.stderr)
+        self.assertIn("'skill.sneak'", result.stderr)
 
     def test_real_data_passes(self) -> None:
         result = self.run_on(self.real)
