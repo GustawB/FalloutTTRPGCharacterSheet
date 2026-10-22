@@ -246,3 +246,11 @@ negative values.
 - Several "see page 1" references (dying condition, tracking, crafting tables)
   are placeholder links.
 - Educated says "Use the Level Up table on page #". The table is on p6.
+
+### E29. Party-scoped perk limits: the later party member loses the pick
+- **Text (p32):** Here and Now "cannot be taken again by any other player
+  characters" once taken.
+- **Ruling:** "first" is the member's position in the list given to
+  `computePartySheet`. The later member's pick is a `problem` and gives no
+  effects. Only picks (not grants) at or below the member's level count.
+- **Status:** Provisional (agent, #32)

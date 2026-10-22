@@ -35,6 +35,14 @@ export type PartyStats = {
   groupSneak: StatResult | null;
 };
 
+/** What a character needs to know about the rest of its party. */
+export type PartyContext = {
+  partyNerve: StatResult;
+  groupSneak: StatResult;
+  /** Perk ids picked by party members listed before this character. */
+  taken: ReadonlySet<string>;
+};
+
 export type Sheet = {
   abilities: Record<AbilityId, StatResult>;
   skills: Record<SkillId, StatResult>;
@@ -77,7 +85,7 @@ const total = (breakdown: Breakdown): StatResult => ({
  * Pure: `(character, rules) → sheet`. Base, race, background, trait, perk,
  * manual override and clamp stages.
  */
-export function computeSheet(character: Character, rules: Rules): Sheet {
+export function computeSheet(character: Character, rules: Rules, party?: PartyContext): Sheet {
   const problems: string[] = [];
   const base = baseAbilities(character);
   const acc = newAccumulator();
@@ -91,7 +99,7 @@ export function computeSheet(character: Character, rules: Rules): Sheet {
   // Stage 4: traits (Wild Wasteland variants replace the base effects).
   applyTraits(character, rules, ctx, acc, problems);
   // Stage 5: perks (ranks, grantPerk, repeat limits).
-  const perkStage = applyPerks(character, rules, ctx, acc, problems);
+  const perkStage = applyPerks(character, rules, ctx, acc, problems, party?.taken);
 
   // Ability effects, overrides and clamps come first: everything derived reads the final scores.
   const abilities = Object.fromEntries(
@@ -104,7 +112,7 @@ export function computeSheet(character: Character, rules: Rules): Sheet {
       return [a, stat];
     }),
   ) as Record<AbilityId, StatResult>;
-  const derived = baseDerived(character, rules, abilities, problems);
+  const derived = baseDerived(character, rules, abilities, problems, party?.partyNerve);
   // apMax first: the AP cap reads its final value. AC never drops below 10 unless a clamp effect says so.
   const order = ["apMax", ...Object.keys(derived).filter((k) => k !== "apMax")] as (keyof typeof derived)[];
   for (const id of order) {
@@ -151,7 +159,7 @@ export function computeSheet(character: Character, rules: Rules): Sheet {
     ]),
     derived,
     perkRanks: Object.fromEntries(perkStage.ranks),
-    party: { partyNerve: null, groupSneak: null },
+    party: party ? { partyNerve: party.partyNerve, groupSneak: party.groupSneak } : { partyNerve: null, groupSneak: null },
     notes: acc.notes,
     rollModes: acc.rollModes,
     resistances: acc.resistances,

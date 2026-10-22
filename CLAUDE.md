@@ -105,6 +105,13 @@ changed.
 
 `luckSkillBonus = modLCK < 0 ? −1 : floor(modLCK / 2)` (E7).
 
+`computePartySheet(characters, rules)` (`src/engine/party.ts`) computes party stats
+for a list of PCs, adds `partyNerve` to each member's `deathSave`, and flags a
+`repeat.scope: "party"` perk picked by a later member (list order) as a
+`problem` on that member's sheet (the pick gives no effects). `computeSheet`
+takes an optional `PartyContext`; without it party stats stay `null` and
+`deathSave` has no Party Nerve line.
+
 Party stats need every PC in the party. The app has a "party" view that loads
 all saved characters, and a single sheet shows party stats only when its party
 is known. Otherwise it shows them as "—".
