@@ -26,6 +26,8 @@ export type Character = {
   skillAbility: Partial<Record<"breach" | "intimidation" | "medicine", AbilityId>>;
   /** Which ability the death save uses; absent = whichever modifier is higher. */
   deathSaveAbility?: "luck" | "endurance";
+  /** Toggleable timed effects, added after perks and before manual overrides and clamps. Inactive ones apply nothing. */
+  temporaryModifiers: { stat: StatId; value: number; label: string; active: boolean }[];
   manualOverrides: { stat: StatId; value: number; note: string }[];
   current: {
     hp: number; sp: number; ap: number; rads: number;
@@ -53,6 +55,7 @@ export function newCharacter(id: string, name = ""): Character {
     choices: {},
     skillPointAllocations: {},
     skillAbility: {},
+    temporaryModifiers: [],
     manualOverrides: [],
     current: {
       hp: 0, sp: 0, ap: 0, rads: 0,

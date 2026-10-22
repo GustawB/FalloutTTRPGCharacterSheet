@@ -69,7 +69,11 @@ breakdowns:
    trait's effects when toggled
 5. **perks** – effects × rank for repeatable perks, unless an effect says
    otherwise
-6. **manual overrides** – user-entered `{ stat, value, note }`, always shown
+6. **temporary modifiers** – `Character.temporaryModifiers`, toggleable
+   `{ stat, value, label, active }`; only active ones are added, shown with
+   source `temporary`. Like overrides, an active one on a stat the character
+   lacks is a `problem`
+7. **manual overrides** – user-entered `{ stat, value, note }`, always shown
    as such. `value` is *added* to the stat (E28). An override on a stat the
    character lacks is a `problem`.
 
@@ -319,6 +323,7 @@ type Character = {
   skillPointAllocations: Partial<Record<SkillId, number>>;
   skillAbility: Partial<Record<"breach" | "intimidation" | "medicine", AbilityId>>;
   deathSaveAbility?: "luck" | "endurance";   // absent = the higher modifier
+  temporaryModifiers: { stat: StatId; value: number; label: string; active: boolean }[];
   manualOverrides: { stat: StatId; value: number; note: string }[];
   current: { hp: number; sp: number; ap: number; rads: number;
              hunger: number; dehydration: number; exhaustion: number;

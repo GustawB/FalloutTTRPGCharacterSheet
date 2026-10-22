@@ -11,7 +11,8 @@ const total = (breakdown: Breakdown): StatResult => ({
 export type Bounds = { min?: { value: number; why: string }; max?: { value: number; why: string } };
 
 /**
- * Pipeline stage 6 plus clamps. Appends the manual overrides for `key`
+ * Pipeline stages 6 (temporary modifiers), 7 (manual overrides) and clamps.
+ * Appends the active temporary modifiers for `key` (source "temporary"), then the manual overrides for `key`
  * (added to the value, always sourced "manual override" with the user's note),
  * then applies the default bounds and `clamp` effects last. Each clamp that
  * changes the value appears in the breakdown as its own line.
@@ -26,6 +27,11 @@ export function finalizeStat(
   const breakdown = [...stat.breakdown];
   const sum = () => breakdown.reduce((s, c) => s + c.value, 0);
 
+  for (const t of character.temporaryModifiers) {
+    if (t.active && t.stat === key) {
+      breakdown.push({ source: "temporary", label: `Temporary: ${t.label}`, value: t.value });
+    }
+  }
   for (const o of character.manualOverrides) {
     if (o.stat === key) {
       breakdown.push({ source: "manual override", label: o.note ? `Manual: ${o.note}` : "Manual", value: o.value });
