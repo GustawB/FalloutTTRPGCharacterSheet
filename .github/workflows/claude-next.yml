@@ -1,0 +1,54 @@
+name: Claude Next Issue
+
+# Picks up the next unblocked roadmap issue whenever a PR is merged into main,
+# so the maintainer only reviews and merges. Only human merges trigger this, so
+# it can't loop: at most one new PR per merge.
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: claude-next
+  cancel-in-progress: false
+
+jobs:
+  next:
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+      id-token: write
+      actions: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Run Claude Code
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          additional_permissions: |
+            actions: read
+          claude_args: |
+            --allowed-tools "Bash(gh issue:*),Bash(gh label:*),Bash(gh pr:*),Bash(python3:*),Bash(npm:*),Bash(npx:*),Bash(git:*)"
+          prompt: |
+            You are the build agent for this repo. Read CLAUDE.md, ERRATA.md and
+            ROADMAP.md first and follow ROADMAP.md's "How to work" rules.
+
+            1. If an open PR already closes an issue labelled phase-*, stop:
+               work is already in review.
+            2. List open issues labelled phase-*. Pick the lowest-numbered one
+               whose "Depends on" issues are all closed. If none qualifies, stop.
+            3. Comment on the issue that you're starting, implement it on a new
+               branch, run the checks from ROADMAP.md, and open a PR whose body
+               says "Closes #<n>" and lists any "Rulings to confirm".
+            4. If you can't finish, push what you have, open a draft PR, and
+               explain what's left.
