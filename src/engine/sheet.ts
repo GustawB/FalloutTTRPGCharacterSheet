@@ -6,6 +6,7 @@ import type {
 import { baseAbilities, baseDerived } from "./base";
 import { newAccumulator } from "./effects";
 import { applyRace } from "./race";
+import { applyTraits } from "./traits";
 import { baseSkills, skillPointsSpent } from "./skills";
 import { ABILITIES, SKILLS } from "./vocab";
 
@@ -59,8 +60,8 @@ function append(stat: StatResult, extra: Breakdown | undefined): StatResult {
 }
 
 /**
- * Pure: `(character, rules) → sheet`. Base, race and background stages exist
- * so far; traits and perks land later.
+ * Pure: `(character, rules) → sheet`. Base, race, background and trait stages
+ * exist so far; perks land later.
  */
 export function computeSheet(character: Character, rules: Rules): Sheet {
   const problems: string[] = [];
@@ -73,6 +74,8 @@ export function computeSheet(character: Character, rules: Rules): Sheet {
     abilities: Object.fromEntries(ABILITIES.map((a) => [a, base[a].value])) as Record<AbilityId, number>,
   };
   applyRace(character, rules, ctx, acc, problems);
+  // Stage 4: traits (Wild Wasteland variants replace the base effects).
+  applyTraits(character, rules, ctx, acc, problems);
 
   // Ability effects come first: everything derived reads the final scores.
   const abilities = Object.fromEntries(

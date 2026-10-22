@@ -14,8 +14,8 @@ export type Character = {
   /** After creation-point allocation, before perk-point increases. */
   abilities: Record<AbilityId, number>;
   background: { id: string; skills: [SkillId, SkillId, SkillId] };
-  /** 0–2 entries. */
-  traits: { id: string; wildWasteland: boolean }[];
+  /** 0–2 entries. `variant` indexes `Trait.wildWasteland` (default 0). */
+  traits: { id: string; wildWasteland: boolean; variant?: number }[];
   /** One row per pick; repeats are multiple rows. */
   perks: { id: string; level: number }[];
   /** Perk points spent on +1 to an ability. */

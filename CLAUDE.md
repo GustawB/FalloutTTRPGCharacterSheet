@@ -289,7 +289,7 @@ type Character = {
   level: number; xp: number;
   abilities: Record<AbilityId, number>;       // after creation-point allocation (pre-perk)
   background: { id: string; skills: [SkillId, SkillId, SkillId] };
-  traits: { id: string; wildWasteland: boolean }[];   // 0–2
+  traits: { id: string; wildWasteland: boolean; variant?: number }[];   // 0–2; variant = index into Trait.wildWasteland (default 0)
   perks: { id: string; level: number }[];             // one row per pick; repeats = multiple rows
   abilityIncreases: { ability: AbilityId; level: number }[];  // perk points spent on +1
   skillPointAllocations: Partial<Record<SkillId, number>>;
