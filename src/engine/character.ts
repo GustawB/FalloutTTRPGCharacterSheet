@@ -1,8 +1,10 @@
-import type { AbilityId, RaceId, SkillId, StatId } from "./vocab";
+import type { AbilityId, DamageType, RaceId, SkillId, StatId } from "./vocab";
 import { ABILITIES } from "./vocab";
 
 /** Bump when the saved shape changes incompatibly; the save server checks it. */
 export const CHARACTER_SCHEMA_VERSION = 1;
+
+export type Weapon = { name: string; damage: string; damageType?: DamageType; notes?: string };
 
 export type Character = {
   id: string;
@@ -35,6 +37,8 @@ export type Character = {
     karmaCapsFlipped: number;
   };
   inventory: { name: string; qty: number; notes?: string }[];
+  /** Free-text weapons, no cap. `damage` is free text such as "2d6+3". */
+  weapons: Weapon[];
   partyId?: string;
 };
 
@@ -63,5 +67,11 @@ export function newCharacter(id: string, name = ""): Character {
       karmaCapsFlipped: 0,
     },
     inventory: [],
+    weapons: [],
   };
+}
+
+/** Fills fields that files saved by older versions lack (`weapons` → `[]`). */
+export function normalizeCharacter(raw: Character): Character {
+  return { ...raw, weapons: raw.weapons ?? [] };
 }

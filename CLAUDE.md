@@ -329,6 +329,7 @@ type Character = {
              hunger: number; dehydration: number; exhaustion: number;
              karmaCapsFlipped: number };
   inventory: { name: string; qty: number; notes?: string }[];
+  weapons: { name: string; damage: string; damageType?: DamageType; notes?: string }[];  // no cap; absent in older files → [] (normalizeCharacter)
   partyId?: string;
 };
 ```

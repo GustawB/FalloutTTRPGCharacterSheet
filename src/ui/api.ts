@@ -1,4 +1,4 @@
-import type { Character } from "../engine/character";
+import { normalizeCharacter, type Character } from "../engine/character";
 
 export type CharacterSummary = { id: string; name: string; race?: string; level: number };
 
@@ -27,7 +27,7 @@ export function createHttpApi(base = "/api/characters"): Api {
       return (await check(await fetch(base))).json() as Promise<CharacterSummary[]>;
     },
     async get(id) {
-      return (await check(await fetch(`${base}/${encodeURIComponent(id)}`))).json() as Promise<Character>;
+      return normalizeCharacter((await (await check(await fetch(`${base}/${encodeURIComponent(id)}`))).json()) as Character);
     },
     async put(character) {
       await check(

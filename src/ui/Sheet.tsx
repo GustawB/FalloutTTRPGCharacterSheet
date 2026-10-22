@@ -7,6 +7,7 @@ import { skillAbilityFor, skillAbilityOptions } from "../engine/skills";
 import { ABILITIES, SKILLS } from "../engine/vocab";
 import { Breakdown } from "./Breakdown";
 import { Build } from "./Build";
+import { Inventory } from "./Inventory";
 import { EntryTooltip } from "./EntryTooltip";
 import { Perks } from "./Perks";
 import { Trackers } from "./Trackers";
@@ -59,6 +60,7 @@ export function Sheet({
       <Trackers character={character} rules={rules} onChange={onChange} />
       <Build character={character} rules={rules} onChange={onChange} />
       <Perks character={character} rules={rules} onChange={onChange} />
+      <Inventory character={character} onChange={onChange} />
 
       {sheet.problems.length > 0 && (
         <section aria-label="Problems" role="alert">
