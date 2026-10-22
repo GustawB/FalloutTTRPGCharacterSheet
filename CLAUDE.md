@@ -349,6 +349,13 @@ its requirements.
 - **Perk proposals:** eligible perks plus perks that are "1 SPECIAL point
   away", ranked by fit with the character's highest abilities and invested
   skills. Deterministic.
+  `proposePerks(character, rules)` (`src/engine/proposals.ts`) returns
+  `{ perkId, eligible, missing?, score, reasons[] }[]`. "Near" = the only unmet
+  requirement is one ability minimum short by exactly 1. Perks at max rank
+  (picked or granted) are skipped. Score = category ability score + score of each
+  ability with a requirement minimum + (allocated + 2 if background) points in
+  each skill the perk modifies by name − 5 if near. Order: eligible first, then
+  score desc, then perk id.
 - Track current vs max HP/SP/AP, skill and perk points (spent vs available),
   karma caps, inventory and an unlimited number of weapons. The paper sheet
   lacks all of these.
