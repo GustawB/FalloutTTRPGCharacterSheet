@@ -59,10 +59,6 @@ export function baseDerived(
   const perLevel = (a: AbilityId, name: string) =>
     line(`${name} modifier ${m(a)} × ${k + 1}`, m(a) * (k + 1));
 
-  const apRaw = 10 + m("agility");
-  const apBreakdown = [line("10", 10), mods("agility", "AGI")];
-  if (apRaw > AP_MAX) apBreakdown.push(line(`Clamp to apMax (${AP_MAX})`, AP_MAX - apRaw, "clamp"));
-
   const race = rules.raceById.get(c.race.id);
   if (!race) problems.push(`Unknown race: ${c.race.id}`);
   const radiationDc = race?.hasRadiationDc
@@ -87,9 +83,10 @@ export function baseDerived(
   return {
     hp: total([levelBase, perLevel("endurance", "END")]),
     sp: total([levelBase, perLevel("agility", "AGI")]),
-    ap: total(apBreakdown),
+    // Capped at apMax by the clamp stage.
+    ap: total([line("10", 10), mods("agility", "AGI")]),
     apMax: total([line(`${AP_MAX}`, AP_MAX)]),
-    // Armor and effects arrive in later stages; AC floors at 10.
+    // Armor and effects arrive in later stages; the clamp stage floors AC at 10.
     ac: total([line("10", 10)]),
     dt: total([line("0", 0)]),
     healingRate: total([
