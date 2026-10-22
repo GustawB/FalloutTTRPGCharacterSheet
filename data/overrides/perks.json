@@ -1117,5 +1117,200 @@
         "text": "At the start of each of your turns, while HP is at least half, regain SP equal to half your level (rounded down)."
       }
     ]
+  },
+  "scrounger": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "When rolling a Luck check for loot, roll two checks and take either result."
+      }
+    ]
+  },
+  "big-crits": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "A natural 20 on a weapon attack roll is a critical hit and the crit's damage is doubled."
+      }
+    ]
+  },
+  "bloody-mess": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "+2 damage on all weapon damage. When you reduce a creature to 0 HP with a weapon attack, roll a DC 20 Luck check; on success the body bursts and creatures of your choice within 30 feet become frightened for 1 round."
+      }
+    ],
+    "needsReview": true
+  },
+  "fortune-finder": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "On pick, gain 800 caps. Whenever you find bottle caps, you find extra caps equal to your Luck modifier."
+      }
+    ]
+  },
+  "make-it-double": {
+    "effects": [
+      {
+        "type": "modifier",
+        "stat": "karmaCaps",
+        "value": 1
+      }
+    ]
+  },
+  "it-just-works": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "When a weapon or armor would gain a level of decay, roll a Luck check (DC 12 + its current decay levels); on a success the new level applies no negative effects. Second rank: on a success it gains no level of decay at all."
+      }
+    ]
+  },
+  "on-a-fluke": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "When you or a party member misses an attack or fails an ability or skill check, flip a Karma Cap to turn it into a success (GM's discretion)."
+      }
+    ]
+  },
+  "grim-reapers-sprint": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "Bringing a creature to 0 HP with a targeted attack gives 8 AP; a second one the same turn gives 6 AP; a third gives 4 AP."
+      }
+    ]
+  },
+  "spray-and-pray": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "Advantage on blind attack rolls, and the blind attack DC is halved."
+      }
+    ]
+  },
+  "randomizer": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "When crafting or repairing, reduce one random required material by your Luck modifier (minimum 1) and replace it with a random junk material. When consuming a food, drink or chem, you may roll a DC 15 Luck check to add one random property to it."
+      }
+    ]
+  },
+  "critical-banker": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "On a critical hit you may deal no extra damage to gain a temporary karma cap (max one, lost when flipped); using it on an attack roll makes that attack an automatic critical hit."
+      }
+    ]
+  },
+  "ricochet": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "When another creature rolls a 1 on an attack roll against you, the attack hits them instead. When a creature within 30 feet makes an attack roll, flip a Karma Cap to turn the result into a 1."
+      }
+    ]
+  },
+  "mysterious-stranger": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "Pick-time choice: a number from 2 to 19. When an attack roll of yours equals it, roll a d20 (optionally + Luck modifier): 1-9 target takes ballistic damage equal to 2 x level; 10-20 3 x level; 21-24 the attack is a critical hit (max dice if already one); 25+ the target dies."
+      }
+    ],
+    "needsReview": true
+  },
+  "dumb-luck": {
+    "effects": [
+      {
+        "type": "modifier",
+        "stat": "skill.*",
+        "value": {
+          "op": "add",
+          "args": [
+            {
+              "op": "sub",
+              "args": [
+                {
+                  "ref": "mod.luck"
+                },
+                {
+                  "op": "floor",
+                  "args": [
+                    {
+                      "op": "div",
+                      "args": [
+                        {
+                          "ref": "mod.luck"
+                        },
+                        2
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "op": "mul",
+              "args": [
+                2,
+                {
+                  "op": "sub",
+                  "args": [
+                    {
+                      "ref": "rank"
+                    },
+                    1
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "type": "note",
+        "text": "The full Luck modifier is added to skill modifiers instead of half (the modifier adds the missing half); the second rank adds a further +2 to all skills. When flipping a Karma Cap for advantage, add double your Luck modifier to the total (second rank: to the second roll when rerolling)."
+      }
+    ],
+    "needsReview": true
+  },
+  "been-there-done-that": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "Luck ability checks by you or an ally within 100 feet get +3. Whenever you gain XP, gain a bonus of (5d10 + the sum of every PC's Luck score) halved."
+      }
+    ]
+  },
+  "fortune-favors-the-bold": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "When a PC flips a Karma Cap for advantage or a reroll, physically flick it; if it lands face up it stays face up. Each other PC with this perk lets you flip an additional time if yours lands face down."
+      }
+    ],
+    "needsReview": true
+  },
+  "outrageous-advantage": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "Whenever you or any PC rolls with advantage on an ability check, skill check or attack roll, roll three d20s and take the highest; each other PC with this perk adds one more d20."
+      }
+    ]
+  },
+  "never-tell-me-the-odds": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "When a creature hits you with an attack, flip a Karma Cap to turn it into a miss. While you have the dying condition, all attacks against you automatically miss."
+      }
+    ]
   }
 }
