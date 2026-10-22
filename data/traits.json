@@ -15,15 +15,39 @@
     "source": {
       "page": 25
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "modifier",
+        "stat": "healingRate",
+        "value": 2
+      },
+      {
+        "type": "modifier",
+        "stat": "radiationDc",
+        "value": 3
+      }
+    ],
     "requirementText": "Human",
     "wildWasteland": [
       {
         "description": "Your Healing Rate is increased by a number equal to your level. However, whenever you succeed a radiation check, your Radiation DC increases by 4 instead of 2.",
-        "effects": []
+        "effects": [
+          {
+            "type": "modifier",
+            "stat": "healingRate",
+            "value": {
+              "ref": "level"
+            }
+          },
+          {
+            "type": "note",
+            "text": "Whenever you succeed a radiation check, your Radiation DC increases by 4 instead of 2."
+          }
+        ]
       }
     ],
-    "category": "race"
+    "category": "race",
+    "needsReview": true
   },
   {
     "id": "cheaper-parts",
@@ -41,12 +65,41 @@
     "source": {
       "page": 26
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "modifier",
+        "stat": "healingRate",
+        "value": 2
+      },
+      {
+        "type": "modifier",
+        "stat": "ac",
+        "value": -1
+      }
+    ],
     "requirementText": "Robot",
     "wildWasteland": [
       {
         "description": "Your Healing Rate is increased by a number equal to your level. However, your AC is decreased by 1, and your DT is decreased by 2.",
-        "effects": []
+        "effects": [
+          {
+            "type": "modifier",
+            "stat": "healingRate",
+            "value": {
+              "ref": "level"
+            }
+          },
+          {
+            "type": "modifier",
+            "stat": "ac",
+            "value": -1
+          },
+          {
+            "type": "modifier",
+            "stat": "dt",
+            "value": -2
+          }
+        ]
       }
     ],
     "category": "race"
@@ -67,15 +120,45 @@
     "source": {
       "page": 26
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "modifier",
+        "stat": "healingRate",
+        "value": 2
+      },
+      {
+        "type": "modifier",
+        "stat": "combatSequence",
+        "value": -2
+      }
+    ],
     "requirementText": "Synth",
     "wildWasteland": [
       {
         "description": "Your Healing Rate is increased by a number equal to your level. However, your Combat Sequence rolls have disadvantage and are decreased by 4.",
-        "effects": []
+        "effects": [
+          {
+            "type": "modifier",
+            "stat": "healingRate",
+            "value": {
+              "ref": "level"
+            }
+          },
+          {
+            "type": "modifier",
+            "stat": "combatSequence",
+            "value": -4
+          },
+          {
+            "type": "rollMode",
+            "roll": "combatSequence",
+            "mode": "disadvantage"
+          }
+        ]
       }
     ],
-    "category": "race"
+    "category": "race",
+    "needsReview": true
   },
   {
     "id": "activated-actinides",
@@ -93,15 +176,49 @@
     "source": {
       "page": 26
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "resistance",
+        "to": "damage.radiation"
+      },
+      {
+        "type": "rollMode",
+        "roll": "radiation",
+        "mode": "advantage"
+      },
+      {
+        "type": "note",
+        "text": "You can heal the full amount from stimpaks and can use healing powder. You are no longer immune to radiation and its effects: this cancels the Ghoul Evolution immunities, which the engine cannot remove, so ignore them."
+      }
+    ],
     "requirementText": "Ghoul",
     "wildWasteland": [
       {
         "description": "In addition to the traits effects; Your Healing Rate is increased by 2. However, whenever you succeed a Radiation check, your Radiation DC increases by 4 instead of 2.",
-        "effects": []
+        "effects": [
+          {
+            "type": "modifier",
+            "stat": "healingRate",
+            "value": 2
+          },
+          {
+            "type": "resistance",
+            "to": "damage.radiation"
+          },
+          {
+            "type": "rollMode",
+            "roll": "radiation",
+            "mode": "advantage"
+          },
+          {
+            "type": "note",
+            "text": "Also has the base trait's effects (full stimpak healing, healing powder, no radiation immunity). Whenever you succeed a Radiation check, your Radiation DC increases by 4 instead of 2."
+          }
+        ]
       }
     ],
-    "category": "race"
+    "category": "race",
+    "needsReview": true
   },
   {
     "id": "onerous-regeneration",
@@ -119,12 +236,43 @@
     "source": {
       "page": 26
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "modifier",
+        "stat": "healingRate",
+        "value": 2
+      },
+      {
+        "type": "modifier",
+        "stat": "sp",
+        "value": {
+          "op": "mul",
+          "args": [
+            -1,
+            {
+              "ref": "level"
+            }
+          ]
+        }
+      }
+    ],
     "requirementText": "Super Mutant",
     "wildWasteland": [
       {
         "description": "Your Healing Rate is increased by a number equal to your level. However, whenever you regain stamina points from sleep, you regain half as much.",
-        "effects": []
+        "effects": [
+          {
+            "type": "modifier",
+            "stat": "healingRate",
+            "value": {
+              "ref": "level"
+            }
+          },
+          {
+            "type": "note",
+            "text": "Whenever you regain stamina points from sleep, you regain half as much."
+          }
+        ]
       }
     ],
     "category": "race"
@@ -138,11 +286,21 @@
     "source": {
       "page": 26
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "After an 8+ hour rest, roll a d20 (Sight roll) and record it. Once per rest, replace any attack roll, skill check or ability check made by you or a creature you can see with it. You start each game with one Karma Cap flipped."
+      }
+    ],
     "wildWasteland": [
       {
         "description": "You may make two Sight rolls after you rest for at least 8 hours, but your Karma Caps no longer flips if you ever roll a 1 on a d20.",
-        "effects": []
+        "effects": [
+          {
+            "type": "note",
+            "text": "Two Sight rolls after an 8+ hour rest. Your Karma Caps no longer flip if you roll a 1 on a d20."
+          }
+        ]
       }
     ],
     "category": "background"
@@ -156,11 +314,21 @@
     "source": {
       "page": 26
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "When you restore hit points to another creature with a first aid kit, stimpak, perk or ability, restore 1 additional point. Damage you deal to another creature is reduced by 1 (minimum 1)."
+      }
+    ],
     "wildWasteland": [
       {
         "description": "In addition to the traits effects; whenever you spend 6 AP to roll a Medicine check on a dying creature to return them to 1 hit point, the check automatically succeeds. However, if you ever damage another creature from an attack you made against them, and this damage kills them; you lose all abilities from this trait.",
-        "effects": []
+        "effects": [
+          {
+            "type": "note",
+            "text": "Also has the base trait's effects. Spending 6 AP on a Medicine check to return a dying creature to 1 hit point automatically succeeds. If an attack of yours kills a creature, you lose all abilities from this trait."
+          }
+        ]
       }
     ],
     "category": "background"
@@ -174,11 +342,21 @@
     "source": {
       "page": 26
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "In a settlement, town, outpost or other populated location: advantage on Sneak and Breach checks, disadvantage on Speech and Barter checks."
+      }
+    ],
     "wildWasteland": [
       {
         "description": "You've got friends in low places, and your reputation goes even further. In addition to the traits effects; you can use your Discount ability three times before resting. However, there’s a price on your head for over 500 caps. Work with your GM on how you’ve obtained this bounty, who would be after you, and how this will affect your character.",
-        "effects": []
+        "effects": [
+          {
+            "type": "note",
+            "text": "Also has the base trait's effects. You can use Discount three times before resting. There is a bounty of over 500 caps on you (work out the details with your GM)."
+          }
+        ]
       }
     ],
     "category": "background"
@@ -192,11 +370,21 @@
     "source": {
       "page": 26
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "When you rest with other player characters, you and each other resting PC gain temporary stamina points equal to your Charisma score. Group stealth is reduced by 2 while you are within 500 feet of them."
+      }
+    ],
     "wildWasteland": [
       {
         "description": "The amount of temporary stamina points gained is instead double your Charisma score, but your party’s group stealth is reduced by 5 so long as you’re in the party.",
-        "effects": []
+        "effects": [
+          {
+            "type": "note",
+            "text": "Temporary stamina points gained are double your Charisma score. Party group stealth is reduced by 5 while you are in the party."
+          }
+        ]
       }
     ],
     "category": "background"
@@ -210,14 +398,73 @@
     "source": {
       "page": 27
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Advantage on Endurance checks to resist a level of Hunger or Fatigue. You fall unconscious at 8 levels of Hunger or Fatigue instead of 10."
+      }
+    ],
     "wildWasteland": [
       {
         "description": "In addition to the traits effects; whenever your hit points or stamina points increase from leveling up, you gain an extra point in each. However, the negative effects from levels of Hunger and Fatigue are doubled.",
-        "effects": []
+        "effects": [
+          {
+            "type": "modifier",
+            "stat": "hp",
+            "value": {
+              "op": "floor",
+              "args": [
+                {
+                  "op": "div",
+                  "args": [
+                    {
+                      "op": "sub",
+                      "args": [
+                        {
+                          "ref": "level"
+                        },
+                        1
+                      ]
+                    },
+                    2
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "type": "modifier",
+            "stat": "sp",
+            "value": {
+              "op": "floor",
+              "args": [
+                {
+                  "op": "div",
+                  "args": [
+                    {
+                      "op": "sub",
+                      "args": [
+                        {
+                          "ref": "level"
+                        },
+                        1
+                      ]
+                    },
+                    2
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "type": "note",
+            "text": "Also has the base trait's effects. The negative effects from levels of Hunger and Fatigue are doubled. The +1 HP and +1 SP apply at each level-up that grants HP/SP (levels 3, 5, ...)."
+          }
+        ]
       }
     ],
-    "category": "background"
+    "category": "background",
+    "needsReview": true
   },
   {
     "id": "vigilant-watch",
@@ -228,11 +475,36 @@
     "source": {
       "page": 27
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "modifier",
+        "stat": "combatSequence",
+        "value": -1
+      },
+      {
+        "type": "note",
+        "text": "In combat sequence, your placement goes before the previous non-player creature in the turn order, regardless of their roll."
+      }
+    ],
     "wildWasteland": [
       {
         "description": "Your turn placement is automatically put before the previous two creatures in the turn order that aren’t player characters, regardless of their roll. However you have disadvantage on Combat Sequence rolls and your bonus is reduced by 2.",
-        "effects": []
+        "effects": [
+          {
+            "type": "modifier",
+            "stat": "combatSequence",
+            "value": -2
+          },
+          {
+            "type": "rollMode",
+            "roll": "combatSequence",
+            "mode": "disadvantage"
+          },
+          {
+            "type": "note",
+            "text": "In combat sequence, your placement goes before the previous two non-player creatures in the turn order, regardless of their roll."
+          }
+        ]
       }
     ],
     "category": "background"
@@ -246,14 +518,50 @@
     "source": {
       "page": 27
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "modifier",
+        "stat": "perkPoints",
+        "value": -1
+      },
+      {
+        "type": "note",
+        "text": "Pick-time choice: instead of a 1st-level perk, five different skill modifiers of your choice increase by 2."
+      }
+    ],
     "wildWasteland": [
       {
         "description": "Instead of gaining a perk at 1st and 2nd level, all your Skill modifiers increase by 2.",
-        "effects": []
+        "effects": [
+          {
+            "type": "modifier",
+            "stat": "perkPoints",
+            "value": {
+              "op": "mul",
+              "args": [
+                -1,
+                {
+                  "op": "min",
+                  "args": [
+                    {
+                      "ref": "level"
+                    },
+                    2
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "type": "modifier",
+            "stat": "skill.*",
+            "value": 2
+          }
+        ]
       }
     ],
-    "category": "background"
+    "category": "background",
+    "needsReview": true
   },
   {
     "id": "persistent",
@@ -264,11 +572,21 @@
     "source": {
       "page": 27
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "When you flip a Karma Cap to re-roll a Skill check, make the roll at advantage. Your Karma Caps no longer flip back over when you roll a 1 on a d20."
+      }
+    ],
     "wildWasteland": [
       {
         "description": "Whenever you flip a Karma Cap to reroll an Ability check, Skill check, or attack roll; you make the roll at advantage. However, you start each game with one of your Karma Caps flipped.",
-        "effects": []
+        "effects": [
+          {
+            "type": "note",
+            "text": "When you flip a Karma Cap to reroll an Ability check, Skill check or attack roll, make the roll at advantage. You start each game with one Karma Cap flipped."
+          }
+        ]
       }
     ],
     "category": "background"
@@ -282,14 +600,79 @@
     "source": {
       "page": 27
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "modifier",
+        "stat": "sp",
+        "value": {
+          "op": "floor",
+          "args": [
+            {
+              "op": "div",
+              "args": [
+                {
+                  "op": "sub",
+                  "args": [
+                    {
+                      "ref": "level"
+                    },
+                    1
+                  ]
+                },
+                2
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "type": "note",
+        "text": "You gain an additional level of fatigue when you fail an Endurance check to resist sleep. The +1 SP applies at each level-up that grants SP (levels 3, 5, ...)."
+      }
+    ],
     "wildWasteland": [
       {
         "description": "In addition to the traits effects; whenever your stamina points increase from leveling up, you gain another extra point (for a total of 2). However, whenever you regain stamina points from any rest that isn’t sleep, you regain a fourth of your maximum stamina points instead of half.",
-        "effects": []
+        "effects": [
+          {
+            "type": "modifier",
+            "stat": "sp",
+            "value": {
+              "op": "mul",
+              "args": [
+                2,
+                {
+                  "op": "floor",
+                  "args": [
+                    {
+                      "op": "div",
+                      "args": [
+                        {
+                          "op": "sub",
+                          "args": [
+                            {
+                              "ref": "level"
+                            },
+                            1
+                          ]
+                        },
+                        2
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "type": "note",
+            "text": "Also has the base trait's effects (total of 2 extra SP per level-up). When you regain stamina from any rest that isn't sleep, you regain a fourth of your maximum stamina instead of half."
+          }
+        ]
       }
     ],
-    "category": "background"
+    "category": "background",
+    "needsReview": true
   },
   {
     "id": "proper-maintenance",
@@ -300,11 +683,21 @@
     "source": {
       "page": 27
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "The first level of decay your weapons and armor gain is ignored while they have no decay. They become non-functional at 8 levels of decay instead of 10."
+      }
+    ],
     "wildWasteland": [
       {
         "description": "Whenever any of your weapons or armor have one or two levels of decay, the negative effects are ignored. However, your weapons and armor become non-functional when they have 5 levels of decay instead of 10.",
-        "effects": []
+        "effects": [
+          {
+            "type": "note",
+            "text": "The negative effects of one or two levels of decay on your weapons and armor are ignored. They become non-functional at 5 levels of decay instead of 10."
+          }
+        ]
       }
     ],
     "category": "background"
@@ -318,11 +711,21 @@
     "source": {
       "page": 27
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "The percentage of caps off from Discount is tripled. All items cost 10% more for you."
+      }
+    ],
     "wildWasteland": [
       {
         "description": "Whenever you use your Discount ability, the percentage of caps off the selected item is sextupled. However, all items cost 25% more for you.",
-        "effects": []
+        "effects": [
+          {
+            "type": "note",
+            "text": "The percentage of caps off from Discount is sextupled. All items cost 25% more for you."
+          }
+        ]
       }
     ],
     "category": "background"
@@ -336,11 +739,21 @@
     "source": {
       "page": 27
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "When you roll combat sequence, each other player character gains advantage on their first attack roll on their turn. If a PC critically hits on that first attack, they deal no extra damage."
+      }
+    ],
     "wildWasteland": [
       {
         "description": "Whenever you roll combat sequence, each other player character gains advantage on their first two attack rolls they make on their turn. However, if any player characters critically hit on their first or second attack after rolling combat sequence, they do not deal any extra damage.",
-        "effects": []
+        "effects": [
+          {
+            "type": "note",
+            "text": "When you roll combat sequence, each other player character gains advantage on their first two attack rolls on their turn. Critical hits on those attacks deal no extra damage."
+          }
+        ]
       }
     ],
     "category": "background"
@@ -354,11 +767,21 @@
     "source": {
       "page": 27
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Travelling at a fast pace, you and other PCs move 2 additional miles per hour. At the end of each hour, each of you must succeed a DC 12 Endurance check or gain a level of fatigue; the DC increases by 2 for each PC who succeeds."
+      }
+    ],
     "wildWasteland": [
       {
         "description": "When you and any other player characters travel at a fast pace, you can move an additional five miles per hour. However, if you do, at the end of each hour you and each other player character gains a level of fatigue.",
-        "effects": []
+        "effects": [
+          {
+            "type": "note",
+            "text": "Travelling at a fast pace, you and other PCs move 5 additional miles per hour. At the end of each hour, each of you gains a level of fatigue."
+          }
+        ]
       }
     ],
     "category": "background"
@@ -372,14 +795,25 @@
     "source": {
       "page": 28
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "A Death Save of 19 or 20 returns you to 1 hit point. You do not add your Luck or Endurance to death saves (the deathSave stat does not model this removal; ignore its LCK/END part)."
+      }
+    ],
     "wildWasteland": [
       {
         "description": "If you roll an 18, 19, or 20 on your Death Save, you return to 1 hit point. However you do not add your Luck, Endurance, or Party Nerve to your death saves.",
-        "effects": []
+        "effects": [
+          {
+            "type": "note",
+            "text": "A Death Save of 18, 19 or 20 returns you to 1 hit point. You do not add Luck, Endurance or Party Nerve to death saves (the deathSave stat does not model this removal)."
+          }
+        ]
       }
     ],
-    "category": "background"
+    "category": "background",
+    "needsReview": true
   },
   {
     "id": "field-research",
@@ -390,11 +824,21 @@
     "source": {
       "page": 28
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Attack damage against a creature type you have fought before is increased by 2; against a type you haven't fought before it is decreased by 2."
+      }
+    ],
     "wildWasteland": [
       {
         "description": "In addition to this trait's effects; whenever you rest and gain a bonus of XP after having rolled combat sequence with a creature you have never rolled combat sequence with before, you gain an additional 20% bonus of XP. However, whenever you rest and gain XP after having rolled combat sequence with a creature you have rolled combat sequence with before, you gain 10% less XP.",
-        "effects": []
+        "effects": [
+          {
+            "type": "note",
+            "text": "Also has the base trait's effects. After combat sequence with a creature you've never rolled with before, you gain an additional 20% bonus XP on rest; for creatures you have rolled with before, you gain 10% less XP."
+          }
+        ]
       }
     ],
     "category": "background"
@@ -408,11 +852,21 @@
     "source": {
       "page": 28
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "When you roll combat sequence, you may learn the HP, SP, AP, AC or DT total of any hostile creature; each creature you choose this for can re-roll its combat sequence."
+      }
+    ],
     "wildWasteland": [
       {
         "description": "Whenever you roll combat sequence, you can choose to know two of the following: Hit point, stamina point, action point, AC, or DT total of any other creatures that are hostile towards you in the combat sequence. However, for each creature you choose with this ability, they can re-roll their combat sequence twice to potentially score a higher result.",
-        "effects": []
+        "effects": [
+          {
+            "type": "note",
+            "text": "When you roll combat sequence, you may learn two of HP, SP, AP, AC or DT of any hostile creature; each such creature can re-roll its combat sequence twice."
+          }
+        ]
       }
     ],
     "category": "background"
@@ -426,11 +880,21 @@
     "source": {
       "page": 28
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "A 1 on an attack roll no longer automatically misses; add your modifier. Your Karma Cap does not flip back over when you roll a 1 on attack rolls."
+      }
+    ],
     "wildWasteland": [
       {
         "description": "Whenever you make an attack roll and the result is a 1, you can re-roll the attack roll but must take the new result. However, whenever you make an attack roll and the result is a critical hit, you automatically hit but deal no extra damage.",
-        "effects": []
+        "effects": [
+          {
+            "type": "note",
+            "text": "When an attack roll is a 1, you can re-roll but must take the new result. A critical hit automatically hits but deals no extra damage."
+          }
+        ]
       }
     ],
     "category": "background"
@@ -444,11 +908,21 @@
     "source": {
       "page": 28
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "When you sell an item you can use Discount to gain a bonus of caps equal to double your Barter skill modifier. You sell all items for 10% less than their listed value."
+      }
+    ],
     "wildWasteland": [
       {
         "description": "Whenever you sell an item, you can use your Discount ability to gain a bonus of caps equal to triple your Barter skill modifier. However, you sell all your items for 20% less than their listed value.",
-        "effects": []
+        "effects": [
+          {
+            "type": "note",
+            "text": "When you sell an item you can use Discount to gain a bonus of caps equal to triple your Barter skill modifier. You sell all items for 20% less than their listed value."
+          }
+        ]
       }
     ],
     "category": "background"
@@ -462,14 +936,36 @@
     "source": {
       "page": 28
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "modifier",
+        "stat": "perkPoints",
+        "value": 1
+      },
+      {
+        "type": "note",
+        "text": "Pick-time choice: five different skill modifiers of your choice decrease by 2."
+      }
+    ],
     "wildWasteland": [
       {
         "description": "You gain two extra perks at 1st level. However, all your skill modifiers decrease by 2.",
-        "effects": []
+        "effects": [
+          {
+            "type": "modifier",
+            "stat": "perkPoints",
+            "value": 2
+          },
+          {
+            "type": "modifier",
+            "stat": "skill.*",
+            "value": -2
+          }
+        ]
       }
     ],
-    "category": "background"
+    "category": "background",
+    "needsReview": true
   },
   {
     "id": "adventurers-instinct",
@@ -480,11 +976,21 @@
     "source": {
       "page": 28
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Advantage on Luck ability checks to search for items. Weapons and armor you find have one additional level of decay."
+      }
+    ],
     "wildWasteland": [
       {
         "description": "Whenever you roll a Luck ability check to search for items, you have advantage and you can re-roll one of the dice. However, any weapons or armor you find have two additional levels of decay.",
-        "effects": []
+        "effects": [
+          {
+            "type": "note",
+            "text": "Advantage on Luck ability checks to search for items, and you can re-roll one of the dice. Weapons and armor you find have two additional levels of decay."
+          }
+        ]
       }
     ],
     "category": "background"
