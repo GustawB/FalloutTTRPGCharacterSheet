@@ -294,6 +294,7 @@ type Character = {
   abilityIncreases: { ability: AbilityId; level: number }[];  // perk points spent on +1
   skillPointAllocations: Partial<Record<SkillId, number>>;
   skillAbility: Partial<Record<"breach" | "intimidation" | "medicine", AbilityId>>;
+  deathSaveAbility?: "luck" | "endurance";   // absent = the higher modifier
   manualOverrides: { stat: StatId; value: number; note: string }[];
   current: { hp: number; sp: number; ap: number; rads: number;
              hunger: number; dehydration: number; exhaustion: number;
