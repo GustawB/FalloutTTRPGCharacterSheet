@@ -3,6 +3,7 @@
 
 import copy
 import json
+import re
 import subprocess
 import sys
 import tempfile
@@ -71,8 +72,25 @@ class ValidateRulesTest(unittest.TestCase):
 
     def test_no_hardcoded_vocab_constants(self) -> None:
         src = SCRIPT.read_text()
-        for name in ("ABILITIES", "SKILLS", "DERIVED", "RACES", "DAMAGE_TYPES", "CONDITIONS"):
+        for name in ("ABILITIES", "SKILLS", "DERIVED", "RACES", "DAMAGE_TYPES", "CONDITIONS", "STATS",
+                     "DEFENSE_TARGETS", "ROLLS", "EXPR_REFS", "PERK_CATEGORIES"):
             self.assertNotRegex(src, rf"^{name}\s*=", name)
+
+    def test_claude_md_lists_match_vocab(self) -> None:
+        text = (DATA.parent / "CLAUDE.md").read_text()
+        section = text[text.index("### Stat ids"):text.index("## Data schema")]
+        labels = {"Abilities": "abilities", "Skills": "skills", "Derived": "derived",
+                  "Race ids": "races", "Damage types": "damageTypes", "Conditions": "conditions"}
+        found = set()
+        for para in section.split("\n\n"):
+            key = next((v for k, v in labels.items() if para.startswith(k)), None)
+            if key is None:
+                continue
+            spans = [m for m in re.findall(r"`([A-Za-z ]+)`", para.replace("\n", " ")) if " " in m]
+            self.assertTrue(spans, key)
+            self.assertEqual(sorted(max(spans, key=len).split()), sorted(self.vocab[key]), key)
+            found.add(key)
+        self.assertEqual(found, set(labels.values()))
 
     def test_id_missing_from_vocab_is_rejected(self) -> None:
         # Real data uses 'sneak'; drop it from vocab.json and the validator must object.
