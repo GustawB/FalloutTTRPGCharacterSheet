@@ -137,6 +137,17 @@ negative values.
 - **Ruling:** encoded as `rollMode` on the `combatSequence` stat id.
 - **Status:** Provisional (agent, #8)
 
+### E17. Alertness: bonus is Perception score or double the modifier?
+- **Text (perks, p32–50):** "you gain a bonus to your passive sense equal to
+  your Perception ability score. (Simply put, your passive sense is equal to
+  12 + double your Perception ability modifier)".
+- **Contradiction:** a bonus of the PER score gives `12 + modPER + PER`, which
+  is not `12 + 2·modPER` (the two differ by 5).
+- **Ruling:** the parenthetical states the intended result, so the bonus is
+  `modPER`, i.e. passive sense becomes `12 + 2·modPER`. Conditional (needs 10
+  minutes in place), so it stays a `note`.
+- **Status:** Provisional (agent, #10)
+
 ## Editorial (no ruling needed, just don't trust these references)
 - p4 steps 7 and 23 say traits are on "pg. 20". They're on p25.
 - p5 says the perk list is on "page 27". It's on p32.

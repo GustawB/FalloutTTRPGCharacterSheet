@@ -307,9 +307,10 @@
     "effects": [
       {
         "type": "note",
-        "text": "After staying within a 20 foot radius for at least 10 minutes, gain a bonus to passive sense equal to your Perception score."
+        "text": "After staying within a 20 foot radius for at least 10 minutes, passive sense gains a bonus (rulebook text says your Perception score, but its parenthetical gives 12 + double your Perception modifier, i.e. a bonus equal to modPER; see ERRATA E17)."
       }
-    ]
+    ],
+    "needsReview": true
   },
   "infiltrator": {
     "effects": [

@@ -257,8 +257,8 @@ Override files are `{ "<id>": { ...fields to replace } }`. A `wildWasteland`
 array is patched element-wise by index, and every other key replaces the
 field wholesale.
 
-Race effects are encoded. Perk and trait effects are still empty, and the
-validator prints progress. `{ ref: "rank" }` is only allowed on perks.
+Race effects are encoded. Perk and trait effects are being encoded batch by batch (see
+ROADMAP.md phase 1), and the validator prints progress. `{ ref: "rank" }` is only allowed on perks.
 Anything an effect can't express exactly becomes a `note`, plus a
 `modifier` for the part that is computable.
 
