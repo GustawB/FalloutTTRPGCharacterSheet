@@ -1,0 +1,14 @@
+{
+  "skilled": {
+    "wildWasteland": [
+      {
+        "requirements": [
+          {
+            "kind": "anyAbility",
+            "max": 1
+          }
+        ]
+      }
+    ]
+  }
+}

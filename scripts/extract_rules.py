@@ -308,7 +308,8 @@ def build_entry(raw: dict, kind: str, wild_wasteland: bool) -> dict:
         "source": {"page": raw["page"]},
         "effects": [],
     }
-    if parts["requirementText"]:
+    if parts["requirementText"] and not (repeat and not reqs):
+        # Deadeye/Duelist: the "requirement" line is really the repeat sentence
         entry["requirementText"] = parts["requirementText"].rstrip(".")
     if repeat:
         entry["repeat"] = repeat

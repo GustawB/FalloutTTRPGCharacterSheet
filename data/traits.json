@@ -878,7 +878,13 @@
       {
         "requirementText": "One Ability Score equal to 1",
         "description": "Increase one Skill modifier by 5.",
-        "effects": []
+        "effects": [],
+        "requirements": [
+          {
+            "kind": "anyAbility",
+            "max": 1
+          }
+        ]
       }
     ],
     "category": "character"

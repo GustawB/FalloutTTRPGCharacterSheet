@@ -124,3 +124,4 @@ negative values.
 - p5 says "use the Level Up Table on pg." with no number. It's p6.
 - Several "see page 1" references (dying condition, tracking, crafting tables)
   are placeholder links.
+- Educated says "Use the Level Up table on page #". The table is on p6.
