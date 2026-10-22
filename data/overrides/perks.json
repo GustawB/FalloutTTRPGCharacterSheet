@@ -496,9 +496,10 @@
     "effects": [
       {
         "type": "note",
-        "text": "Moving through water costs 1 AP per 5 feet instead of 10. Drinking dirty water gives no irradiated levels."
+        "text": "Moving through water: 1 AP moves you 10 feet instead of 5 (ERRATA E19). Drinking dirty water gives no irradiated levels."
       }
-    ]
+    ],
+    "needsReview": true
   },
   "mad-dash": {
     "effects": [
@@ -529,7 +530,7 @@
     "effects": [
       {
         "type": "note",
-        "text": "While dying, movement costs no extra AP and you gain 1 additional AP at the start of your turn (2 additional at the second rank)."
+        "text": "While dying, movement costs no extra AP and you gain 1 additional AP at the start of your turn (2 additional in total at the second rank; ERRATA E18)."
       }
     ],
     "needsReview": true
