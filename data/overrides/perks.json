@@ -1237,7 +1237,13 @@
               "op": "sub",
               "args": [
                 {
-                  "ref": "mod.luck"
+                  "op": "max",
+                  "args": [
+                    {
+                      "ref": "mod.luck"
+                    },
+                    0
+                  ]
                 },
                 {
                   "op": "floor",
@@ -1246,13 +1252,34 @@
                       "op": "div",
                       "args": [
                         {
-                          "ref": "mod.luck"
+                          "op": "max",
+                          "args": [
+                            {
+                              "ref": "mod.luck"
+                            },
+                            0
+                          ]
                         },
                         2
                       ]
                     }
                   ]
                 }
+              ]
+            },
+            {
+              "op": "min",
+              "args": [
+                {
+                  "op": "add",
+                  "args": [
+                    {
+                      "ref": "mod.luck"
+                    },
+                    1
+                  ]
+                },
+                0
               ]
             },
             {
@@ -1275,7 +1302,7 @@
       },
       {
         "type": "note",
-        "text": "The full Luck modifier is added to skill modifiers instead of half (the modifier adds the missing half); the second rank adds a further +2 to all skills. When flipping a Karma Cap for advantage, add double your Luck modifier to the total (second rank: to the second roll when rerolling)."
+        "text": "The full Luck modifier is added to skill modifiers instead of half (the modifier adds the missing half; with a negative modifier it replaces the flat -1 from E7); the second rank adds a further +2 to all skills. When flipping a Karma Cap for advantage, add double your Luck modifier to the total (second rank: to the second roll when rerolling)."
       }
     ],
     "needsReview": true
