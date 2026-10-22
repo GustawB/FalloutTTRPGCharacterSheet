@@ -73,6 +73,19 @@ describe("proposePerks", () => {
     expect(proposePerks(make(), rulesWith([...perks].reverse()))).toEqual(first);
   });
 
+  it("does not depend on the key order of the character's maps", () => {
+    const perks = [
+      perk("a", { category: "strength", requirements: str(5) }),
+      perk("b", { effects: [{ type: "modifier", stat: "skill.guns", value: 1 }] }),
+      perk("c", { effects: [{ type: "modifier", stat: "skill.sneak", value: 1 }] }),
+    ];
+    const c = make({ skillPointAllocations: { guns: 3, sneak: 3 } });
+    const abilities = Object.fromEntries(Object.entries(c.abilities).reverse()) as Character["abilities"];
+    const alloc = { sneak: 3, guns: 3 };
+    const d = { ...c, abilities, skillPointAllocations: alloc };
+    expect(proposePerks(d, rulesWith(perks))).toEqual(proposePerks(c, rulesWith(perks)));
+  });
+
   it("works on the bundled rules", () => {
     const r = proposePerks(make(), real);
     expect(r.length).toBeGreaterThan(0);

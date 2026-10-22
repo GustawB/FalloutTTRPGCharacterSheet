@@ -326,6 +326,7 @@ with `StatResult = { value, breakdown: Contribution[] }` for abilities, skills
 and derived stats, plus `party` (`null` stats when unknown), `notes`,
 `rollModes`, `resistances`/`immunities`/`vulnerabilities` and `problems`.
 `derived.radiationDc` is `null` when the race has no radiation DC.
+`sheet.perkRanks` maps every owned perk (picked or granted) to its final rank.
 `sheet.perkPointsSpent` is perks picked plus ability increases; spending more than
 `derived.perkPoints`, or exceeding a perk's `repeat.max`, is a `problem`.
 `sheet.skillPointsSpent` is the sum of `skillPointAllocations`; spending more than
