@@ -307,6 +307,7 @@ type Character = {
 with `StatResult = { value, breakdown: Contribution[] }` for abilities, skills
 and derived stats, plus `party` (`null` stats when unknown), `notes`,
 `rollModes`, `resistances`/`immunities`/`vulnerabilities` and `problems`.
+`derived.radiationDc` is `null` when the race has no radiation DC.
 `newCharacter(id, name?)` builds a level 1 default human.
 
 ## UI requirements

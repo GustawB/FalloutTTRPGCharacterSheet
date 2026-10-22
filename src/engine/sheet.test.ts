@@ -40,6 +40,7 @@ describe("computeSheet", () => {
     expect(Object.keys(s.abilities)).toEqual([...ABILITIES]);
     expect(Object.keys(s.skills)).toEqual([...SKILLS]);
     expect(s.derived.hp.breakdown).toEqual([]);
+    expect(s.derived.radiationDc).toBeNull();
     expect(s.party).toEqual({ partyNerve: null, groupSneak: null });
     expect(s.problems).toEqual([]);
   });

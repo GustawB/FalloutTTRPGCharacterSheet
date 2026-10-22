@@ -12,7 +12,8 @@ export type Breakdown = Contribution[];
 export type StatResult = { value: number; breakdown: Breakdown };
 
 /** A resistance, immunity or vulnerability, with where it came from. */
-export type Defense<T extends string> = { to: T; source: string };
+export type DefenseTarget = `damage.${DamageType}` | `condition.${ConditionId}` | "radiationLevels";
+export type Defense = { to: DefenseTarget; source: string };
 export type RollModeResult = {
   roll: RollId;
   mode: "advantage" | "disadvantage";
@@ -30,13 +31,16 @@ export type Sheet = {
   abilities: Record<AbilityId, StatResult>;
   skills: Record<SkillId, StatResult>;
   /** Every derived id except the party stats, which live in `party`. */
-  derived: Record<Exclude<DerivedId, "partyNerve" | "groupSneak">, StatResult>;
+  derived: Record<Exclude<DerivedId, "partyNerve" | "groupSneak" | "radiationDc">, StatResult> & {
+    /** `null` unless the race has `hasRadiationDc` (humans). */
+    radiationDc: StatResult | null;
+  };
   party: PartyStats;
   notes: SheetNote[];
   rollModes: RollModeResult[];
-  resistances: Defense<`damage.${DamageType}` | `condition.${ConditionId}` | "radiationLevels">[];
-  immunities: Defense<`damage.${DamageType}` | `condition.${ConditionId}` | "radiationLevels">[];
-  vulnerabilities: Defense<`damage.${DamageType}` | `condition.${ConditionId}` | "radiationLevels">[];
+  resistances: Defense[];
+  immunities: Defense[];
+  vulnerabilities: Defense[];
   /** Things wrong with the character (unknown ids, unmet requirements, ...). */
   problems: string[];
 };
@@ -54,7 +58,7 @@ export function computeSheet(_character: Character, _rules: Rules): Sheet {
     derived: {
       hp: empty(), sp: empty(), ap: empty(), apMax: empty(), ac: empty(), dt: empty(),
       healingRate: empty(), carryLoad: empty(), passiveSense: empty(),
-      combatSequence: empty(), radiationDc: empty(), karmaCaps: empty(),
+      combatSequence: empty(), radiationDc: null, karmaCaps: empty(),
       deathSave: empty(), skillPoints: empty(), perkPoints: empty(),
     },
     party: { partyNerve: null, groupSneak: null },
