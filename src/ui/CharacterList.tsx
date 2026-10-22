@@ -4,8 +4,6 @@ import type { Rules } from "../engine/rules";
 import type { RaceId } from "../engine/vocab";
 import type { Api, CharacterSummary } from "./api";
 
-
-
 export function CharacterList({
   api,
   rules,
@@ -31,9 +29,15 @@ export function CharacterList({
     };
   }, [api]);
 
+  const raceName = (id?: string) => {
+    const r = rules.races.find((x) => x.id === id);
+    return r ? `${r.name}, ` : "";
+  };
+
   async function create() {
     const c = newCharacter(crypto.randomUUID(), name.trim());
-    c.race = { id: race, variants: [] };
+    const subtype = rules.races.find((r) => r.id === race)?.subtypes?.[0]?.id;
+    c.race = { id: race, variants: [], ...(subtype && { subtype }) };
     try {
       await api.put(c);
       onOpen(c.id);
@@ -55,7 +59,7 @@ export function CharacterList({
               <button type="button" onClick={() => onOpen(r.id)}>
                 {r.name || "(unnamed)"}
               </button>{" "}
-              — level {r.level}
+              — {raceName(r.race)}level {r.level}
             </li>
           ))}
         </ul>

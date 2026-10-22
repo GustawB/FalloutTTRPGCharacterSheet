@@ -1,6 +1,6 @@
 import type { Character } from "../engine/character";
 
-export type CharacterSummary = { id: string; name: string; level: number };
+export type CharacterSummary = { id: string; name: string; race?: string; level: number };
 
 /** Client for the local save server (server/app.ts). The server has no delete. */
 export type Api = {

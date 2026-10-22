@@ -9,7 +9,7 @@ import { App } from "./App";
 function mockApi(stored: Character[] = []): Api & { [K in keyof Api]: ReturnType<typeof vi.fn> } {
   const db = new Map(stored.map((c) => [c.id, c]));
   return {
-    list: vi.fn(async () => [...db.values()].map((c) => ({ id: c.id, name: c.name, level: c.level }))),
+    list: vi.fn(async () => [...db.values()].map((c) => ({ id: c.id, name: c.name, race: c.race.id, level: c.level }))),
     get: vi.fn(async (id: string) => {
       const c = db.get(id);
       if (!c) throw new Error("server returned 404");
@@ -29,7 +29,17 @@ describe("character list", () => {
     const c = { ...newCharacter("a1", "Vera"), level: 4 };
     render(<App api={mockApi([c])} />);
     expect(await screen.findByRole("button", { name: "Vera" })).toBeTruthy();
-    expect(screen.getByText(/level 4/)).toBeTruthy();
+    expect(screen.getByText(/Human, level 4/)).toBeTruthy();
+  });
+
+  it("gives a new robot a subtype so it has no problems", async () => {
+    const api = mockApi();
+    render(<App api={api} />);
+    await screen.findByText("No characters yet.");
+    await userEvent.selectOptions(screen.getByLabelText("Race"), "robot");
+    await userEvent.click(screen.getByRole("button", { name: "Create" }));
+    await waitFor(() => expect(api.put).toHaveBeenCalledTimes(1));
+    expect((api.put.mock.calls[0]![0] as Character).race.subtype).toBeTruthy();
   });
 
   it("shows an empty state", async () => {
@@ -86,5 +96,15 @@ describe("autosave", () => {
     api.put.mockRejectedValue(new Error("disk full"));
     fireEvent.change(input, { target: { value: "Vera III" } });
     await waitFor(() => expect(screen.getByRole("status").textContent).toContain("Save failed: disk full"));
+  });
+
+  it("saves a pending edit when leaving the sheet", async () => {
+    const api = mockApi([newCharacter("a1", "Vera")]);
+    window.location.hash = "#/c/a1";
+    render(<App api={api} />);
+    fireEvent.change(await screen.findByLabelText("Name"), { target: { value: "Quick" } });
+    await userEvent.click(screen.getByRole("button", { name: "← Characters" }));
+    await waitFor(() => expect(api.put).toHaveBeenCalledTimes(1));
+    expect((api.put.mock.calls[0]![0] as Character).name).toBe("Quick");
   });
 });

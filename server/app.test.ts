@@ -45,8 +45,8 @@ describe("save server", () => {
     await put("b", { ...newCharacter("b", "Bea"), level: 3 });
     await put("a", newCharacter("a", "Al"));
     expect(await (await fetch(`${base}/api/characters`)).json()).toEqual([
-      { id: "a", name: "Al", level: 1 },
-      { id: "b", name: "Bea", level: 3 },
+      { id: "a", name: "Al", race: "human", level: 1 },
+      { id: "b", name: "Bea", race: "human", level: 3 },
     ]);
   });
 
