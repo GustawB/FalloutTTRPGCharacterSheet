@@ -62,7 +62,8 @@ function checkEffect(e: Effect, where: string): void {
     case "immunity":
     case "resistance":
     case "vulnerability":
-      expect(targets.has(e.to), `${where}: to ${e.to}`).toBe(true);
+      if ("choice" in e) expect(e.choice.of, where).toBe("damage");
+      else expect(targets.has(e.to), `${where}: to ${e.to}`).toBe(true);
       break;
     case "grantPerk":
       expect(rules.perkById.has(e.perkId), `${where}: perk ${e.perkId}`).toBe(true);

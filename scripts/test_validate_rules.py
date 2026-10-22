@@ -119,6 +119,7 @@ class ValidateRulesTest(unittest.TestCase):
             {"type": "modifier", "choice": {"id": "pick", "of": "skill", "count": 2}, "value": 5},
             {"type": "abilityPoints", "choice": "pts", "points": {"op": "mul", "args": [5, {"ref": "rank"}]}},
             {"type": "abilityTransfer", "choice": "swap", "max": 3, "bonus": 1},
+            {"type": "resistance", "choice": {"id": "dmg", "of": "damage", "count": 3}},
             {"type": "note", "text": "Situational."},
         ]
         result = self.run_on(data)
@@ -137,6 +138,13 @@ class ValidateRulesTest(unittest.TestCase):
         self.assert_error(lambda d: self.perk(d)["effects"].append(
             {"type": "modifier", "choice": {"id": "p", "of": "skill"}, "stat": "hp", "value": 1}),
             "unknown key 'stat'")
+
+    def test_bad_damage_choice(self) -> None:
+        self.assert_error(lambda d: self.perk(d)["effects"].append(
+            {"type": "resistance", "choice": {"id": "p", "of": "skill"}}), "choice.of")
+        self.assert_error(lambda d: self.perk(d)["effects"].append(
+            {"type": "resistance", "choice": {"id": "p", "of": "damage"}, "to": "damage.fire"}),
+            "unknown key 'to'")
 
     def test_unknown_effect_type(self) -> None:
         self.assert_error(lambda d: self.perk(d)["effects"].append({"type": "buff"}),

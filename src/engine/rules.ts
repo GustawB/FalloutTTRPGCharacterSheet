@@ -30,6 +30,12 @@ export type Expr =
 export type Choice = { id: string; of: "skill" | "ability"; count?: number };
 
 /**
+ * A damage-type pick: the player picks `count` (default 1) distinct damage types.
+ * A `resistance`/`immunity`/`vulnerability` effect with a `choice` applies to each pick.
+ */
+export type DamageChoice = { id: string; of: "damage"; count?: number };
+
+/**
  * Ability-point choices, stored in `Character.choices["<entry id>:<choice>"]`:
  * - `abilityPoints`: up to `points` (an `Expr`) points to distribute. Each pick is an
  *   ability id and gives +1, so repeats are allowed. Picks beyond `points` are a
@@ -48,6 +54,7 @@ export type Effect =
       type: "immunity" | "resistance" | "vulnerability";
       to: `damage.${DamageType}` | `condition.${ConditionId}` | "radiationLevels";
     }
+  | { type: "immunity" | "resistance" | "vulnerability"; choice: DamageChoice }
   | { type: "grantPerk"; perkId: string }
   | { type: "countsAsRace"; race: RaceId; for: "perkRequirements" }
   | { type: "note"; text: string };
