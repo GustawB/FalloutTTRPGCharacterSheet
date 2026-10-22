@@ -1,0 +1,9 @@
+{
+  "here-and-now": {
+    "repeat": {
+      "text": "Once this perk has been taken, it cannot be taken again by any other player characters.",
+      "max": 1,
+      "scope": "party"
+    }
+  }
+}
