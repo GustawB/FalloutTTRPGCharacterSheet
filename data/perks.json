@@ -1749,7 +1749,12 @@
     "source": {
       "page": 40
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Purchases are cheaper by a percentage equal to 2 x your Charisma score."
+      }
+    ],
     "requirementText": "Charisma 4",
     "category": "charisma"
   },
@@ -1768,7 +1773,12 @@
     "source": {
       "page": 40
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "You cannot become addicted to Alcohol. When you drink an alcoholic drink, regain stamina points equal to your level."
+      }
+    ],
     "requirementText": "Charisma 4",
     "category": "charisma"
   },
@@ -1787,7 +1797,12 @@
     "source": {
       "page": 40
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Spend 3 AP to taunt a creature (Charisma check vs. its Charisma ability check, DC = your total). On a failure, the next attack against it from anyone else has advantage and on its next turn it can only target you. A previously taunted creature has advantage on its check. No creature can be taunted more than twice."
+      }
+    ],
     "requirementText": "Charisma 5",
     "category": "charisma"
   },
@@ -1806,7 +1821,12 @@
     "source": {
       "page": 40
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "You sell items for 75% of their price instead of 50%."
+      }
+    ],
     "requirementText": "Charisma 5",
     "category": "charisma"
   },
@@ -1825,7 +1845,12 @@
     "source": {
       "page": 40
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "A Speech skill check total lower than 9 becomes 9 + your Speech bonus. When gambling at cards or dice, add your Charisma score to the roll."
+      }
+    ],
     "requirementText": "Charisma 5",
     "category": "charisma"
   },
@@ -1844,7 +1869,12 @@
     "source": {
       "page": 40
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Spend 3 AP: each creature of your choice within 20 feet gains 2 AP (max 15) and advantage on their first attack roll on their turn. Usable again after you next roll combat sequence."
+      }
+    ],
     "requirementText": "Charisma 5",
     "category": "charisma"
   },
@@ -1863,7 +1893,12 @@
     "source": {
       "page": 40
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "In combat, Animals and Insects don't target you unless all other targets are out of sight or unconscious."
+      }
+    ],
     "requirementText": "Charisma 5",
     "category": "charisma"
   },
@@ -1882,7 +1917,12 @@
     "source": {
       "page": 40
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "When another party member fails an attack roll, flip a Karma Cap to add your Charisma modifier to it. If it hits, the next creature to attack for the first time on their turn gains your Charisma modifier + 1. Keeps triggering until a party member misses their first attack roll on their turn."
+      }
+    ],
     "requirementText": "Charisma 6",
     "category": "charisma"
   },
@@ -1901,7 +1941,12 @@
     "source": {
       "page": 40
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "The first time you take damage to your hit points, party members who can sense you regain all their stamina points. Doesn't trigger again until you rest 8 hours. Only one PC in the party can take this perk."
+      }
+    ],
     "requirementText": "Charisma 6",
     "repeat": {
       "text": "Once a player character has taken this perk, it cannot be taken by any other characters.",
@@ -1925,14 +1970,20 @@
     "source": {
       "page": 40
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "When you roll combat sequence, choose an ally. While within 5 feet of each other, you both get +1 AC and +2 DT, and when either takes damage, either of you can halve it so the other takes the same amount. Rank 2 (party-limited, one PC): +2 AC and +4 DT in total, and the damage can be reduced to 0 with the other taking it instead."
+      }
+    ],
     "requirementText": "Charisma 6",
     "repeat": {
       "text": "Once a player character has taken this perk, it cannot be taken by any other characters. If you take this perk again, the AC bonus increases by 1, the DT bonus increases by 2, and whenever you or that ally take damage, either you or that ally can choose to reduce that damage to 0. Then, they take the damage instead.",
       "max": 2,
       "scope": "party"
     },
-    "category": "charisma"
+    "category": "charisma",
+    "needsReview": true
   },
   {
     "id": "big-ego",
@@ -1949,9 +2000,15 @@
     "source": {
       "page": 40
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Your Party Nerve modifier is doubled for you."
+      }
+    ],
     "requirementText": "Charisma 7",
-    "category": "charisma"
+    "category": "charisma",
+    "needsReview": true
   },
   {
     "id": "inspiring-action",
@@ -1968,7 +2025,12 @@
     "source": {
       "page": 41
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Spend 3 AP to inspire a creature within 30 feet: for 1 minute it can add 2d10 to one d20 roll. A given creature can be inspired once per day."
+      }
+    ],
     "requirementText": "Charisma 7",
     "category": "charisma"
   },
@@ -1987,7 +2049,12 @@
     "source": {
       "page": 41
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "In the first round of combat, each enemy that can see you and has Intelligence above 2 becomes frightened."
+      }
+    ],
     "requirementText": "Charisma 7",
     "category": "charisma"
   },
@@ -2006,9 +2073,15 @@
     "source": {
       "page": 41
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Your Party Nerve applies negatively to the Stamina Points of enemies you are in combat with, even creatures that can't comprehend legends."
+      }
+    ],
     "requirementText": "Charisma 8",
-    "category": "charisma"
+    "category": "charisma",
+    "needsReview": true
   },
   {
     "id": "empowering-personality",
@@ -2025,7 +2098,12 @@
     "source": {
       "page": 41
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Flip a Karma Cap when another creature within 30 feet deals attack damage to add double your Charisma modifier to it, or when another creature takes damage to its hit points to reduce it by double your Charisma modifier."
+      }
+    ],
     "requirementText": "Charisma 8",
     "category": "charisma"
   },
@@ -2044,7 +2122,12 @@
     "source": {
       "page": 41
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Spend 3 AP to command an allied creature within 60 feet; it immediately gains 6 AP (not retained or recycled) to carry out the command."
+      }
+    ],
     "requirementText": "Charisma 9",
     "category": "charisma"
   },
@@ -2063,7 +2146,12 @@
     "source": {
       "page": 41
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "When another PC flips their Karma Cap back over after rolling a 1 on a d20 or being critically hit, you can flip yours back over too. Second rank: you can instead choose another PC to flip their Karma Cap back over."
+      }
+    ],
     "requirementText": "Charisma 9",
     "repeat": {
       "text": "You can take this perk up to a maximum of twice, when you take it again; whenever another player character flips their Karma Cap back over when they roll a 1 on a d20 or if they are hit with a critical hit, you can choose for another player character to flip over their Karma Cap.",
@@ -2086,9 +2174,15 @@
     "source": {
       "page": 41
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Free drinks at bars and a permanent 20% discount on all items. Meeting a neutral or unaffiliated NPC: Luck check, DC 30 - your Speech or Barter bonus; on a success they know you and you have advantage on Charisma-based skill checks with them. You can lose your Karma Cap to have that NPC follow the party (regained next session if dismissed or dead)."
+      }
+    ],
     "requirementText": "Charisma 10",
-    "category": "charisma"
+    "category": "charisma",
+    "needsReview": true
   },
   {
     "id": "stand-and-fight",
@@ -2105,7 +2199,12 @@
     "source": {
       "page": 41
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "When a creature within 30 feet fails a death save and dies, turn that roll into a success. Once used on a creature, not again on them until you roll combat sequence."
+      }
+    ],
     "requirementText": "Charisma 10",
     "category": "charisma"
   },
