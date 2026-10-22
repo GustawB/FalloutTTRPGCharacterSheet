@@ -4,7 +4,9 @@ import type {
   AbilityId, ConditionId, DamageType, DerivedId, RollId, SkillId,
 } from "./vocab";
 import { baseAbilities, baseDerived } from "./base";
-import { SKILLS } from "./vocab";
+import { newAccumulator } from "./effects";
+import { applyRace } from "./race";
+import { ABILITIES, SKILLS } from "./vocab";
 
 /** One line of a breakdown: where a number came from and how much it added. */
 export type Contribution = { source: string; label: string; value: number };
@@ -48,23 +50,51 @@ export type Sheet = {
 
 const empty = (): StatResult => ({ value: 0, breakdown: [] });
 
+/** Appends contributions to a stat; the value stays the sum of the breakdown. */
+function append(stat: StatResult, extra: Breakdown | undefined): StatResult {
+  if (!extra?.length) return stat;
+  const breakdown = [...stat.breakdown, ...extra];
+  return { value: breakdown.reduce((sum, c) => sum + c.value, 0), breakdown };
+}
+
 /**
- * Pure: `(character, rules) → sheet`. Only the base stage exists so far; skills
- * are zeroed stubs until the later stages land.
+ * Pure: `(character, rules) → sheet`. The base and race stages exist so far;
+ * skills only carry effect contributions until the later stages land.
  */
 export function computeSheet(character: Character, rules: Rules): Sheet {
   const problems: string[] = [];
-  const abilities = baseAbilities(character);
+  const base = baseAbilities(character);
+  const acc = newAccumulator();
+
+  // Stage 2: race. Expressions see the ability scores before effects.
+  const ctx = {
+    level: character.level,
+    abilities: Object.fromEntries(ABILITIES.map((a) => [a, base[a].value])) as Record<AbilityId, number>,
+  };
+  applyRace(character, rules, ctx, acc, problems);
+
+  // Ability effects come first: everything derived reads the final scores.
+  const abilities = Object.fromEntries(
+    ABILITIES.map((a) => [a, append(base[a], acc.modifiers.get(`ability.${a}`))]),
+  ) as Record<AbilityId, StatResult>;
+  const derived = baseDerived(character, rules, abilities, problems);
+  for (const id of Object.keys(derived) as (keyof typeof derived)[]) {
+    const stat = derived[id];
+    if (stat) derived[id] = append(stat, acc.modifiers.get(id));
+  }
+
   return {
     abilities,
-    skills: Object.fromEntries(SKILLS.map((s) => [s, empty()])) as Sheet["skills"],
-    derived: baseDerived(character, rules, abilities, problems),
+    skills: Object.fromEntries(
+      SKILLS.map((s) => [s, append(empty(), acc.modifiers.get(`skill.${s}`))]),
+    ) as Sheet["skills"],
+    derived,
     party: { partyNerve: null, groupSneak: null },
-    notes: [],
-    rollModes: [],
-    resistances: [],
-    immunities: [],
-    vulnerabilities: [],
+    notes: acc.notes,
+    rollModes: acc.rollModes,
+    resistances: acc.resistances,
+    immunities: acc.immunities,
+    vulnerabilities: acc.vulnerabilities,
     problems,
   };
 }
