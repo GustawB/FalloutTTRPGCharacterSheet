@@ -12,6 +12,9 @@ on:
 
 jobs:
   claude-review:
+    # Autopilot PRs come from claude[bot]. The action refuses bot actors, and
+    # claude-next.yml already runs its own review job, so skip them here.
+    if: github.event.pull_request.user.type != 'Bot'
     # Optional: Filter by PR author
     # if: |
     #   github.event.pull_request.user.login == 'external-contributor' ||
