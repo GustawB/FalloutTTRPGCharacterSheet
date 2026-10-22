@@ -177,6 +177,22 @@ negative values.
   are a note.
 - **Status:** Provisional (agent, #18)
 
+### E22. Addiction traits: roll mode and the addicted condition
+- **Text (p29–30):** Enhancement Reliant gives disadvantage, and Enhancement
+  Resistant advantage, on Endurance checks to resist becoming addicted.
+  Enhancement Resistant's Wild Wasteland variant grants "immune to the addicted
+  condition".
+- **Ruling:** the check modes are `rollMode` on `addiction`. There is no
+  `addicted` condition id, so the immunity, the rest-ends-addiction clauses and
+  the chem duration changes are notes.
+- **Status:** Provisional (agent, #18)
+
+### E23. Hoarder (Wild Wasteland): immune to Encumbered
+- **Text (p30):** "You are immune to the Encumbered condition".
+- **Ruling:** `immunity` to `condition.encumbered` only. Heavily Encumbered is a
+  separate condition and is not covered.
+- **Status:** Provisional (agent, #18)
+
 ## Editorial (no ruling needed, just don't trust these references)
 - p4 steps 7 and 23 say traits are on "pg. 20". They're on p25.
 - p5 says the perk list is on "page 27". It's on p32.
