@@ -4158,7 +4158,12 @@
     "source": {
       "page": 49
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Sprinting costs 3 AP instead of 5. Long jumps clear an additional 10 feet and high jumps an additional 3 feet."
+      }
+    ],
     "requirementText": "Ghoul",
     "category": "race"
   },
@@ -4182,7 +4187,12 @@
     "source": {
       "page": 49
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Feral Ghouls won't target you unless you are the only hostile target within 60 feet. Advantage on Speech checks with any ghoul."
+      }
+    ],
     "requirementText": "Ghoul, Level 5",
     "category": "race"
   },
@@ -4206,7 +4216,22 @@
     "source": {
       "page": 49
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "modifier",
+        "stat": "dt",
+        "value": 1
+      },
+      {
+        "type": "rollMode",
+        "roll": "deathSave",
+        "mode": "advantage"
+      },
+      {
+        "type": "note",
+        "text": "If you already have advantage on Death Saves, roll three d20s and take the highest."
+      }
+    ],
     "requirementText": "Ghoul, Level 5",
     "category": "race"
   },
@@ -4230,7 +4255,12 @@
     "source": {
       "page": 49
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "While dying your speed isn't halved and you gain an additional AP at the start of your turn. When you die you immediately gain 20 AP; once they are used, or your turn ends, you die."
+      }
+    ],
     "requirementText": "Ghoul, Level 10",
     "category": "race"
   },
@@ -4250,7 +4280,12 @@
     "source": {
       "page": 49
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "If you sprint through the space of a creature with a Strength score equal to or less than yours, it is knocked prone."
+      }
+    ],
     "requirementText": "Robot",
     "category": "race"
   },
@@ -4270,7 +4305,12 @@
     "source": {
       "page": 49
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Pick-time choice: any two weapons become Robot weapons, provided you can buy, craft or already own them."
+      }
+    ],
     "requirementText": "Robot",
     "category": "race"
   },
@@ -4294,7 +4334,26 @@
     "source": {
       "page": 49
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "modifier",
+        "stat": "ac",
+        "value": {
+          "ref": "rank"
+        }
+      },
+      {
+        "type": "modifier",
+        "stat": "dt",
+        "value": {
+          "ref": "rank"
+        }
+      },
+      {
+        "type": "note",
+        "text": "Each rank gives +1 AC and +1 DT."
+      }
+    ],
     "requirementText": "Robot, Level 8",
     "repeat": {
       "text": "You can take this perk up to a maximum of three times.",
@@ -4318,7 +4377,16 @@
     "source": {
       "page": 50
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "immunity",
+        "to": "condition.limb"
+      },
+      {
+        "type": "note",
+        "text": "Damage to hit points from a targeted attack is halved."
+      }
+    ],
     "requirementText": "Synth",
     "category": "race"
   },
@@ -4338,7 +4406,12 @@
     "source": {
       "page": 50
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "You never set off placed explosives or traps."
+      }
+    ],
     "requirementText": "Synth",
     "category": "race"
   },
@@ -4362,7 +4435,12 @@
     "source": {
       "page": 50
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Spend 6 AP to heal stamina equal to double your healing rate. Usable once per 8-hour rest."
+      }
+    ],
     "requirementText": "Synth, Level 5",
     "category": "race"
   },
@@ -4382,7 +4460,12 @@
     "source": {
       "page": 50
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Spend 6 AP to heal hit points equal to your healing rate. Usable once per sleep."
+      }
+    ],
     "requirementText": "Super Mutant",
     "category": "race"
   },
@@ -4402,9 +4485,15 @@
     "source": {
       "page": 50
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "You no longer suffer the Bulky racial trait; the schema can't remove a feature's contribution (see E26). Crafting checks to repair an item have their DC reduced by 5."
+      }
+    ],
     "requirementText": "Super Mutant",
-    "category": "race"
+    "category": "race",
+    "needsReview": true
   },
   {
     "id": "wasteland-camel",
@@ -4422,7 +4511,12 @@
     "source": {
       "page": 50
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "You no longer need double the daily water to avoid dehydration. Dirty water has the hydrating property for you."
+      }
+    ],
     "requirementText": "Super Mutant",
     "category": "race"
   },
@@ -4446,7 +4540,12 @@
     "source": {
       "page": 50
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Super mutants won't target you unless you are the only hostile target within 60 feet. Spend 3 AP to learn the total ability scores of one super mutant within 60 feet."
+      }
+    ],
     "requirementText": "Super Mutant, Level 5",
     "category": "race"
   },
@@ -4470,7 +4569,17 @@
     "source": {
       "page": 50
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "modifier",
+        "stat": "dt",
+        "value": 1
+      },
+      {
+        "type": "note",
+        "text": "If you end your turn with at least 6 AP, when you take damage to hit points you can spend 6 AP to halve it (rounded down)."
+      }
+    ],
     "requirementText": "Super Mutant, Level 5",
     "category": "race"
   },
@@ -4494,8 +4603,38 @@
     "source": {
       "page": 50
     },
-    "effects": [],
+    "effects": [
+      {
+        "type": "modifier",
+        "stat": "ac",
+        "value": 1
+      },
+      {
+        "type": "modifier",
+        "stat": "dt",
+        "value": 1
+      },
+      {
+        "type": "modifier",
+        "stat": "hp",
+        "value": {
+          "ref": "level"
+        }
+      },
+      {
+        "type": "modifier",
+        "stat": "sp",
+        "value": {
+          "ref": "level"
+        }
+      },
+      {
+        "type": "note",
+        "text": "Pick-time choice: one damage type; damage of that type to hit points is halved (rounded down)."
+      }
+    ],
     "requirementText": "Super Mutant, Level 10",
-    "category": "race"
+    "category": "race",
+    "needsReview": true
   }
 ]
