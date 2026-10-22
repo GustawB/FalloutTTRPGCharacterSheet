@@ -1,7 +1,8 @@
 # CLAUDE.md
 
 Guidance for AI agents (and humans) working in this repo. Read `ERRATA.md`
-before you touch any rules logic. It overrides the rulebook text.
+before you touch any rules logic. It overrides the rulebook text. Working
+from a GitHub issue? `ROADMAP.md` has the plan and the workflow rules.
 
 ## What this is
 
@@ -49,8 +50,9 @@ the p6 level-up table, with the corrections from ERRATA.md applied.
 - Every derived number carries a **breakdown**: a list of
   `{ source, label, value }` contributions that the UI shows on hover. A number
   without a breakdown is a bug.
-- An unclear rule gets a new ERRATA.md entry marked **Open**, and you ask in
-  the PR or issue. Don't silently pick an interpretation.
+- An unclear rule gets a ruling, not a pause: add an ERRATA.md entry marked
+  **Provisional**, pick the most plausible reading, and list it in the PR
+  under "Rulings to confirm". Never pick an interpretation silently.
 - One issue, one PR. Keep PRs small.
 
 ## Engine pipeline

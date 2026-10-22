@@ -26,6 +26,7 @@ npm test        # engine unit tests
 | `scripts/validate_rules.py` | Checks `data/` against the schema (runs in CI) |
 | `ERRATA.md` | How the app resolves contradictions in the rulebook |
 | `CLAUDE.md` | Architecture, formulas and data schema (for contributors and agents) |
+| `ROADMAP.md` | Build plan and the workflow for agent-driven issues |
 
 ### Re-extracting the rules data
 

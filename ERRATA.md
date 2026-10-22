@@ -3,8 +3,10 @@
 The rulebook (Arcane Arcade "Fallout TTRPG v2.0") contradicts itself in places.
 This file is the single source of truth for how the app resolves each case.
 **The engine implements these rulings, not the raw text.** If code and this file
-disagree, the code is wrong. New ambiguities go here first and get a ruling
-from the maintainer before an implementation PR picks a side.
+disagree, the code is wrong. New ambiguities go here first. An agent may
+make a ruling marked `**Status:** Provisional (agent, #<issue>)` and flag it
+in its PR, and the maintainer confirms or overrules it in review. Entries
+without a status are confirmed.
 
 Page numbers are printed page numbers, which equal PDF page indices.
 
