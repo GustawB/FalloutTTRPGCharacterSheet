@@ -266,7 +266,8 @@ negative values.
 - **Ruling:** both are resistances on the picked types, listed on the sheet
   always. NEMEAN's activation (3 AP, 3 rounds, cooldown) is not tracked, so
   its resistance shows even when the implant is inactive. Evolution's halving
-  is read as the same as resistance.
+  is read as the same as resistance. Duplicate or unknown picks are ignored and
+  reported as missing picks.
 - **Status:** Provisional (agent, #74)
 
 ## Editorial (no ruling needed, just don't trust these references)
