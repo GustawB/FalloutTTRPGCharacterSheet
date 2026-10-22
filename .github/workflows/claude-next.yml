@@ -49,6 +49,7 @@ jobs:
         run: |
           gh label create autopilot --color 0e8a16 --description "PR opened by Claude Autopilot" --force
           gh label create blocked --color b60205 --description "Autopilot gave up; skipped" --force
+          gh label create retried --color fbca04 --description "Autopilot failed once for a non-check reason; next failure blocks" --force
 
       # Lowest-numbered open phase-* issue, not blocked, whose "## Depends on"
       # issues are all closed. Empty output = nothing left, and the loop ends.
@@ -143,6 +144,8 @@ jobs:
     if: always() && needs.build.outputs.pr != '' && needs.build.result == 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    outputs:
+      checks: ${{ steps.checks.outcome }}
     env:
       PR: ${{ needs.build.outputs.pr }}
     steps:
@@ -175,26 +178,33 @@ jobs:
           gh pr merge "$PR" --squash --delete-branch
           gh issue close "${{ needs.build.outputs.issue }}" --reason completed || true
 
-  # Runs whatever happened above, so a crash can't stop the chain. Whatever
-  # this iteration left unfinished gets closed or blocked, so every iteration
-  # makes progress and the loop terminates.
+  # Runs whatever happened above, so a crash can't stop the chain. Red checks
+  # block the issue. Any other failure (no PR, crash, timeout, outage) gets one
+  # retry, tracked by the `retried` label, and the second one blocks. So the
+  # loop still terminates.
   next:
     needs: [build, review, merge]
     if: always() && vars.CLAUDE_AUTOPILOT != 'off' && needs.build.outputs.issue != ''
     runs-on: ubuntu-latest
     env:
       ISSUE: ${{ needs.build.outputs.issue }}
-      RESULTS: "build: ${{ needs.build.result }}, review: ${{ needs.review.result }}, merge: ${{ needs.merge.result }}"
+      CHECKS: ${{ needs.merge.outputs.checks }}
+      RESULTS: "build: ${{ needs.build.result }}, review: ${{ needs.review.result }}, merge: ${{ needs.merge.result }}, checks: ${{ needs.merge.outputs.checks || 'not run' }}"
       RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
     steps:
-      - name: Block anything left unfinished
+      - name: Block or retry anything left unfinished
         run: |
           for pr in $(gh pr list -R "$GITHUB_REPOSITORY" --state open --json number,labels -q '.[] | select(any(.labels[]; .name == "autopilot")) | .number'); do
             gh pr close "$pr" -R "$GITHUB_REPOSITORY" --delete-branch --comment "Autopilot: this iteration didn't finish ($RESULTS, $RUN_URL). Closing."
           done
-          if [ "$(gh issue view "$ISSUE" -R "$GITHUB_REPOSITORY" --json state -q .state)" = OPEN ]; then
+          [ "$(gh issue view "$ISSUE" -R "$GITHUB_REPOSITORY" --json state -q .state)" = OPEN ] || exit 0
+          retried=$(gh issue view "$ISSUE" -R "$GITHUB_REPOSITORY" --json labels -q 'any(.labels[]; .name == "retried")')
+          if [ "$CHECKS" = failure ] || [ "$retried" = true ]; then
             gh issue edit "$ISSUE" -R "$GITHUB_REPOSITORY" --add-label blocked
-            gh issue comment "$ISSUE" -R "$GITHUB_REPOSITORY" --body "Autopilot didn't get this merged ($RESULTS, $RUN_URL). Skipping. Remove the \`blocked\` label to retry."
+            gh issue comment "$ISSUE" -R "$GITHUB_REPOSITORY" --body "Autopilot didn't get this merged ($RESULTS, $RUN_URL). Skipping. Remove the \`blocked\` (and \`retried\`) label to retry."
+          else
+            gh issue edit "$ISSUE" -R "$GITHUB_REPOSITORY" --add-label retried
+            gh issue comment "$ISSUE" -R "$GITHUB_REPOSITORY" --body "Autopilot didn't get this merged, but not because of failing checks ($RESULTS, $RUN_URL). Retrying once."
           fi
 
       - name: Next iteration
