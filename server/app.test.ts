@@ -50,6 +50,13 @@ describe("save server", () => {
     ]);
   });
 
+  it("includes partyId in the list", async () => {
+    await put("p", { ...newCharacter("p", "Pat"), partyId: "crew" });
+    expect(await (await fetch(`${base}/api/characters`)).json()).toEqual([
+      { id: "p", name: "Pat", race: "human", level: 1, partyId: "crew" },
+    ]);
+  });
+
   it("omits files whose names are not valid ids from the list", async () => {
     await writeFile(join(dir, "a.b.json"), JSON.stringify(newCharacter("a.b")));
     await put("ok", newCharacter("ok", "Ok"));

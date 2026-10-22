@@ -117,8 +117,10 @@ takes an optional `PartyContext`; without it party stats stay `null` and
 `deathSave` has no Party Nerve line.
 
 Party stats need every PC in the party. The app has a "party" view that loads
-all saved characters, and a single sheet shows party stats only when its party
-is known. Otherwise it shows them as "—".
+all saved characters (`#/party`; it also assigns characters to a party by
+`partyId`), and a single sheet shows party stats only when its `partyId` is set
+(members are loaded through the API; `partyContextFor` in `party.ts`). Otherwise
+it shows them as "—". The server's list endpoint includes `partyId`.
 
 Spending a perk point on an ability increase raises the ability score by 1
 (max 10), and everything derived from it updates retroactively.

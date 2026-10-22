@@ -61,11 +61,11 @@ export function createServer(dir: string): Server {
         if (e.code === "ENOENT") return [] as string[];
         throw e;
       });
-      const list: { id: string; name: unknown; race: unknown; level: unknown }[] = [];
+      const list: { id: string; name: unknown; race: unknown; level: unknown; partyId?: unknown }[] = [];
       for (const file of files.filter((f) => f.endsWith(".json") && ID_PATTERN.test(f.slice(0, -5))).sort()) {
         try {
           const c: unknown = JSON.parse(await readFile(join(dir, file), "utf8"));
-          if (isRecord(c)) list.push({ id: file.slice(0, -5), name: c.name, race: isRecord(c.race) ? c.race.id : undefined, level: c.level });
+          if (isRecord(c)) list.push({ id: file.slice(0, -5), name: c.name, race: isRecord(c.race) ? c.race.id : undefined, level: c.level, partyId: c.partyId });
         } catch {
           // skip unreadable or corrupt files
         }

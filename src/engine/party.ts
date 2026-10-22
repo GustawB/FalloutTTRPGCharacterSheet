@@ -48,15 +48,17 @@ function partyStats(solo: Sheet[]): PartyStats {
  */
 export function computePartySheet(characters: Character[], rules: Rules): PartySheet {
   const party = partyStats(characters.map((c) => computeSheet(c, rules)));
-  const taken = new Set<string>();
-  const sheets = characters.map((c) => {
-    const ctx: PartyContext = {
-      partyNerve: party.partyNerve!,
-      groupSneak: party.groupSneak!,
-      taken: new Set(taken),
-    };
-    for (const p of c.perks) if (p.level <= c.level) taken.add(p.id);
-    return computeSheet(c, rules, ctx);
-  });
+  const sheets = characters.map((c, i) => computeSheet(c, rules, contextFor(characters, i, party)));
   return { sheets, party };
+}
+
+function contextFor(characters: Character[], index: number, party: PartyStats): PartyContext {
+  const taken = new Set<string>();
+  for (const c of characters.slice(0, index)) for (const p of c.perks) if (p.level <= c.level) taken.add(p.id);
+  return { partyNerve: party.partyNerve!, groupSneak: party.groupSneak!, taken };
+}
+
+/** The `PartyContext` for `characters[index]`, for a sheet view that renders one member. */
+export function partyContextFor(characters: Character[], index: number, rules: Rules): PartyContext {
+  return contextFor(characters, index, partyStats(characters.map((c) => computeSheet(c, rules))));
 }
