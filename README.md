@@ -23,6 +23,7 @@ npm test        # engine unit tests
 | `data/*.json` | Backgrounds, traits and perks extracted from the rulebook |
 | `data/overrides/` | Hand-curated fixes and effects, merged on extraction |
 | `scripts/extract_rules.py` | Re-generates `data/` from the rulebook PDF |
+| `scripts/validate_rules.py` | Checks `data/` against the schema (runs in CI) |
 | `ERRATA.md` | How the app resolves contradictions in the rulebook |
 | `CLAUDE.md` | Architecture, formulas and data schema (for contributors and agents) |
 
