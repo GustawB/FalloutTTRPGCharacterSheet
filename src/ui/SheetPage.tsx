@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import type { Character } from "../engine/character";
 import type { Api } from "./api";
+import type { Rules } from "../engine/rules";
+import { Sheet } from "./Sheet";
 import { useAutosave } from "./useAutosave";
 
-/** Shell for one character: loads it and autosaves edits. Sheet contents come in later issues. */
-export function SheetPage({ api, id, onBack }: { api: Api; id: string; onBack: () => void }) {
+/** Shell for one character: loads it and autosaves edits.  */
+export function SheetPage({ api, rules, id, onBack }: { api: Api; rules: Rules; id: string; onBack: () => void }) {
   const [character, setCharacter] = useState<Character | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -28,12 +30,12 @@ export function SheetPage({ api, id, onBack }: { api: Api; id: string; onBack: (
       </button>
       {error && <p role="alert">{error}</p>}
       {!character && !error && <p>Loading…</p>}
-      {character && <Loaded api={api} initial={character} />}
+      {character && <Loaded api={api} rules={rules} initial={character} />}
     </section>
   );
 }
 
-function Loaded({ api, initial }: { api: Api; initial: Character }) {
+function Loaded({ api, rules, initial }: { api: Api; rules: Rules; initial: Character }) {
   const [character, setCharacter] = useState(initial);
   const save = useAutosave(api, character);
   return (
@@ -46,6 +48,7 @@ function Loaded({ api, initial }: { api: Api; initial: Character }) {
         {save.status === "saving" && "Saving…"}
         {save.status === "error" && `Save failed: ${save.message}`}
       </p>
+      <Sheet character={character} rules={rules} onChange={setCharacter} />
     </div>
   );
 }

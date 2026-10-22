@@ -1,0 +1,4 @@
+.breakdown-tip { display: none; position: absolute; left: 0; top: 100%; z-index: 10; min-width: 16rem;
+  padding: 0.25rem 0.5rem; background: #222; color: #eee; border-radius: 4px; font-weight: normal; }
+.breakdown-tip ul { margin: 0; padding-left: 1rem; }
+.breakdown:hover .breakdown-tip, .breakdown:focus .breakdown-tip { display: block; }

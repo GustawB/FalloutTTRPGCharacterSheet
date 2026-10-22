@@ -26,7 +26,7 @@ export function App({ api = defaultApi }: { api?: Api }) {
     <main>
       <h1>Fallout TTRPG Character Sheet</h1>
       {id ? (
-        <SheetPage api={api} id={id} onBack={() => (window.location.hash = "#/")} />
+        <SheetPage api={api} rules={rules} id={id} onBack={() => (window.location.hash = "#/")} />
       ) : (
         <CharacterList api={api} rules={rules} onOpen={(cid) => (window.location.hash = `#/c/${cid}`)} />
       )}
