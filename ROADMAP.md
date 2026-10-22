@@ -59,8 +59,10 @@ Autopilot) runs one iteration at a time:
    labelled `blocked` and whose dependencies are closed. It opens a PR
    labelled `autopilot`.
 2. **review:** a separate agent reviews the PR adversarially and pushes fixes.
-3. **merge:** re-runs the checks. Green → squash-merge. Red → close the PR and
-   label the issue `blocked`, so it's skipped.
+3. **merge:** re-runs the checks. Green → squash-merge.
+4. **next:** always runs. If the issue wasn't merged for any reason (red
+   checks, no PR, a crashed job), it closes the PR and labels the issue
+   `blocked`, so it's skipped.
 
 Then it dispatches itself again, until nothing qualifies. Any `@claude` run on
 an issue labelled `epic` also dispatches it when it finishes (from a
