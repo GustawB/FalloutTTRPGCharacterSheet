@@ -9,6 +9,7 @@ import { Breakdown } from "./Breakdown";
 import { Build } from "./Build";
 import { EntryTooltip } from "./EntryTooltip";
 import { Perks } from "./Perks";
+import { Trackers } from "./Trackers";
 
 /** The perk or trait whose name is `source`, as a tooltip; undefined for other sources (races, backgrounds). */
 const entryNamed = (rules: Rules, source: string) => {
@@ -55,6 +56,7 @@ export function Sheet({
         </label>
       </section>
 
+      <Trackers character={character} rules={rules} onChange={onChange} />
       <Build character={character} rules={rules} onChange={onChange} />
       <Perks character={character} rules={rules} onChange={onChange} />
 
