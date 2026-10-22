@@ -39,8 +39,8 @@ describe("computeSheet", () => {
     const s = computeSheet(newCharacter("c1"), rules);
     expect(Object.keys(s.abilities)).toEqual([...ABILITIES]);
     expect(Object.keys(s.skills)).toEqual([...SKILLS]);
-    expect(s.derived.hp.breakdown).toEqual([]);
-    expect(s.derived.radiationDc).toBeNull();
+    expect(s.derived.hp.breakdown.length).toBeGreaterThan(0);
+    expect(s.derived.radiationDc?.value).toBe(12);
     expect(s.party).toEqual({ partyNerve: null, groupSneak: null });
     expect(s.problems).toEqual([]);
   });

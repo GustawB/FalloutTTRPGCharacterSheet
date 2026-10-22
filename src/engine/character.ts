@@ -22,6 +22,8 @@ export type Character = {
   abilityIncreases: { ability: AbilityId; level: number }[];
   skillPointAllocations: Partial<Record<SkillId, number>>;
   skillAbility: Partial<Record<"breach" | "intimidation" | "medicine", AbilityId>>;
+  /** Which ability the death save uses; absent = whichever modifier is higher. */
+  deathSaveAbility?: "luck" | "endurance";
   manualOverrides: { stat: StatId; value: number; note: string }[];
   current: {
     hp: number; sp: number; ap: number; rads: number;
