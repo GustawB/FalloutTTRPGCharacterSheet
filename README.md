@@ -8,12 +8,14 @@ you qualify for or are one SPECIAL point away from.
 > Status: early. The rules data is extracted; the engine and UI are not built
 > yet. See the open issues.
 
-## Planned usage
+## Usage
 
 ```sh
-npm install
-npm run dev     # app + local save server; characters saved to ./characters/*.json
-npm test        # engine unit tests
+npm ci              # install dependencies (npm install to update the lockfile)
+npm run dev         # Vite dev server (the local save server comes later)
+npm run build       # typecheck, then production build into dist/
+npm run typecheck   # tsc --noEmit, strict
+npm test            # Vitest engine unit tests
 ```
 
 ## Repository
