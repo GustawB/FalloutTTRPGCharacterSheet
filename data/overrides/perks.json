@@ -952,5 +952,170 @@
         "text": "Crafting an item uses two fewer of each listed material (minimum one)."
       }
     ]
+  },
+  "quick-draw": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "Equipping or stowing an item costs 2 less AP (minimum 1)."
+      }
+    ]
+  },
+  "action-hero": {
+    "effects": [
+      {
+        "type": "modifier",
+        "stat": "ap",
+        "value": 2
+      },
+      {
+        "type": "note",
+        "text": "AP maximum increases by 2, to a maximum of 15 (the apMax clamp applies)."
+      }
+    ]
+  },
+  "fan-the-hammer": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "When attacking with a revolver, flip a Karma Cap and spend 10 AP to make extra attacks at no AP cost; targets within 10 feet of the previous one. Number of attacks = rounds left in the revolver."
+      }
+    ]
+  },
+  "rapid-reload": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "Reloading or taking cover costs 3 less AP (minimum 1). Reloading a Manual Reload weapon: 1 AP reloads three rounds."
+      }
+    ]
+  },
+  "reaction-reactor": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "If you end your turn with at least 3 unused AP, you can use them at the end of another creature's turn; otherwise all recycle at the start of your next turn."
+      }
+    ]
+  },
+  "the-dance": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "Damage from bladed melee weapon attacks may add your Agility modifier instead of your Strength modifier."
+      }
+    ]
+  },
+  "nimble-dash": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "Sprinting: small barriers don't stop you (spend 10 feet of movement to vault or slide). If you spent all your AP on a turn to sprint, attack rolls against you have disadvantage until your next turn."
+      }
+    ]
+  },
+  "evasive-action": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "The first time you take SP damage after rolling combat sequence, that damage is reduced to 0."
+      }
+    ]
+  },
+  "gunslinger": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "+2 to attack rolls with handguns. Once per combat sequence, flip a Karma Cap to turn a targeted handgun head hit into a critical hit."
+      }
+    ]
+  },
+  "and-stay-back": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "Shotgun damage ignores 2 DT. If the target is within 5 feet, you can knock it back 15 feet."
+      }
+    ]
+  },
+  "multitarget-hotshot": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "After a ranged hit, your next ranged attack against a different creature gets +2; the one after that against yet another different creature gets +4, then the cycle resets (starts again from an attack without the bonus). Needn't be on one turn."
+      }
+    ]
+  },
+  "ninja": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "Spend 5 AP on your turn for a spinning unarmed attack against 3 creatures within 5 feet. Crit chance decreases by 2 with melee and unarmed attacks."
+      }
+    ],
+    "needsReview": true
+  },
+  "concentrated-fire": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "On a targeted hit you choose the limb condition. Attack rolls against creatures get +2 per limb condition they have."
+      }
+    ]
+  },
+  "mister-sandman": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "Attacking an unconscious creature kills it."
+      }
+    ]
+  },
+  "rangers-deadly-aim": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "If you act first in combat sequence, your first attack roll can automatically critically hit, or you can attack up to three times without spending AP."
+      }
+    ]
+  },
+  "group-camouflage": {
+    "effects": [
+      {
+        "type": "clamp",
+        "stat": "groupSneak",
+        "min": 20,
+        "max": 20
+      },
+      {
+        "type": "note",
+        "text": "Allies within 30 feet of you also have a Group Sneak score of 20."
+      }
+    ],
+    "needsReview": true
+  },
+  "efficient-speedster": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "You recycle all unused AP at the start of your turn. When sprinting you can turn once and continue sprinting."
+      }
+    ]
+  },
+  "anticipated-reflexes": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "When an attack hits you, spend 3/6/9 AP to gain +1/+2/+3 AC; you regain that many fewer AP at the start of your next turn."
+      }
+    ]
+  },
+  "nerves-of-steel": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "At the start of each of your turns, while HP is at least half, regain SP equal to half your level (rounded down)."
+      }
+    ]
   }
 }
