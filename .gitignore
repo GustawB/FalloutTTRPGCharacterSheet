@@ -1,0 +1,4 @@
+node_modules/
+dist/
+characters/
+__pycache__/
