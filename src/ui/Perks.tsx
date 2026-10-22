@@ -5,6 +5,7 @@ import type { Rules } from "../engine/rules";
 import { ABILITIES } from "../engine/vocab";
 import { EntryPicker } from "./EntryPicker";
 import { EntryTooltip } from "./EntryTooltip";
+import { Proposals } from "./Proposals";
 
 const label = (id: string) => id.replace(/([A-Z])/g, " $1").replace(/^./, (c) => c.toUpperCase());
 const ABILITY_MAX = 10;
@@ -32,6 +33,8 @@ export function Perks({ character, rules, onChange }: { character: Character; ru
         })}
       </ul>
       <EntryPicker kind="perk" label="Add perk" character={character} rules={rules} blocked={blocked}
+        onPick={(id) => onChange(withPerk(character, id))} />
+      <Proposals character={character} rules={rules} blocked={blocked}
         onPick={(id) => onChange(withPerk(character, id))} />
       <h3>Ability increases</h3>
       {ABILITIES.map((a) => {
