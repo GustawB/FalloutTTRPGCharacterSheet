@@ -47,6 +47,8 @@ export type Sheet = {
   skillPointsSpent: StatResult;
   /** Perk points spent (perks picked plus ability increases); compare with `derived.perkPoints`. */
   perkPointsSpent: StatResult;
+  /** Rank of every owned perk (picked or granted by something else). */
+  perkRanks: Record<string, number>;
   party: PartyStats;
   notes: SheetNote[];
   rollModes: RollModeResult[];
@@ -148,6 +150,7 @@ export function computeSheet(character: Character, rules: Rules): Sheet {
       { source: "perks", label: "Ability increases", value: increases },
     ]),
     derived,
+    perkRanks: Object.fromEntries(perkStage.ranks),
     party: { partyNerve: null, groupSneak: null },
     notes: acc.notes,
     rollModes: acc.rollModes,

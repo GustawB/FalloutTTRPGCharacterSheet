@@ -22,6 +22,8 @@ export type PerkStage = {
   picks: number;
   /** Perk points spent: picks plus ability increases. */
   spent: number;
+  /** Final rank of every owned perk (picked or granted), after the repeat limit. */
+  ranks: Map<string, number>;
 };
 
 /**
@@ -62,6 +64,7 @@ export function applyPerks(
     scan(g.perkId);
   }
 
+  const ranks = new Map<string, number>();
   for (const id of new Set([...granted.keys(), ...picked.keys()])) {
     const perk = rules.perkById.get(id);
     if (!perk) {
@@ -80,6 +83,7 @@ export function applyPerks(
       );
       rank = max;
     }
+    ranks.set(id, rank);
     const source = `Perk: ${perk.name}`;
     const label = rank > 1 ? `${perk.name} (rank ${rank})` : perk.name;
     const pctx = { ...ctx, rank, picks: picksFor(c, id) };
@@ -91,5 +95,5 @@ export function applyPerks(
   }
 
   const increases = c.abilityIncreases.filter((i) => i.level <= c.level).length;
-  return { picks: rows.length, spent: rows.length + increases };
+  return { picks: rows.length, spent: rows.length + increases, ranks };
 }
