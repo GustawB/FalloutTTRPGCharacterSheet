@@ -5,7 +5,7 @@ import type { Rules } from "../engine/rules";
 import { Sheet } from "./Sheet";
 import { useAutosave } from "./useAutosave";
 
-/** Shell for one character: loads it and autosaves edits.  */
+/** Shell for one character: loads it and autosaves edits. */
 export function SheetPage({ api, rules, id, onBack }: { api: Api; rules: Rules; id: string; onBack: () => void }) {
   const [character, setCharacter] = useState<Character | null>(null);
   const [error, setError] = useState<string | null>(null);

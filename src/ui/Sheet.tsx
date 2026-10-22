@@ -121,6 +121,7 @@ export function Sheet({
             {name} <span data-testid={`derived-${id}`}><Stat stat={sheet.derived[id]} /></span>
           </div>
         ))}
+        <div>Perk points spent <span data-testid="perkPointsSpent"><Stat stat={sheet.perkPointsSpent} /></span></div>
         <div>Party nerve <span data-testid="derived-partyNerve"><Stat stat={sheet.party.partyNerve} /></span></div>
         <div>Group sneak <span data-testid="derived-groupSneak"><Stat stat={sheet.party.groupSneak} /></span></div>
       </section>

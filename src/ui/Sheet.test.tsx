@@ -70,6 +70,11 @@ describe("Sheet", () => {
     expect(within(skill).getByRole("tooltip").textContent).toMatch(/[Ii]ntelligence/);
   });
 
+  it("shows perk points spent with a breakdown", () => {
+    render(<Harness initial={newCharacter("a")} />);
+    expect(within(screen.getByTestId("perkPointsSpent")).getByRole("tooltip").querySelectorAll("li").length).toBeGreaterThan(0);
+  });
+
   it("edits level and xp", () => {
     render(<Harness initial={newCharacter("a")} />);
     fireEvent.change(screen.getByLabelText("Level"), { target: { value: "5" } });
