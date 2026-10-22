@@ -29,7 +29,7 @@ scripts/extract_rules.py  PDF → data/*.json (needs poppler `pdftotext`)
 scripts/validate_rules.py data/*.json vs. the schema below (no PDF, stdlib only)
 src/engine/           pure TS: no React, no I/O, no Date.now(); fully unit-tested
 src/ui/               React components
-server/               local Node server: GET/PUT characters/<id>.json
+server/               local Node server (app.ts, index.ts): list, GET/PUT characters/<id>.json; run by Node type stripping, so erasable TS syntax only
 characters/           saved characters (gitignored)
 ```
 

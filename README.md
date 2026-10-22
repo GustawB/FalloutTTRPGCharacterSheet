@@ -12,11 +12,18 @@ you qualify for or are one SPECIAL point away from.
 
 ```sh
 npm ci              # install dependencies (npm install to update the lockfile)
-npm run dev         # Vite dev server (the local save server comes later)
+npm run dev         # local save server (port 5174) + Vite together; Vite proxies /api
+npm run dev:server  # save server only
+npm run dev:client  # Vite only
 npm run build       # typecheck, then production build into dist/
 npm run typecheck   # tsc --noEmit, strict
 npm test            # Vitest engine unit tests
 ```
+
+Characters are saved as `characters/<id>.json` (gitignored; override the
+directory with `CHARACTERS_DIR`, the port with `PORT`). The server serves
+`GET /api/characters`, `GET /api/characters/:id` and `PUT /api/characters/:id`,
+and rejects an unknown `schemaVersion` with 409.
 
 ## Repository
 
