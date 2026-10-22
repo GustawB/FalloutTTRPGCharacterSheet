@@ -61,7 +61,8 @@ function Loaded({ api, rules, initial, roster }: { api: Api; rules: Rules; initi
   const save = useAutosave(api, character);
   // The edited character stands in for its saved copy, so party stats follow edits live.
   const members = roster.map((m) => m ?? character);
-  const party = character.partyId && members.length > 0 ? partyContextFor(members, roster.indexOf(null), rules) : undefined;
+  const self = roster.indexOf(null);
+  const party = character.partyId && self >= 0 ? partyContextFor(members, self, rules) : undefined;
   return (
     <div>
       <label>

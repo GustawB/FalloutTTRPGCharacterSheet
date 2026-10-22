@@ -91,4 +91,14 @@ describe("sheet party stats", () => {
     // 5 + -2 + 1 = 4 → 2
     expect(text(screen.getByTestId("derived-partyNerve"))).toBe("2");
   });
+
+  it("shows — when the list does not place the character in its own party", async () => {
+    window.location.hash = "#/c/a";
+    const api = mockApi(party);
+    api.list.mockResolvedValue([{ id: "b", name: "B", race: "human", level: 1, partyId: "crew" }]);
+    render(<App api={api} />);
+    await screen.findByTestId("derived-partyNerve");
+    await waitFor(() => expect(api.list).toHaveBeenCalled());
+    expect(screen.getByTestId("derived-partyNerve").textContent).toBe("—");
+  });
 });
