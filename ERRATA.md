@@ -162,6 +162,37 @@ negative values.
   instead of 5. Note only.
 - **Status:** Provisional (agent, #11)
 
+### E20. "In addition to this trait's effects" Wild Wasteland variants restate the base
+- **Text (p29–31):** several Wild Wasteland variants (Fast Shot, Feral, Brawny,
+  Small Frame, Hot Blooded, Loose Cannon) open with "In addition to this
+  trait's effects".
+- **Ruling:** a Wild Wasteland variant replaces the base effects (CLAUDE.md), so
+  these variants restate the base effects plus the extra ones. For Brawny and
+  Small Frame the repeated bonus/penalty stacks, giving 2× level.
+- **Status:** Provisional (agent, #18)
+
+### E21. Gifted: "skill check bonuses" and Discount
+- **Text (p30):** "you decrease all your skill check bonuses by 3".
+- **Ruling:** encoded as `skill.*` −3 (6 for Wild Wasteland). Extra Discount uses
+  are a note.
+- **Status:** Provisional (agent, #18)
+
+### E22. Addiction traits: roll mode and the addicted condition
+- **Text (p29–30):** Enhancement Reliant gives disadvantage, and Enhancement
+  Resistant advantage, on Endurance checks to resist becoming addicted.
+  Enhancement Resistant's Wild Wasteland variant grants "immune to the addicted
+  condition".
+- **Ruling:** the check modes are `rollMode` on `addiction`. There is no
+  `addicted` condition id, so the immunity, the rest-ends-addiction clauses and
+  the chem duration changes are notes.
+- **Status:** Provisional (agent, #18)
+
+### E23. Hoarder (Wild Wasteland): immune to Encumbered
+- **Text (p30):** "You are immune to the Encumbered condition".
+- **Ruling:** `immunity` to `condition.encumbered` only. Heavily Encumbered is a
+  separate condition and is not covered.
+- **Status:** Provisional (agent, #18)
+
 ## Editorial (no ruling needed, just don't trust these references)
 - p4 steps 7 and 23 say traits are on "pg. 20". They're on p25.
 - p5 says the perk list is on "page 27". It's on p32.

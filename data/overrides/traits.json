@@ -7,6 +7,603 @@
             "kind": "anyAbility",
             "max": 1
           }
+        ],
+        "effects": [
+          {
+            "type": "note",
+            "text": "Pick-time choice: increase one skill modifier by 5."
+          }
+        ]
+      }
+    ],
+    "effects": [
+      {
+        "type": "note",
+        "text": "Pick-time choice: increase one skill modifier by 2."
+      }
+    ]
+  },
+  "bruiser": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "Melee weapon attacks that deal bludgeoning damage, and unarmed attacks, deal one additional damage die. Unarmed and melee weapon attacks cost 1 more AP."
+      }
+    ],
+    "wildWasteland": [
+      {
+        "effects": [
+          {
+            "type": "note",
+            "text": "Melee weapon attacks that deal bludgeoning damage, and unarmed attacks, deal +3 damage. Unarmed and melee weapon attacks cost 2 more AP."
+          }
+        ]
+      },
+      {
+        "effects": [
+          {
+            "type": "modifier",
+            "stat": "ability.strength",
+            "value": 2
+          },
+          {
+            "type": "modifier",
+            "stat": "apMax",
+            "value": -2
+          }
+        ]
+      }
+    ]
+  },
+  "built-to-destroy": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "Damage you deal with a weapon is increased by 1. When you roll a 1 on an attack roll, the weapon gains two levels of decay instead of one."
+      }
+    ],
+    "wildWasteland": [
+      {
+        "effects": [
+          {
+            "type": "note",
+            "text": "Damage you deal with a weapon is increased by 2. Whenever you attack with a weapon, it gains Breakable."
+          }
+        ]
+      }
+    ]
+  },
+  "enhancement-reliant": {
+    "effects": [
+      {
+        "type": "rollMode",
+        "roll": "addiction",
+        "mode": "disadvantage"
+      },
+      {
+        "type": "note",
+        "text": "An addicted condition ends after you rest for at least 8 hours. Disadvantage on Endurance checks to resist becoming addicted."
+      }
+    ],
+    "wildWasteland": [
+      {
+        "effects": [
+          {
+            "type": "note",
+            "text": "An addicted condition ends after 1 hour. You always become addicted after using a Chem or Robot Overclock Program."
+          }
+        ]
+      }
+    ]
+  },
+  "claustrophobia": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "While outside, Party Nerve effects are doubled (combat sequence temporary stamina and death save bonus). While indoors, underground or otherwise not outside, you gain no benefit from Party Nerve."
+      }
+    ],
+    "wildWasteland": [
+      {
+        "effects": [
+          {
+            "type": "note",
+            "text": "Advantage on all ability and skill checks while outside; disadvantage on all ability and skill checks while indoors, underground or otherwise not outside."
+          }
+        ]
+      }
+    ]
+  },
+  "early-bird": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "Add a d4 to any ability or skill check made from 6am to 12pm. Gain an additional level of fatigue when you fail an Endurance check to resist sleep."
+      }
+    ],
+    "wildWasteland": [
+      {
+        "effects": [
+          {
+            "type": "note",
+            "text": "+2 to all skills in the morning (6am to 12pm), -1 at night (6pm to 6am)."
+          }
+        ]
+      }
+    ]
+  },
+  "enhancement-resistant": {
+    "effects": [
+      {
+        "type": "rollMode",
+        "roll": "addiction",
+        "mode": "advantage"
+      },
+      {
+        "type": "note",
+        "text": "Advantage on Endurance checks to resist becoming addicted. Chem and Robot Overclock Program benefits last half as long as listed."
+      }
+    ],
+    "wildWasteland": [
+      {
+        "effects": [
+          {
+            "type": "note",
+            "text": "Immune to the addicted condition. Chem and Robot Overclock Program benefits last at most one round."
+          }
+        ]
+      }
+    ],
+    "needsReview": true
+  },
+  "fast-shot": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "When spending AP to attack with a ranged weapon or explosive, you may take disadvantage on the attack roll to make it cost 1 less AP (minimum 3)."
+      }
+    ],
+    "wildWasteland": [
+      {
+        "effects": [
+          {
+            "type": "rollMode",
+            "roll": "combatSequence",
+            "mode": "advantage"
+          },
+          {
+            "type": "note",
+            "text": "Everything from the base trait applies (ranged and explosive attacks may take disadvantage for 1 less AP, minimum 3). You cannot make targeted attacks with ranged weapons."
+          }
+        ]
+      }
+    ]
+  },
+  "feral": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "Melee and unarmed attacks deal an extra 2 damage. You gain no benefit from Party Nerve."
+      }
+    ],
+    "wildWasteland": [
+      {
+        "effects": [
+          {
+            "type": "note",
+            "text": "Melee and unarmed attacks deal an extra 2 damage. You gain no benefit from Party Nerve. Whenever you spend at least 6 AP to move, you immediately gain 2 AP. Disadvantage on all Barter and Speech skill checks. For perk requirements you count as having 4 Charisma."
+          }
+        ]
+      }
+    ],
+    "needsReview": true
+  },
+  "finesse": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "A critical hit with a weapon increases either the damage multiplier or the damage dice by 1. Attack roll totals are reduced by 1."
+      }
+    ],
+    "wildWasteland": [
+      {
+        "effects": [
+          {
+            "type": "note",
+            "text": "A critical hit with a weapon increases either the damage multiplier or the damage dice by 2. Attack roll totals are reduced by 2."
+          }
+        ]
+      }
+    ]
+  },
+  "gifted": {
+    "effects": [
+      {
+        "type": "modifier",
+        "stat": "carryLoad",
+        "value": 10
+      },
+      {
+        "type": "modifier",
+        "stat": "combatSequence",
+        "value": 1
+      },
+      {
+        "type": "modifier",
+        "stat": "partyNerve",
+        "value": 1
+      },
+      {
+        "type": "modifier",
+        "stat": "karmaCaps",
+        "value": 1
+      },
+      {
+        "type": "modifier",
+        "stat": "skill.*",
+        "value": -3
+      },
+      {
+        "type": "note",
+        "text": "Use Discount an additional time per rest."
+      }
+    ],
+    "wildWasteland": [
+      {
+        "effects": [
+          {
+            "type": "modifier",
+            "stat": "carryLoad",
+            "value": 20
+          },
+          {
+            "type": "modifier",
+            "stat": "combatSequence",
+            "value": 2
+          },
+          {
+            "type": "modifier",
+            "stat": "partyNerve",
+            "value": 2
+          },
+          {
+            "type": "modifier",
+            "stat": "karmaCaps",
+            "value": 2
+          },
+          {
+            "type": "modifier",
+            "stat": "skill.*",
+            "value": -6
+          },
+          {
+            "type": "note",
+            "text": "Use Discount two additional times per rest."
+          }
+        ]
+      }
+    ],
+    "needsReview": true
+  },
+  "godspeed": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "While your SP is 0 you may gain 1 additional AP at the start of your turn; if you do, AC and DT are each decreased by 2."
+      }
+    ],
+    "wildWasteland": [
+      {
+        "effects": [
+          {
+            "type": "note",
+            "text": "While your SP is 0 you may gain 2 additional AP at the start of your turn; if you do, you do not subtract DT from damage dealt to HP and your AC is 8."
+          }
+        ]
+      }
+    ]
+  },
+  "good-natured": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "For Charisma perk requirements you count as having 2 more Charisma. For Agility and Strength perk requirements you count as having 2 less."
+      }
+    ],
+    "wildWasteland": [
+      {
+        "effects": [
+          {
+            "type": "note",
+            "text": "For Charisma perk requirements you count as having 10 Charisma. For Agility and Strength perk requirements you count as having 4."
+          }
+        ]
+      }
+    ]
+  },
+  "brawny": {
+    "effects": [
+      {
+        "type": "modifier",
+        "stat": "hp",
+        "value": {
+          "ref": "level"
+        }
+      },
+      {
+        "type": "modifier",
+        "stat": "sp",
+        "value": {
+          "op": "mul",
+          "args": [
+            -1,
+            {
+              "ref": "level"
+            }
+          ]
+        }
+      }
+    ],
+    "wildWasteland": [
+      {
+        "effects": [
+          {
+            "type": "modifier",
+            "stat": "hp",
+            "value": {
+              "op": "mul",
+              "args": [
+                2,
+                {
+                  "ref": "level"
+                }
+              ]
+            }
+          },
+          {
+            "type": "modifier",
+            "stat": "sp",
+            "value": {
+              "op": "mul",
+              "args": [
+                -2,
+                {
+                  "ref": "level"
+                }
+              ]
+            }
+          },
+          {
+            "type": "note",
+            "text": "Doubled bonus and penalty: the wording \"in addition to this trait's effects\" is read as stacking on the base effects."
+          }
+        ]
+      }
+    ],
+    "needsReview": true
+  },
+  "hoarder": {
+    "effects": [
+      {
+        "type": "modifier",
+        "stat": "carryLoad",
+        "value": 25
+      },
+      {
+        "type": "note",
+        "text": "Disadvantage on all ability checks, skill checks and attack rolls while carrying less than 50 load of weapons, armor, ammunition, explosives, chems, food, drink or junk."
+      }
+    ],
+    "wildWasteland": [
+      {
+        "effects": [
+          {
+            "type": "immunity",
+            "to": "condition.encumbered"
+          },
+          {
+            "type": "note",
+            "text": "You gain a level of fatigue whenever your Carry Load is below your maximum."
+          }
+        ]
+      }
+    ]
+  },
+  "hot-blooded": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "While your SP is 0: reroll a 1 or 2 on a weapon damage die (keep the new roll), and subtract 2 from attack rolls."
+      }
+    ],
+    "wildWasteland": [
+      {
+        "effects": [
+          {
+            "type": "note",
+            "text": "While your SP is 0: reroll a 1 or 2 on a weapon damage die (keep the new roll), subtract 2 from attack rolls, and attack damage is increased by 5. Disadvantage on all attack rolls while your SP is 0."
+          }
+        ]
+      }
+    ],
+    "needsReview": true
+  },
+  "jinxed": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "The chance to automatically miss (and the weapon to gain a level of decay) on any creature's attack roll is increased by 1. If your karma cap is flipped you may flip it back."
+      }
+    ],
+    "wildWasteland": [
+      {
+        "effects": [
+          {
+            "type": "note",
+            "text": "The chance for any creature's attack roll to automatically miss is increased by 2."
+          }
+        ]
+      }
+    ]
+  },
+  "loose-cannon": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "Throwing an explosive costs 1 less AP (minimum 3). You can throw them only up to half their listed range."
+      }
+    ],
+    "wildWasteland": [
+      {
+        "effects": [
+          {
+            "type": "note",
+            "text": "Throwing an explosive costs 1 less AP (minimum 3) and only up to half the listed range. If a thrown explosive damages another PC's HP, the damage is doubled for all non-PC creatures."
+          }
+        ]
+      }
+    ],
+    "needsReview": true
+  },
+  "night-person": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "Add a d4 to any ability or skill check made from 6pm to 6am. Gain an additional level of fatigue when you fail an Endurance check to resist sleep."
+      }
+    ],
+    "wildWasteland": [
+      {
+        "effects": [
+          {
+            "type": "note",
+            "text": "-1 to all skills in the morning (6am to 12pm), +2 at night (6pm to 6am)."
+          }
+        ]
+      }
+    ]
+  },
+  "one-hander": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "+2 to attack rolls with one-handed weapons; -2 to attack rolls with two-handed weapons."
+      }
+    ],
+    "wildWasteland": [
+      {
+        "effects": [
+          {
+            "type": "note",
+            "text": "+2 to damage with one-handed weapon attacks; -2 to damage with two-handed weapon attacks."
+          }
+        ]
+      }
+    ]
+  },
+  "one-in-a-million": {
+    "effects": [
+      {
+        "type": "note",
+        "text": "On a critical hit with a weapon, roll a d20: on a 20 the hit automatically lands and the weapon table's extra damage is quadrupled; otherwise it hits but deals no critical damage."
+      }
+    ],
+    "wildWasteland": [
+      {
+        "effects": [
+          {
+            "type": "note",
+            "text": "On a critical hit with a weapon, roll a d20; on a 20 roll another d20; on a second 20 the hit automatically lands and the weapon table's extra damage is octupled."
+          }
+        ]
+      }
+    ]
+  },
+  "small-frame": {
+    "effects": [
+      {
+        "type": "modifier",
+        "stat": "sp",
+        "value": {
+          "ref": "level"
+        }
+      },
+      {
+        "type": "modifier",
+        "stat": "hp",
+        "value": {
+          "op": "mul",
+          "args": [
+            -1,
+            {
+              "ref": "level"
+            }
+          ]
+        }
+      }
+    ],
+    "wildWasteland": [
+      {
+        "effects": [
+          {
+            "type": "modifier",
+            "stat": "sp",
+            "value": {
+              "op": "mul",
+              "args": [
+                2,
+                {
+                  "ref": "level"
+                }
+              ]
+            }
+          },
+          {
+            "type": "modifier",
+            "stat": "hp",
+            "value": {
+              "op": "mul",
+              "args": [
+                -2,
+                {
+                  "ref": "level"
+                }
+              ]
+            }
+          },
+          {
+            "type": "note",
+            "text": "Doubled bonus and penalty: the wording \"in addition to this trait's effects\" is read as stacking on the base effects."
+          }
+        ]
+      }
+    ],
+    "needsReview": true
+  },
+  "trigger-discipline": {
+    "effects": [
+      {
+        "type": "modifier",
+        "stat": "combatSequence",
+        "value": -2
+      },
+      {
+        "type": "note",
+        "text": "The extra AP cost of targeted ranged attack rolls is reduced by 1."
+      }
+    ],
+    "wildWasteland": [
+      {
+        "effects": [
+          {
+            "type": "modifier",
+            "stat": "combatSequence",
+            "value": -5
+          },
+          {
+            "type": "note",
+            "text": "The extra AP cost of targeted ranged attack rolls is reduced by 2."
+          }
         ]
       }
     ]
