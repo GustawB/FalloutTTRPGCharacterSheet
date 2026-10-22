@@ -70,6 +70,7 @@ export function baseSkills(
 export function skillPointsSpent(c: Character, problems: string[]): number {
   let spent = 0;
   for (const [skill, n] of Object.entries(c.skillPointAllocations)) {
+    if (!SKILLS.includes(skill as SkillId)) problems.push(`Unknown skill in allocations: ${skill}`);
     if (!Number.isInteger(n) || (n as number) < 0) problems.push(`Invalid skill point allocation for ${skill}: ${n}`);
     spent += n as number;
   }

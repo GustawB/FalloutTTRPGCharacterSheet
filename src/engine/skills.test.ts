@@ -94,4 +94,9 @@ describe("skill points", () => {
     const s = sheet({ level: 1, skillPointAllocations: { guns: 1 } });
     expect(s.problems.join()).toContain("Spent 1 skill points but only 0");
   });
+  it("flags negative and unknown allocations", () => {
+    const s = sheet({ level: 5, skillPointAllocations: { guns: -1, bogus: 1 } as Character["skillPointAllocations"] });
+    expect(s.problems.join()).toContain("Invalid skill point allocation for guns");
+    expect(s.problems.join()).toContain("Unknown skill in allocations: bogus");
+  });
 });
