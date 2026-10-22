@@ -59,6 +59,7 @@ describe("Build", () => {
     pick("Subtype", "handy");
     expect(screen.queryByLabelText("Tool 4")).toBeNull();
     const first = optionValues("Tool 1")[0]!;
+    expect((screen.getByLabelText("Tool 2") as HTMLSelectElement).disabled).toBe(true);
     pick("Tool 1", first);
     expect(screen.getByRole("alert").textContent).toContain("needs 3 tool(s), got 1");
     pick("Tool 2", first);

@@ -69,6 +69,8 @@ export function Build({ character, rules, onChange }: { character: Character; ru
               Tool {i + 1}{" "}
               <select
                 value={character.race.tools?.[i] ?? ""}
+                // Tools are stored as a packed list, so fill the slots in order.
+                disabled={i > (character.race.tools?.length ?? 0)}
                 onChange={(e) => {
                   const tools = Array.from({ length: toolChoice.count }, (_, j) => character.race.tools?.[j] ?? "");
                   tools[i] = e.target.value;
@@ -184,4 +186,3 @@ export function Build({ character, rules, onChange }: { character: Character; ru
     </section>
   );
 }
-
