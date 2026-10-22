@@ -76,3 +76,9 @@ export function skillPointsSpent(c: Character, problems: string[]): number {
   }
   return spent;
 }
+
+/** Abilities a skill may use: the p20 default first, then the alternates (E11). */
+export function skillAbilityOptions(skill: SkillId): AbilityId[] {
+  const entry = SKILL_ABILITIES[skill];
+  return [entry.default, ...(entry.alternates ?? [])];
+}
